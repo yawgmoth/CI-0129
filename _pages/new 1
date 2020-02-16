@@ -1,0 +1,14 @@
+import random
+
+
+def generate_deck():
+    result = []
+    for suit in ["Hearts", "Spades", "Clubs", "Diamonds"]:
+        for rank in ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]:
+            result.append((suit,rank))
+    return result
+
+
+class Game:
+    def __init__(self):
+        self.cards = 
