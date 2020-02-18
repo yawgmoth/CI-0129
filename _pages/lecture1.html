@@ -33,14 +33,31 @@ permalink: /slides/lecture1.html
       
       .tiny { font-size: 0.8em; }
       
+      .footnote { font-size: 0.7em; }
+      
       .small li {  font-size: 0.8em; }
       
       .medium li {  font-size: 1.1em; }
       
+      .big { font-size: 1.9em; text-align: center; }
       
       .mmedium li {  font-size: 0.95em; }
       
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      .left-column {
+        width: 45%;
+        height: 92%;
+        float: left;
+        font-size: 0.9em;
+      }
+  
+      .right-column {
+        width: 50%;
+        float: right;
+        padding-top: 1em;
+        font-size: 0.75em;
+      }
     </style>
   </head>
   <body>
@@ -99,7 +116,7 @@ class: medium
  
 # About Me
 
-<img src="/PF-3341/assets/img/cats.jpg" width="50%"/>
+<img src="/CI-0129/assets/img/cats.jpg" width="50%"/>
  
 ---
  
@@ -123,37 +140,181 @@ class: small
   
 # Class contents
   
-  TODO
+  * What is AI?
+  
+  * Intelligent Agents 
+  
+  * Classical Search
+  
+  * Adversarial Search
+  
+  * Logic 
+  
+  * Planning 
+  
+  * Machine Learning
+  
+---
+
+class: small
+  
+# Textbook
+  
+<img src="/CI-0129/assets/img/textbook.png" width="60%"/>
     
+---
+
+class: medium
+
+# Grading
+
+* Project: 45%
+
+   - Proposal: 5%
+   - Update Presentations: 7%
+   - Prototype: 10%
+   - Report and Final Implementation: 15%
+   - Final Presentation: 8%
+   
+* Labs: 5*7%: 35%
+
+* Exams: 2*10%: 20%
+
 ---
 
 class: small
   
 # Class schedule
   
-TODO
-    
----
-
-class: mmedium
-
-# Labs
-
-TODO
-
----
-
-class: mmedium
-
-# Grading 
-
-TODO
+  * 9/3 - 12/3: What is Intelligence?
+  
+  * 16/3 - 2/4: Search and Adversarial Search 
+  
+  * 16/4 - 30/4: Logic 
+  
+  * 7/5: Review 
+  
+  * 14/5: Exam 1
+  
+  * 21/5: Planning 
+  
+  * 28/5 - 25/6: Machine Learning 
+  
+  * 2/7: Review
+  
+  * 9/7: Exam 2
   
 ---
 
-# Textbook
+# Project
 
-TODO
+* For this course, we will work together with the Robotics course and [Grupo Prides](https://www.grupoprides.com/) on a project
+
+* There are several project ideas to choose from 
+
+* Organize in groups of four, and choose one of these project ideas (or propose your own)
+
+* Every week (on Mondays) you have to give a short (5 minutes or less) update presentation on your progress
+
+---
+
+# Project: Pepper 
+
+.left-column[
+<img src="/CI-0129/assets/img/pepper.jpg" width="40%"/>
+]
+
+.right-column[
+* 1.2m height
+ 
+* Camera and Microphones (speaks and understands 20 languages)
+
+* Can recognize emotions
+
+* Sonar, laser distance sensors
+
+* Can move arms, hands, the body, and move around
+
+* Built-in tablet
+]
+
+---
+
+# Pepper 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zJHyaD1psMc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+---
+
+class: medium
+
+# Project Ideas
+
+* Build a game for Pepper, preferably one involving communication ([Codenames](https://boardgamegeek.com/boardgame/178900/codenames), [Hanabi](https://boardgamegeek.com/boardgame/98778/hanabi), [Cockroach Poker](https://boardgamegeek.com/boardgame/11971/cockroach-poker), ...)
+
+* Build an educational experience with Pepper, which actively helps students (giving them hints, explaining concepts)
+
+* Build a support-system using Pepper, where you can ask it questions and it looks things up on Google and Wikipedia
+
+* Make Pepper learn dances, movements, etc.
+
+---
+
+class: medium
+
+# Project: Focus on AI
+
+Whichever project you choose, the focus for this course is AI:
+
+* Playing games well is an AI problem
+
+* Communicating well with humans is an AI problem
+
+* Determining how to show information/give advice is an AI problem 
+
+* Learning from examples is an AI (or Machine Learning) problem
+
+---
+
+# Project Schedule
+
+* By 16/3: Organize in groups of four, come up with some ideas 
+
+* 23/3: Proposal document (1-2 pages)
+
+* 1/6: Prototype submission 
+
+* 29/6: Final submission (before 6pm) and presentation 
+
+---
+
+# Labs
+
+* There will be five lab assignments
+
+* Each Monday, starting 23/3 we will be meeting in a lab 
+
+* Each assignment covers 2-3 Mondays, and you should be able to finish them during class time
+
+* After each lab, send your code and a short readme to me by email
+
+* For the lab, you may work in groups of up to two students
+
+---
+
+class: medium
+
+# Labs
+
+ * Lab 1: Search/pathfinding
+ 
+ * Lab 2: Monte Carlo Tree Search for Poker
+ 
+ * Lab 3: Logic Reasoning 
+ 
+ * Lab 4: Planning 
+ 
+ * Lab 5: Neural Networks
 
 ---
 
@@ -161,12 +322,292 @@ class: center, middle
 
 # Introduction
 
+---
+
+class: center, middle
+
+# What is Artificial Intelligence?
+
+---
+
+# What is AI
+  
+  * No one really agrees on what "AI" is exactly
+  
+  * As Douglas R. Hofstadter said "AI is whatever hasn't been done yet"
+  
+  * Pathfinding "was" once AI
+  
+  * Many people also confuse/conflate AI and Machine Learning
+  
+---
+
+# Artificial Intelligence 
+
+<img src="/CI-0129/assets/img/ai.png" width="80%"/>
+
+.footnote[Source: *AI: A Modern Approach*, Russel and Norvig]
+
+---
+
+# Act Humanly: The Turing Test 
+
+* Imagine sitting in front of a computer, chatting with someone 
+
+* You can ask questions, the other "person" answers 
+
+* After the conversation you are asked: Were you talking to a person or a computer 
+
+* What if you are talking to a computer, but think it is a person? The computer "passed the Turing Test"
+
+---
+
+# The Turing Test 
+
+Why is the Turing Test hard?
+
+--
+
+ * Natural Language Understanding 
+ 
+ * Knowledge Representation: Remembering what you say/what it knows
+ 
+ * Reasoning: Deducing new knowledge from the information you provide
+ 
+ * Learning?
+ 
+---
+
+# Think Humanly
+
+* Observe/test the human thought process for various problems 
+
+* Come up with algorithms/methods that mirror that process 
+
+* Apply them to new problems of the same type 
+
+* Result: "Intelligence"
+
+---
+
+class: medium
+
+# Think Rationally
+
+* *Logic* is a set of languages to model relationships between facts 
+
+* There are usually rules that determine how new information can be deduced
+
+* A computer program can use these rules to **prove** facts about the world 
+
+* Logic is widely used in AI, because it can "anything" in theory 
+
+* In practice, there are two main limitations: computational resources, and representational range
+
+---
+
+# Act Rationally 
+
+* Rather than imitating a human, we are often just interested in some particular task 
+
+* Our goal is to develop a program/robot to perform that task, a (rational) *agent*
+
+* The agent actually *does* something, it *acts*
+
+* Our goal is for the agent to perform the "best possible" action 
+
+---
+
+# Best Possible Action?
+
+<img src="/CI-0129/assets/img/trolleyproblem.png" width="100%"/>
+
+---
+
+# The Moral Machine 
+
+<img src="/CI-0129/assets/img/moralmachine.png" width="80%"/>
+
+---
+
+class: center, middle 
+
+# History and Extent of AI
+
+---
+
+class: medium
+
+# History of AI
+
+* Starting in 1943, researchers took inspiration from the human brain, mixed it with Logic, and some theory of computation and created the first "Neural Networks" (McCulloch and Pitts (1943), Hebb (1949))
+
+* Marvin Minsky (1950) built the first Neural Network computer, and also wrote about the limitations of this approach 
+
+* Turing (1950) proposed the Turing Test as a "goal" for AI research 
+
+* A workshop in Dartmouth in 1956 established the term "Artificial Intelligence"
+
+---
+
+# History of AI
+
+* One of the first AI agents was developed by Arthur Samuel in 1952 to play Checkers ("Damas")
+
+* Gelernter (1959) created a Geometry Theorem Prover
+
+* Newell and Simon developed a General Problem Solver (1950s-1960s)
+
+* John McCarthy developed LISP (1958)
+
+---
+
+# History of AI 
+
+
+Herbert Simon in 1957:
+
+"
+It is not my aim to surprise or shock you—but the simplest way I can summarize is to say
+that there are now in the world machines that think, that learn and that create. Moreover, 
+their ability to do these things is going to increase rapidly until—in a visible future—the
+range of problems they can handle will be coextensive with the range to which the human
+mind has been applied.
+"
+
+---
+
+class: medium
+
+# History of AI 
+
+* Early AI research made rapid progress (from "nothing" to "playing Checkers really well")
+
+* Machine translation was an early stumbling block: "there has been no machine translation of general scientific text, and none is in immediate prospect." (1966)
+
+* Combinatorial explosion was a problem: Small problems worked, larger problems became intractable (Lighthill, 1973)
+
+* Machine Learning research funding was severely cut in the 1970s
+
+---
+
+class: medium
+
+# AI Winter 
+
+* In the 1980s, the focus was more on combinatorial/logic-based AI
+
+* It too suffered from grand promises it could not keep at the time 
+
+* LISP machines (specialized computers for LISP) were replaced by general purpose computers 
+
+* As a result, in the late 1980s, general AI research funding was also severly reduced 
+
+---
+
+class: medium
+
+# The Boom
+
+* Researchers developed smarter algorithms/heuristics to overcome the combinatorial explosion for some applications
+
+* The goals shifted: Instead of building a "human-like" AI, research became (even) more task-focused
+
+* With better computers, larger neural networks became possible 
+
+* In 1997 Deep Blue beat Gary Kasparov at Chess
+
+* Computers advanced, larger data sets became available 
+
+---
+
+# Today 
+
+* Many developments of early AI are now taken for granted (pathfinding)
+
+* Classical/logic-based AI has many applications 
+
+* Deep Learning is "everywhere"
+
+---
+
+# Why do we talk about this?
+
+<img src="/CI-0129/assets/img/soberingmessage.png" width="80%"/>
+
+.footnote[Source: Wired.com]
+
+---
+
+# Artificial Intelligence and Machine Learning
+
+<img src="/CI-0129/assets/img/AIvsML.png" width="80%"/>
+
+---
+
+# Artificial Intelligence
+
+.big[
+"Everything in AI is either representation or search"
+]
+
+-Dave Roberts, NC State University
+
+---
+
+# Representations
+
+* Logic is one representation 
+
+* Neural Networks are nothing more than non-linear functions (a representation of functions)
+
+* Graphs, vectors, word counts, etc. are all different representations
+
+* One challenge for AI is to translate a real-world task (i.e. translation) into a suitable **representation**
+
+---
+
+# Search 
+
+* Once we have represented our problem suitably, we want a solution 
+
+* In an AI problem we do not know how to get the solution (that's the "intelligence" part)
+
+* We therefore need to **search** through the space of possible solutions 
+
+* Note: *Optimization* is a kind of search: Find "the best" value 
+
+---
+
+# Machine Learning 
+
+* What is Machine Learning?
+
+* We have some data, that we need to put in a suitable form (Representation)
+
+* Then we optimize parameters of some model to get the best possible fit for the data (Search)
+
+* Note: There are many different representations, and many different search strategies!
+
+---
+
+# To Do 
+
+  * Organize in groups of four for the project 
+  
+  * Think about the project ideas 
+  
+  * **Next Monday** (16/3) you should come with one or more pre-proposals for the project
 
 ---
   
 # References
 
-
+  * [AI: A Modern Approach](http://aima.cs.berkeley.edu/)
+  
+  * [The Moral Machine](http://moralmachine.mit.edu/)
+  
+  * [A Sobering Message About the Future at AI's Biggest Party](https://www.wired.com/story/sobering-message-future-ai-party/)
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-0.14.0.min.js">
