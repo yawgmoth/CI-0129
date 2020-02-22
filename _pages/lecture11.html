@@ -1,0 +1,468 @@
+---
+permalink: /slides/lecture1.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 1: Introduction</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      
+      .tiny li {  font-size: 0.8em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .tiny { font-size: 0.8em; }
+      
+      .small li {  font-size: 0.8em; }
+      
+      .medium li {  font-size: 1.1em; }
+      
+      
+      .mmedium li {  font-size: 0.95em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Machine Learning
+
+### III-Verano 2019
+
+---
+
+class: medium
+
+# Instructor and Schedule
+
+ * Instructor: Dr. *Markus* Eger, Dr. Jos&eacute; Guevara Coto
+ 
+ * Email: <a href="mailto:markus.eger.ucr@gmail.com">markus.eger.ucr@gmail.com</a>, <a href="mailto:joseaguevara@gmail.com">joseaguevara@gmail.com</a>
+ 
+ * Assistant: Diego Mora (<a href="mailto:diegomoraj@outlook.com">diegomoraj@outlook.com</a>
+ 
+ * Office hours: Wednesday, 1.30-3pm
+    
+ * Class: Tuesday, Thursday, 8-10am, Aula 103
+ 
+ * Lab: Wednesday, 8-12am, Lab 102
+ 
+---
+ 
+# About Markus
+
+ * Originally from Austria
+ 
+---
+
+# About Markus
+
+<img src="/CI-2700/assets/img/austria.png" width="70%"/>
+ 
+---
+
+class: medium
+ 
+# About Markus
+
+ * Originally from Austria
+ 
+ * BSc and MSc in Computer Science from University of Technology Graz, Austria 
+ 
+ * PhD in Computer Science from NC State University, USA, working on game AI for games involving communication
+ 
+ * Games: Smite, Guild Wars 2, Incremental Games 
+ 
+ * I also like board games (Ricochet Robots, Dominion, Brewcrafters, ...)
+ 
+---
+ 
+# About Markus
+
+<img src="/PF-3341/assets/img/cats.jpg" width="50%"/>
+
+---
+
+# About Jose
+
+* BSc in Biotechnology from ITCR, Cartago, Costa Rica
+
+* PhD in the Genetics and Biochemistry Department from Clemson University working in Bioinformatics and Machine Learning
+
+* Games: The Witcher 3, ESO Online, Doom
+
+* I also play chicken coop, corn hole, shuffle board and board games
+ 
+---
+ 
+# About You
+
+ * Name
+ 
+ * Games
+ 
+ * Fun facts?
+ 
+---
+
+# Class Resources
+
+  * Website: <a href="http://bit.ly/CI-2600">http://bit.ly/CI-2600</a>
+  
+---
+
+class: small
+  
+# Class contents
+  
+  * Supervised Learning
+  
+    - Statistical Learning
+    - Neural Networks 
+    - Support Vector Machines
+  
+  * Unsupervised Learning
+  
+    - Clustering
+    - k-Means
+    - Expectation Maximization Algorithm
+  
+  * Reinforcement Learning
+  
+    - Markov Decision Processes
+    - Q-Learning
+    - SARSA
+    
+  * Application 
+  
+    - Feature engineering, tuning, ensemble learning
+    - Ethical consideration, biases
+    
+---
+
+class: small
+  
+# Class schedule
+  
+  * Introduction: 7/1-8/1
+  
+  * Statistics and Learning: 9/1-14/1
+  
+  * Neural Networks: 16/1-28/1
+  
+  * <b>Mid term exam: 4/2</b>
+  
+  * Support Vector Machines: 30/1-5/2
+  
+  * Semi-supervised and Unsupervised Learning: 6/2-12/2
+  
+  * Reinforcement Learning: 13/2-19/2
+  
+  * Application Considerations: 20/2-27/2
+  
+  * <b>Final exam: 4/3</b>
+    
+---
+
+class: mmedium
+
+# Labs
+
+* Lab 1, 8/1: Setup Python, learn how to prepare, process and handle data, reproducibility
+
+* Lab 2, 15/1: Statistical Learning: Regression
+
+* Lab 3, 22/1: Neural Networks: Regression 
+
+* Lab 4, 29/1: Generative Adversarial Networks (GANs)
+
+* Lab 5, 5/2: Support Vector Machines 
+
+* Lab 6, 12/2: Clustering 
+
+* Lab 7, 19/2: Reinforcement Learning 
+
+* Lab 8, 26/2: Deep Reinforcement Learning
+
+---
+
+class: mmedium
+
+# Grading 
+
+* Each lab counts as 7.5% of the grade 
+
+  - For each lab, you work in groups of one to two students 
+  
+  - At the end of the lab you should have a **pdf** report, including the most important results
+  
+  - Also submit the code, and any other results (graphs, etc.) that you produced
+
+* The exams each count as 20% of the grade 
+
+  - The first exam covers everything up to the class of 28/1
+  
+  - The second exam covers everything starting in the class of 30/1
+  
+---
+
+# Textbook
+
+<img src="/CI-2600/assets/img/textbook.png" width="45%"/>
+
+(<a href="https://pytorch.org/deep-learning-with-pytorch">Free PDF available</a>)
+
+---
+
+class: center, middle 
+
+# Introduction
+
+---
+
+# Why This Course?
+
+<img src="/CI-2600/assets/img/machine_learning.png" width="50%"/>
+
+---
+
+# Machine Learning
+
+- Supervised Learning: Learn a mapping from examples 
+
+- Unsupervised Learning: Learn an interesting thing about data
+
+- Reinforcement Learning: Learn what to do in an environment, given feedback information
+
+We will cover some algorithms from each of these areas in this course!
+
+---
+
+# Machine Learning 
+
+Say there is a function `\(f(\vec{x}) = y\)`
+
+- Supervised Learning: We know x and y, and are trying to find f (more accurately: a probability distribution `\(P(x|y)\)`)
+
+- Unsupervised Learning: We know x and are trying to find "interesting" f and y
+
+- Reinforcement Learning: We know f*, and are trying to get "the best y" by choosing x
+
+.tiny[*: Terms and Conditions may apply]
+
+---
+
+class: medium
+
+# Supervised Learning: Rote Learning 
+
+- Say we want to "learn" a function given some x and y (supervised learning)
+
+- The simplest thing to do is: Just memorize the values
+
+- Computers are good at remembering things!
+
+- However, in most interesting applications, we would need to store a lot of data 
+
+- It also does not generalize: We only know the values we have seen
+
+---
+
+class: medium
+
+# Supervised Learning?
+
+- What we want is to give the computer "some" x and y, and it finds the "general connection" between them 
+
+- The function that we learn is not just a memorization of the values, but it also gives us a "good" value for y for x that we haven't seen before 
+
+- Inter- and Extrapolation: From the known data, we can "predict" values for new inputs 
+
+- But who are x and y?
+
+---
+
+class: center, middle 
+
+# Some Linear Algebra
+
+---
+
+class: small
+
+# Functions 
+
+Remember our function `\(f(\vec{x}) = y\)`
+
+- This function takes a vector of real numbers and produces one real number
+
+- Unlike vectors you may have seen before, this vector is really just "an ordered collection of numbers"
+
+- For example: We want to predict the price of google stock given the day of the year, the temperature, the position of Mars in its orbit, and the number of Marvel movies released so far
+
+- We construct a four-dimensional vector with one entry for each of these numbers 
+
+- Our (supervised) learning algorithm then has to figure out how to turn these four values into a stock price (not all values may be relevant)
+
+---
+
+class: medium
+
+# Vectors 
+
+* Vectors are neat because we have mathematical operations defined on them: Addition, substraction, multiplication with a scalar, etc.
+
+* One particularly important operation is the dot product:
+
+$$
+\vec{v} \cdot \vec{w} = \begin{pmatrix}v_1\\\\v_2\\\\\vdots\\\\v_n\end{pmatrix}\cdot\begin{pmatrix}w_1\\\\w_2\\\\\vdots\\\\w_n\end{pmatrix} =  v_1 \cdot w_1 + v_2 \cdot w_2 + \ldots + v_n \cdot w_n
+$$
+
+* We will use this to concisely define learning systems and algorithms!
+
+---
+
+class: medium
+
+# Vector and Matrices and Tensors, oh my!
+
+* Vector: An ordered list of numbers 
+
+* Matrix: A grid of numbers 
+
+* We could store a matrix in a vector, if we remember the dimensions!
+
+* **Tensor**: What if we "need" more dimension?
+
+* For example: We have 10000 images of 28x28 pixels. We store them in a 10000x28x28 tensor
+
+* In memory the pixels will still be stored sequentially, the tensor is really just a different "view" on the data
+
+---
+
+# PyTorch 
+
+* PyTorch is a python library for Machine Learning
+
+* At every major Machine Learning conference last year, the majority of papers used PyTorch
+
+* The other "big one" is Tensorflow, which is a bit older and has therefore more adoption in industry
+
+* PyTorch is easier to get started with, and once you know the core concepts you can easily pick up Tensorflow, too
+
+---
+
+# PyTorch vs. Tensorflow 
+
+<img src="/CI-2600/assets/img/pytorch_vs_tensorflow.png" width="100%"/>
+
+---
+
+class: medium
+
+# PyTorch 
+
+* (Almost) everything is a `pytorch.Tensor`!
+
+* These tensors really are just views into a sequential array of numbers 
+
+* Each tensor can also "remember" where it came from (e.g. if it is the result of an addition)
+
+* This means, you can also view a tensor as a "tree" of computation, with the result at the top, and the inputs as the leaves
+
+* You can also tell your tensors that the operations should be performed on the GPU
+
+---
+
+# Where do we start, and why?
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">300 applications for ML internship. Not a single one can write a scikit pipeline and normalise input data.<br><br>Everyone has advanced ML and data science degrees from all kinds of cool programs. And everyone has worked on CNN.<br>And everyone has published papers.</p>&mdash; Sandeep Srinivasa (@sandeepssrin) <a href="https://twitter.com/sandeepssrin/status/1209108236088922113?ref_src=twsrc%5Etfw">December 23, 2019</a></blockquote> 
+
+---
+
+class: medium
+
+# First Step: We need an input tensor 
+
+* In practical applications, our inputs are often text, images, sound files, etc.
+
+* Before we do any learning, we need to convert this input into a tensor
+
+* In the lab tomorrow you will read image files and convert them to tensors
+
+* Write your code in the suggested functions, because we will reuse the functionality in future labs!
+
+---
+
+class: mmedium
+
+# A Note on the Labs 
+
+- In every lab you will implement something
+
+- You are free to use whichever IDE/editor/environment you want, but the code has to be runnable from the command line 
+
+- Why? Reproducibility! One of the key challenges with Machine Learning research is that it is often very hard to reproduce results 
+
+- By not requiring a special environment your code becomes useable by more people
+
+- In particular: Jupyter notebooks are **not** valid submissions. Convert the code to standalone python files.
+
+- For each lab you should also write a **pdf** report with the most important findings
+
+---
+  
+# References
+
+  * [Rote Learning](http://users.cs.cf.ac.uk/Dave.Marshall/AI2/node133.html)
+  
+  * [Machine Learning 4 All: Guides](https://ml4a.github.io/guides/)
+  
+  * [PyTorch](https://pytorch.org/)
+  
+  * [DeepLearning with PyTorch](https://pytorch.org/deep-learning-with-pytorch)
+  
+  * [Five Reasons why Jupyter Notebooks Suck](https://towardsdatascience.com/5-reasons-why-jupyter-notebooks-suck-4dc201e27086)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-0.14.0.min.js">
+    </script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script>
+      var slideshow = remark.create();
+      
+       // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>

@@ -1,7 +1,7 @@
 ---
 title: "Lab 3"
 layout: single
-excerpt: "Lab 3: Neural Networks"
+excerpt: "Lab 3: Logic"
 sitemap: true
 permalink: /labs/lab3.html
 frontpageorder: 4
@@ -11,40 +11,63 @@ categories: []
 * TOC
 {:toc}
 
-## Introduction
+## Logical Formula Representation
 
-In this lab, we will use a neural network to classify images. You should have your code from labs 1 and 2, which we will use to read the image data and class labels and as the basis of our training loop. This lab is based on 
-chapter 5.2 of "Deep Learning with PyTorch: Essential Excerpts", and you may want to refer to it for more details if anything is unclear. You may also want to refer to 
-[this tutorial](https://towardsdatascience.com/building-neural-network-using-pytorch-84f6e75f9a) for the basics of defining Neural Networks in PyTorch.
+The goal of this task is to develop a class structure representing logical formulas and worlds, that support querying whether or not a world models a formula, and applying changes to the world. The input is given as 
+an abstract syntax tree of the logical formulas in question. Later on, in task 3, we will generate these abstract syntax trees by parsing PDDL files, but for now we'll just assume that they are provided. The file 
+`expressions.py` describes the expected API and provides some examples for the expected capabilities. You will have to implement the functions 
+   
+   - `make_expression`, which turns an abstract syntax tree into a suitable python object representing an expression
+   - `make_world`, which turns a list of atoms and a dictionary of sets into a suitable python object representing a world 
+   - `models`, which determines whether a world models an expression, i.e. if the expression holds in that world 
+   - `substitute`, which replaces all occurrences of a variable in an expression with a value, and returns a **new** expression with this substitution. This may be used for formulas with quantifiers, but is **required** even if quantifiers are not implemented.
+   - `apply`, which applies an effect, expressed as a logical expression with certain restrictions, to a world, and returns a new world
 
-## Report
+The return values of `make_expression`, `make_world`, `substitute` and `apply` will only be used to pass them into these functions. `models`, on the other hand, **has** to return a truth value, `True` if the world models the 
+expression, and `False` otherwise. The format of the Abstract Syntax Tree passed to the `make_*` functions is described in more detail in the doc strings of `expressions.py`, but a typical input could look like this:
+```
+("and", 
+        ("not", ("at", "home", "mickey")), 
+        ("or", 
+              ("at", "park", "mickey"), 
+              ("at", "store", "mickey"), 
+              ("at", "theater", "mickey"), 
+              ("at", "airport", "mickey")), 
+        ("imply", 
+                  ("friends", "mickey", "minny"), 
+                  ("forall", 
+                            ("?l", "-", "Locations"),
+                            ("imply",
+                                    ("at", "?l", "mickey"),
+                                    ("at", "?l", "minny")))))
+```
+or
+```
+("exists", ("?l", "-", "Locations"),
+        ("and",
+              ("at", "?l", "mickey"),  
+              ("at", "?l", "minny") 
+              ))
+```
 
-You are required to document your work in a report, that you should write while you work on the lab. Include all requested images, and any other graphs you deem interesting, and describe what you observe. The lab text will 
-prompt you for specific information at times, but you are expected to fill in other text to produce a coherent document. At the end of the lab, send an email with the names and carn&eacute;s of the students in the group as well
-as the zip file containing the lab report as a pdf, and all code you wrote to the two professors and the assistant ([markus.eger.ucr@gmail.com](mailto:markus.eger.ucr@gmail.com), [joseaguevara@gmail.com](mailto:joseaguevara@gmail.com), [diegomoraj@outlook.com](mailto:diegomoraj@outlook.com)) **with the subject** "\[CI-2600\]Lab 3, carn&eacute; 1, carn&eacute; 2". Do **not** include the data sets in this zip file or email. 
 
-## Revisiting the SkillCraft1 Master Table Dataset
+A world consists of a set of atoms, which are what is considered to be true, and everything else is considered to be false (Closed World Assumption).
 
-Take a look at your code from last week, in particular the linear model function `model`: You defined it as `w * x + b`. (Almost) the simplest possible Neural Network consists of a single neuron representing exactly the same 
-function. The module `torch.nn` contains a class `Linear` which defines exactly such a neural network. Update your code to use `torch.nn.Linear(1,1)` instead of your own model function (the parameters are the number of inputs and
-outputs). Instead of `w` and `b`, the neural network gives you a `parameters()` method, which you should pass to your optimizer. Check if the results are the same, better or worse than your results from last week.
+In addition to the basic operators, you also have to implement:
+   - `when` expressions 
+   - Quantifiers `forall` and `exists`
+   - Equality
+   
+Because these three operations simplify domain writing significantly, many standard PDDL input files use them, and by including them, our planner will be able to support these files. Once you have the other operators,
+including these three should be fairly straightforward.
 
-Now, instead of simply using a linear model in the form of a neural network, let's make our model a bit more complex. Neural Networks in PyTorch are organized as `Module`s: To create a new neural network you have to:
+Note, if you are wondering why there is this weird extra `-` in the specification of quantified variables: When we parse the PDDL files later on, which are written in a LISP-inspired syntax, we can get the 
+Abstract Syntax Tree used in this task almost "for free", but it does include the dash. Rather than complicating the parsing for this edge-case, we will just keep the dash around and ignore it here.
 
-  - Create a subclass of `nn.Module`
-  - Initialize the neural network with its layers in the `__init__` method 
-  - Implement the `forward` method which takes a tensor `x` and sequentially passes it through the layers 
-  
-There are many helper functions defined by PyTorch, including all common activation functions, and compositions. There is even the `nn.Sequential` container 
-([documentation](https://pytorch.org/docs/master/nn.html#torch.nn.Sequential)), which can help you avoid having to define your own class for many simple tasks.
+Mandatory functions in `expressions.py`, following the API described there:
+   - `make_expression`
+   - `make_world`
+   - `models`
+   - `substitute`
+   - `apply`
 
-For the purpose of this lab define a simple neural network with a few neurons in one hidden layer, and try several different numbers of hidden neurons and types of activations functions and report your results on the training 
-set as well as the test set. You can plot your predicted function by passing a list of ascending values for x and drawing the resulting curve.
-
-
-## Useful Resources
-
- - [PyTorch Tensor Documentation](https://pytorch.org/docs/stable/tensors.html)
- - [Deep Learning with PyTorch: Essential Excerpts](https://pytorch.org/deep-learning-with-pytorch)
- - [Basic PyTorch operations](https://jhui.github.io/2018/02/09/PyTorch-Basic-operations/)
- - [matplotlib sample plots](https://matplotlib.org/3.1.1/tutorials/introductory/sample_plots.html)

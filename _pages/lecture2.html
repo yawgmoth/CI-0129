@@ -1,0 +1,462 @@
+---
+permalink: /slides/lecture2.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 2: Intelligent Agents</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      
+      .tiny li {  font-size: 0.8em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .tiny { font-size: 0.8em; }
+      
+      .footnote { font-size: 0.7em; }
+      
+      .small li {  font-size: 0.8em; }
+      
+      .medium li {  font-size: 1.1em; }
+      
+      .big { font-size: 1.9em; text-align: center; }
+      
+      .mmedium li {  font-size: 0.95em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      .left-column {
+        width: 45%;
+        height: 92%;
+        float: left;
+        font-size: 0.9em;
+      }
+  
+      .right-column {
+        width: 50%;
+        float: right;
+        padding-top: 1em;
+        font-size: 0.75em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Artificial Intelligence
+
+## Intelligent Agents
+
+### I 2020
+
+---
+
+class: center, middle 
+
+# Intelligent Agents 
+
+---
+
+# Agents 
+
+What is an agent?
+
+---
+
+# Agents 
+
+  * An *agent* is an entity that **perceives** its **environment** and **acts** on it 
+
+  * Some/Many people frown upon saying that something is "an AI" and prefer the term "agent"
+  
+  * Agents come in many different forms
+     
+     - Robots 
+     - Software
+     - One could view humans or other living entities as agents 
+     
+---
+
+class: medium
+
+# PEAS
+  
+  * **P**erformance: How do we measure the quality of the agent (e.g. score, player enjoyments)
+  
+  * **E**nvironment: What surroundings is the agent located in (a game, house for a vacuum robot, ...)
+  
+  * **A**ctuators: Which actions can the agent perform (e.g. move, remove dirt, ...)
+  
+  * **S**ensors: How does the agent perceive the world (game data, screen shots, cameras, text input, ...) 
+  
+  ---
+
+class: medium
+
+# PEAS
+
+What's the PEAS for a self-driving car?
+  
+  * **P**erformance?
+  
+  * **E**nvironment?
+  
+  * **A**ctuators?
+  
+  * **S**ensors?
+  
+  
+---
+
+# Rational Agents 
+
+"For each possible percept sequence, a rational agent should select an action that is expected
+to maximize its performance measure, given the evidence provided by the percept
+sequence and whatever built-in knowledge the agent has."
+
+- *AI: A Modern Approach*, Russel and Norvig
+
+---
+
+# Performance Measure
+
+* We want to tell the agent what it should "achieve"
+
+* Generally, we want to avoid thinking about "how" the agent will achieve this goal 
+
+* However, there are many examples where an agent might "exploit" an underspecified goal 
+
+---
+
+# Exploiting Coast Runners
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tlOIHko8ySg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+---
+
+# Agent Knowledge 
+
+"... a rational agent should select an action that is **expected** to maximize its performance measure ..."
+
+* An agent may choose the "wrong" action 
+
+* For example, in Poker, an agent may choose to fold when they would have won 
+
+* But as long as the **expectation** (in this case: expected value, using probabilities) was correct, the agent behaved rationally
+
+* Rationality does **not** require omniscience
+
+---
+
+# The Structure of Agents 
+
+* Each agent has an *architecture* and a *program*
+
+* The architecture defines the sensors and actuators (inputs and outputs) for our agent 
+
+* The program is the behavior, the intelligence, of the agent
+  
+---
+
+class: small
+
+# Agents in Games 
+
+  * Say you have some NPC character in your game that should be controlled by AI
+  
+  * Your game typically contains some main loop that updates all game objects and renders them 
+  
+  * At some points you run an AI update
+  
+  * This means, all our agents receive one "update" call every x ms, and this update call has to make the necessary decisions
+  
+  * Simplest approach: On each update, the agent reads the sensor values calculates the which actuators to use based on these values
+  
+---
+
+# Braitenberg Vehicles
+
+  * Valentino Braitenberg proposed a thought experiment with simple two-wheel vehicles 
+  
+  * The vehicles had two light sensors, and there was a light in the room
+  
+  * Each of the two sensors would be connected to one of the wheels
+  
+  * Depending on how this was done, the vehicle would seek or flee from the light 
+  
+  * The behavior of the agent is fully reactive, with no memory 
+  
+---
+
+# Braitenberg Vehicles 
+
+<img src="/PF-3341/assets/img/braitenberg.png" width="70%"/>
+
+---
+
+# A first agent: An enemy in an ARPG 
+
+  * Performance: How much damage it can do to the player? 
+  
+  * Environment: A dungeon in the game 
+  
+  * Actuators: Rotate, move forward, hit
+  
+  * Sensors: Player position (With that we can compute distance and angle to the player)
+
+---
+
+# Behavior for our ARPG agent
+
+  * If the angle to the player is greater than 0, turn left 
+  
+  * (else) If the angle to the player is less than 0, turn right
+  
+  * (else) If the distance to the player is greater than 0, move forward 
+  
+  * (else) Hit the player
+  
+---
+
+# Limitations
+
+  * This is, of course, a very simple agent 
+  
+  * Imagine if there were walls
+  
+  * What if we want the enemy to have different modes of engagement, flee when it is in danger, etc.?
+  
+  * How did we even come up with these conditions?
+  
+  * How could we make this a bit friendlier to edit?
+  
+---
+
+# Decision Trees
+
+![Decision Tree](/PF-3341/assets/img/decisiontree.png)
+
+---
+
+# Decision Trees: Limitations
+
+  * We haven't actually changed anything from the if statements (other than drawing them)
+  
+  * Designing a decision tree is still a lot of manual work
+  
+  * There's also no persistence, the agent will decide a new behavior every time the tree is evaluated
+  
+  * There is one nice thing: Decision trees can (sometimes) be learned with Machine Learning techniques
+  
+---
+
+class: center, middle 
+
+# Finite State Machines
+  
+---
+
+# States?
+
+  * Say we want our enemy to attack more aggressively if they have a lot of health and try to flee when they become wounded
+  
+  * In other words: The enemy has a *state* that determines what they do, in addition to their inputs and outputs 
+  
+  * But we'll need new sensors: The enemy needs to know their own health level 
+  
+  * Let's also give them a ranged weapon
+  
+---
+
+# Finite State Machines 
+
+  * *States* represent what the agent is currently supposed to do
+  
+  * Each state is associated with *actions* the agent should perform in that state
+  
+  * *Transitions* between the states observe the sensors and change the state when a condition is met 
+  
+  * The agent starts in some designated state, and can only be in one state at a time
+
+---
+
+# Finite State Machines 
+
+<img src="/PF-3341/assets/img/fsm.png" width="100%"/>
+
+---
+
+class: small
+
+# Finite State Machines: Limitations
+
+  * There's no real concept of "time", it has to be "added" 
+
+  * If you just want to add one state you have to determine how it relates to every other state 
+
+  * If you have two Finite State Machines they are hard to compose 
+  
+  * It's also kind of hard to reuse subparts
+  
+  * For example: The parts of our state machine that is used to engage an enemy at range could be useful for an archer guard on a wall, but how do we take *just* those parts?
+
+---
+
+# Hierarchical Finite State Machines
+
+  * Finite State Machines define the behavior of the agent 
+  
+  * But we said the nodes are behaviors?!
+  
+  * We can make each node another sub-machine!
+  
+  * This leads to *some* reusability, and eases authoring
+  
+---
+
+class: center, middle 
+
+# Behavior Trees
+  
+---
+
+class: small
+
+# Behavior Trees
+
+  * Let's still use a graph, but make it a tree!
+  
+  * If we have a subtree, we now only need to worry about one connection: its parent
+  
+  * The *leafs* of the tree will be the actual actions, while the interior nodes define the decisions 
+  
+  * Each node can either be successful or not, which is what the interior nodes use for the decisions
+  
+  * We can have different kinds of nodes for different kinds of decisions 
+  
+  * This is extensible (new kinds of nodes), easily configurable (just attach different nodes together to make tree) and reusable (subtrees can be used multiple times)
+  
+---
+
+class: small
+
+# Behavior Trees
+
+  * Every AI time step the root node of the tree is executed 
+  
+  * Each node saves its state: 
+     - Which child is currently executing for interior nodes
+     - Which state the execution is in for leaf nodes
+  
+  * When a node is executed, it executes its currently executing child
+  
+  * When a leaf node is executed and finishes, it returns success or failure to its parent 
+  
+  * The parent then makes a decision based on this result
+  
+---
+
+# Behavior Trees: Common Node types
+
+  * Choice/Selector: Execute children in order until one succeeds
+  
+  * Sequence: Execute children in order until one fails
+  
+  * Loop: Keep executing child (or children) until one fails 
+  
+  * Random choice: Execute one of the children at random
+  
+  * etc.
+  
+---
+
+# Behavior Trees: How do you make an "if" statement?
+
+  * Some actions are just "checks", they return success iff the check passes 
+  
+  * A *sequence* consisting of a check and another node will only execute the second node if the check passes 
+  
+  * If we put multiple such sequences as children of a choice, the first sequence with a passing condition will be executed
+  
+  
+---
+
+# Behavior Trees
+
+<img src="/PF-3341/assets/img/bt.png" width="100%"/>
+
+---
+
+class: center, middle
+
+# Let's make a Behavior Tree for our ARPG enemy!
+
+---
+
+# Behavior Trees
+
+  * Behavior Trees are a very powerful technique and widely used in games
+  
+  * Halo 2, for example, used them 
+  
+  * Unreal Engine has built-in support for Behavior Trees (there are plugins for Unity)
+  
+  * The tree structure usually allows for visual editing (which Unreal Engine also has built-in)
+  
+---
+
+# Behavior Trees in Unreal Engine 
+
+<img src="/PF-3341/assets/img/bteditor.jpg" width="70%"/>
+
+---
+  
+# References
+
+  * [AI: A Modern Approach](http://aima.cs.berkeley.edu/)
+  
+  * [The Moral Machine](http://moralmachine.mit.edu/)
+  
+  * [A Sobering Message About the Future at AI's Biggest Party](https://www.wired.com/story/sobering-message-future-ai-party/)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-0.14.0.min.js">
+    </script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script>
+      var slideshow = remark.create();
+      
+       // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>

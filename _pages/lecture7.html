@@ -1,0 +1,824 @@
+---
+permalink: /slides/lecture1.html
+---
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 1: Introduction</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 0.8em; }
+      .medium li {  font-size: 0.9em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Artificial Intelligence: Planning
+
+### II Ciclo 2019
+
+---
+# Instructor and Schedule
+
+ * Instructor: Dr. *Markus* Eger
+ 
+ * Email: <a href="mailto:markus.eger.ucr@gmail.com">markus.eger.ucr@gmail.com</a>
+ 
+ * Office hours: Tuesday, Friday, 2-2.55pm
+    
+ * Class: Friday, 5-9pm
+ 
+---
+ 
+# About Me
+
+ * Originally from Austria
+ 
+---
+
+# About Me
+
+<img src="/CI-2700/assets/img/austria.png" width="70%"/>
+ 
+---
+ 
+# About Me
+
+ * Originally from Austria
+ 
+ * BSc and MSc in Computer Science from University of Technology Graz, Austria 
+ 
+ * PhD in Computer Science from NC State University, USA
+ 
+ * Games: Overwatch, Smite, Guild Wars 2, Incremental Games 
+ 
+ * I also like board games (Dominion, Pandemic, Ricochet Robots, ...)
+
+---
+ 
+# About Me
+
+<img src="/PF-3341/assets/img/cats.jpg" width="50%"/>
+
+---
+ 
+# About My Research
+
+  - For my dissertation ("Intentional Agents for Doxastic Games") I worked on games involving communication 
+  
+  - Hanabi: Cooperative card game with restricted communication 
+  
+  - One Night Ultimate Werewolf: Unrestricted communication, featuring lies and deception 
+  
+  - I also worked on narrative generation for a bit, particularly detective stories 
+  
+  - The basis for my work were Dynamic Epistemic Logic, *Planning*, and Intentionality
+ 
+---
+ 
+# About You
+
+ * Name
+ 
+ * What do you work on?
+ 
+ * Games
+ 
+ * Fun facts?
+ 
+---
+
+# Class Resources
+
+  * Website: <a href="http://bit.ly/PF-3335">http://bit.ly/PF-3335</a>
+  
+  * Piazza: <a href="http://piazza.com/ucr.ac.cr/fall2019/pf3335">http://piazza.com/ucr.ac.cr/fall2019/pf3335</a>
+  
+---
+  
+# Class contents
+  
+  * Logic
+  
+  * Pathfinding 
+  
+  * Classical Planning 
+     
+     - State-Space Planning 
+     - Plan-Space Planning 
+     - Planning Graphs
+     - Planning Heuristics 
+
+  * Advanced Planning
+  
+---
+
+# Textbook
+
+  * There is no required textbook for this class 
+  
+  * [Automated Planning: Theory and Practice](http://projects.laas.fr/planning/aptp/index.html) covers most of our content
+ 
+  * *[Artificial Intelligence: A Modern Approach](http://aima.cs.berkeley.edu/)* by Stuart Russell and Peter Norvig, chapters 10 and 11 is a good start 
+  
+  * *[An introduction to least commitment planning](https://homes.cs.washington.edu/~weld/papers/pi.pdf)* by Daniel S. Weld 
+  
+  * *[A Logic for Suspicious Players: Epistemic Actions and Belief-Updates in Games](https://www.vub.be/CLWF/SS/BER.pdf)* by Alexandru Baltag
+  
+---
+
+# Homework 
+
+  * (Almost) every week there will be homework
+    
+  * In the following week we discuss the homework:
+     
+     - For each problem, you indicate if you solved it or not 
+     
+     - Then I will (semi-randomly) choose someone to present each problem on the board 
+     
+     - In addition to your solution, I will also grade how well you present it
+  
+---
+
+# Homework: Scoring
+
+  * The homework counts for 40% of the grade, 20% for problems solved, 20% for presentations 
+  
+  * You get a fraction of the 20% equal to the fraction of problems you solved (i.e. if you solve every homework problem, you get the full 20%, if you only solve half, you get 10%)
+  
+  * For each presentation, you can get up to 5%
+  
+  * If it becomes clear during your presentation that you did not actually solve a problem, I may take away points
+  
+---
+
+# Selection Algorithm
+
+  - Order problems by how many students solved them
+  
+  - Assign each student a number depending on how often they've already presented this semester
+  
+  - For each problem, in order, choose a student at random, biased by this number (higher = less likely to be chosen)
+  
+  - Remove chosen student from the list of all other problems
+  
+  - May need to backtrack/manually fix assignments in rare cases 
+  
+  - If no one solves a problem, I'll present it
+  
+---
+
+# Selection Algorithm: Effects
+
+  - If you solved a harder problem, you are more likely to present that
+  
+  - You should not have to present more than once per class (unless you are the only one to solve 2 or more of the problems)
+  
+  - Everyone should present about an equal number of times over the course of the semester 
+  
+  - Presentation scores are additive, so a good presentation can make up for a less good one
+
+---
+
+class: small
+
+# Project
+
+  * In addition to the homeworks (which are basically math problems), you will complete a project (worth the other 60% of the grade)
+  
+  * The project consists of the implementation of a simplified planner in python 3
+  
+  * You will implement this in four parts (15% of the grade each):
+  
+     - Data structures representing logical formulas, due Sep 19
+     - The A* pathfinding algorithm, due Sep 27
+     - A parser for Planning Domain Definition Language (PDDL) files, and connecting everything, due Nov 8
+     - A planning heuristic to improve performance, due Nov 22
+     
+  * Submission as a zip-file of all code via email to me (<a href="mailto:markus.eger.ucr@gmail.com">markus.eger.ucr@gmail.com</a>)
+     
+  * At the end of the semester we'll also have a small competition between all of your planners
+
+  * If you want to submit a version with some experimental optimizations, you can also do that on Nov 22
+
+---
+    
+# Grading
+  
+  * 60%: Project, consisting of 4 tasks worth 15% each
+  
+  * 40%: Homework
+  
+     - 20% for problems solved 
+     - 20% for presentations
+  
+  * If you are signed up for the lab: Your project counts as the lab
+
+---
+
+class: middle, center
+
+# What is AI?
+
+---
+
+# What is AI?
+
+  * If you ask 20 AI researchers what AI is, you will get 25 different definitions 
+  
+  * Some include Machine Learning, some say ML and AI are distinct things 
+  
+  * Commonly, "the science of intelligent agents"
+  
+  * Behavior that can be applied in unknown situations 
+  
+  * Or, as Douglas R. Hofstadter said "AI is whatever hasn't been done yet"
+  
+  * "Everything in AI is either representation or search"
+  
+---
+
+# AI vs. Machine Learning 
+
+  * There is a great deal of disagreement about the distinction between AI and Machine Learning (ML)
+  
+  * Some people say ML is a part of AI
+  
+  * Some people view them as different things: ML deals with deriving information from data, AI with formulating intelligence explicitly (mostly through logic)
+  
+  * I will use the term *symbolic AI* to refer to the field of study of solving problems through logic-based representations
+  
+---
+
+# What is Planning?
+
+  * Planning is one of the central topics in symbolic AI
+  
+  * It is the idea that we want to tell an AI agent to "solve a problem" by itself
+  
+  * The general formulation involves actions that the agent can perform, and a definition of a goal 
+  
+  * The agent will then automatically determine a sequence of actions that allows it to reach the goal
+  
+---
+
+class: center, middle
+
+# Logic
+
+---
+
+# Why Logic?
+
+  * As mentioned earlier, everything in AI is either representation or search 
+  
+  * Logical formulas are often a very convenient representation
+  
+  * Why convenient?
+     
+      - Can be generated automatically
+      - Can be processed automatically 
+      - Are very expressive
+
+  * We will use logic extensively!
+  
+---
+
+# Propositional Logic 
+
+  * I'm assuming you are all familiar with propositional logic?
+  
+  * `\(a \wedge b\)`, `\(a \vee b\)`, `\(\neg a\)`
+  
+  * If we have some "interpretation" W of a and b, we can determine truth values
+  
+  * `\( W \models  a \wedge b \)` iff a and b are both true in W, i.e. `\( W \models a \)` **and** `\(W \models b \)`
+  
+  * So what is W?
+  
+---
+
+# Interpretations
+
+  * W is an *interpretation* (also called *state* or *world*), which assigns truth values to every constant
+
+  * Sometimes it is convenient to just represent W as a set that contains everything that is true 
+  
+  * Conversely, everything that is not in the set is false ("closed world assumption")
+  
+  * You may have heard the term *model*: An interpretation under which a formula is satisfied 
+  
+  * A formula is a tautology if *all* interpretations are models
+  
+---
+
+# Interpretations
+
+$$
+W = \\{a, b, c\\}
+$$
+
+$$
+W \models a \wedge b \\\\
+W \models a \vee d \\\\
+W \not\models a \wedge d\\\\
+W \models d \rightarrow a\\\\
+\ldots
+$$
+
+---
+
+# Predicate Logic 
+
+  * Representing any non-trivial state in propositional logic is tedious (imagine chess: there has to be one variable for each possible location of each piece)
+  
+  * We will use Predicate Logic instead, which represents the world as objects and relations between them 
+  
+  * Objects: constants
+  
+  * Relations: Sets of n-tuples of objects, called predicates (n is the *arity* of the predicate)
+  
+  * (Functors: Assignments of n-tuples of objects to objects)
+  
+  * We also have sets of objects, and quantifiers `\( \forall, \exists \)`
+  
+---
+
+# Predicate Logic: Example
+
+$$
+\mathit{human}(\mathit{socrates})\\\\
+\forall h: \mathit{human}(h) \rightarrow \mathit{mortal}(h)\\\\
+\mathit{friends}(\mathit{socrates}, \mathit{plato})
+$$
+--
+`\(\mathit{human}(h)\)` is an unary relation, i.e. a set of 1-tuples/single elements. It is often more convenient to write:
+
+$$
+\forall h \in \mathit{human}: \mathit{mortal}(h)
+$$
+--
+Using set-operators, we could also write `\((\mathit{socrates}, \mathit{plato}) \in \mathit{friends}\)`
+
+In fact, as we will see, that's how our interpretations work.
+
+---
+
+# Predicate Logic: Syntax
+
+  * A predicate name with parameters is called an *Atom* or *atomic formula*, e.g. `\(\mathit{human}(h)\)`
+  
+  * The `h` can either be a constant or a variable 
+  
+  * If `h` is part of our *domain*, it is a constant 
+  
+  * If `h` does not refer to any concrete object, it is a variable. A variable can be *bound* by a quantifier, or it can be *unbound*/*free*
+  
+  * A formula with no free variables is called *ground*
+  
+---
+
+# Predicate Logic: Syntax
+
+  * Given two predicate logic formulas `\(\phi\)` and `\(\psi\)`, we can use the usual logical connectives `\(\wedge, \vee, \rightarrow, \neg \)` to construct more complex formulas 
+
+  * Conceptually, this will result in a (syntax) tree, where each interior node is an operator, and the leaves are atoms
+  
+  * If we have a formula `\(\phi\)` that contains a free variable `x`, we can *substitute* that variable with a value t, written `\(\phi[t/x]\)`
+  
+---
+
+# Predicate Logic: Semantics
+
+  * Given a (ground) formula `\(\phi\)` and an interpretation/world `\(W\)`, we want to know if the formula holds in that world, i.e. if the world is a model for the formula
+  
+  * We write this as `\(W \models \phi\)` ("W models phi")
+  
+  * How do we determine that? 
+  
+     - If `\(\phi\)` is an atom, it is true iff `\(\phi \in W\)`
+     - If `\(\phi\)` is a more complex formula, use the syntax tree to determine the truth value
+     
+---
+
+# Predicate Logic: Semantics
+
+$$
+W \models \neg \phi \:\:\text{iff}\:\:W \not\models \phi\\\\
+W \models \phi \wedge \psi\:\:\text{iff}\:\:W \models \phi\:\:\text{and}\:\:W \models \psi\\\\
+W \models \phi \vee \psi\:\:\text{iff}\:\:W \models \phi\:\:\text{or}\:\:W \models \psi\\\\
+W \models \phi \rightarrow \psi\:\:\text{iff}\:\:W \not\models \phi\:\:\text{or}\:\:W \models \psi\\\\
+W \models \forall x \in X: \phi\:\:\text{iff}\:\:W \models \phi[t/x]\:\:\text{for all}\:t \in X\\\\
+W \models \exists x \in X: \phi\:\:\text{iff}\:\:W \models \phi[t/x]\:\:\text{for any}\:t \in X
+$$
+
+---
+
+class: small
+
+# Predicate Logic: Interpretations 
+
+  * We start with a *domain*, the set of all objects we can talk about
+
+  * Technically, an interpretation has to assign objects to all our constants, since Socrates and Plato could be the same person in an interpretation! We 
+  will use the *unique-names assumption* to avoid such problems and will just assume that the constants are the same as the objects.
+  
+  * Then, the interpretation has to contain definitions for every predicate, in the form of a set of tuples.
+  
+  * The *closed world assumption* states that everything we don't know to be true (i.e. everything not in the set representing a predicate) is in fact false.
+  
+  * Using these assumptions, we can represent our interpretation as a set of true atoms, or as a collection of sets, one for each predicate. 
+  
+---
+
+# Predicate Logic: Interpretations 
+
+W:
+$$
+\mathit{human} = \\{\mathit{socrates}, \mathit{plato}, \mathit{aristotle}\\}\\\\
+\mathit{mortal} = \\{\mathit{socrates}, \mathit{plato}, \mathit{aristotle}, \mathit{DonaldDuck}\\}\\\\
+\mathit{friends} = \\{(\mathit{socrates}, \mathit{plato}), (\mathit{socrates}, \mathit{DonaldDuck})\\}\\\\
+$$
+
+$$
+W \models \mathit{human}(\mathit{socrates}) \\\\
+W \models \forall h: \mathit{human}(h) \rightarrow \mathit{mortal}(h) \\\\
+W \models \mathit{friends}(\mathit{socrates}, \mathit{plato})\\\\
+W \not\models \mathit{friends}(\mathit{socrates}, \mathit{socrates})\\\\
+\ldots
+$$
+
+---
+
+# Predicate Logic: Interpretations 
+
+$$
+W = \\{\mathit{human}(\mathit{socrates}), \mathit{human}(\mathit{plato}), \mathit{human}(\mathit{aristotle}), \\\\
+\mathit{mortal}(\mathit{socrates}), \mathit{mortal}(\mathit{plato}), \mathit{mortal}(\mathit{aristotle}), \mathit{mortal}(\mathit{DonaldDuck}),\\\\
+\mathit{friends}(\mathit{socrates}, \mathit{plato}), \mathit{friends}(\mathit{socrates}, \mathit{DonaldDuck})\\}\\\\
+$$
+
+$$
+W \models \mathit{human}(\mathit{socrates}) \\\\
+W \models \forall h: \mathit{human}(h) \rightarrow \mathit{mortal}(h) \\\\
+W \models \mathit{friends}(\mathit{socrates}, \mathit{plato})\\\\
+W \not\models \mathit{friends}(\mathit{socrates}, \mathit{socrates})\\\\
+\ldots
+$$
+
+---
+
+class: small
+
+# Data Structures 
+
+  * First we need to represent atoms, maybe just as tuples: `\(human(h)\)` becomes `("human", "h")` or `("human", ("h",))`
+  
+  * Then we can store the atoms in a suitable data structure, e.g. a python set, to get our world 
+  
+  * We represent our syntax tree using a data structure, e.g. 
+  
+```
+class LogicalFormula:
+    def isModeledBy(self, world):
+        return False
+```
+  
+  * We subclass this for each syntactic element, overriding `isModeledBy` accordingly
+  
+  * For example, the subclass `Atom`, will do `return self.atom in world.atoms` (and store `self.atom` appropriately)
+  
+  * The subclass `And` needs to call `isModeledBy` for all its children, and return `True` iff all of them return `True` 
+  
+---
+
+class: small
+
+# Data Structures 
+
+  * Note that I said "all its children" for `And`: It can be beneficial if "and" can connect more than two operators
+  
+  * For the quantifiers `\(\forall\)` and `\(\exists\)` we need to be able to substitute variables in formulas, so we need to add another method to our base class:
+  
+```
+def substitute(self, variable, value):
+    return self
+```
+
+  * This method should replace the given variable with the given value in *all* children, or parameters (in the case of atoms), and return a **copy** of itself with the substitution performed
+  
+  * `Forall` can then use this in its `isModeledBy` method
+  
+```
+def isModeledBy(self, world):
+    values = world.getValues(self.variable)
+    for value in values:
+        if not isModeledBy(self.child.substitute(self.variable, value): return False 
+    return True
+```
+
+---
+
+class: medium
+
+# Data Structures 
+
+  * In task 1, you will implement these data structures 
+  
+  * Start with the code on the previous slides as guidelines 
+  
+  * There are ways to make this less tedious: `And` and `Or` are almost identical, so they could share a lot of code, or just be modeled as one class 
+  
+  * You will need to implement some high level function: 
+      - `make_expression`, which gets a syntax tree and produces a python object representing the formula
+      - `make_world`, which gets a set of atoms and returns a python object representing the world
+      - `models`, which gets a world and a formula (as returned by `make_expression` and `make_world`) and determines if the formula holds 
+      - `substitute`, which gets a formula, a variable and a value, and has to produce a new formula with the substitution performed 
+      - `apply`, which we will talk about now
+  
+---
+
+# Actions? 
+
+  * We often want to represent a world that is changing, rather than just static facts 
+  
+  * Simple solution: Let's use constants representing (discrete) times, and increase the arity of each predicate by one to account for time 
+  
+  * For example, `\(\mathit{human}(\mathit{socrates})\)` becomes `\(\mathit{human}(\mathit{socrates}, 0)\)`, or 
+  `\(\forall t \in T: \mathit{human}(\mathit{socrates}, t)\)`
+  
+  * An *action* is something that changes some truth values over time, often represented as an implication, like `\(\mathit{alive}(\mathit{socrates}, 400 \text{BCE}) \rightarrow \neg \mathit{alive}(\mathit{socrates}, 399 \text{BCE})\)`
+  
+  * This can be generalized with quantifiers and special predicates that indicate when actions occur, if needed
+
+---
+
+# The Yale Shooting Problem 
+
+   * Consider Fred, a turkey, and a gun 
+   
+   * At time 0, Fred is alive and the gun is unloaded
+   
+   * We load the gun, so that at time 1 the gun is loaded 
+   
+   * Then we wait 
+   
+   * At time 2 we shoot, such that at time 3 Fred is dead 
+   
+---
+
+# The Yale Shooting Problem 
+
+$$
+\mathit{alive}(\mathit{Fred}, 0)\\\\
+\neg \mathit{loaded}(\mathit{Gun}, 0)\\\\
+\neg \mathit{loaded}(\mathit{Gun}, 0) \rightarrow \mathit{loaded}(\mathit{Gun}, 1)\\\\
+\mathit{loaded}(\mathit{Gun}, 2) \rightarrow \neg \mathit{alive}(\mathit{Fred}, 3)
+$$
+
+--
+
+What about `\(\mathit{alive}(\mathit{Fred}, 1)\)`?
+
+What about `\(\mathit{loaded}(\mathit{Gun}, 2)\)`?
+
+Idea: Let's say "the least" number of things change each time step!
+
+--
+
+The turkey could still die at time step 1 and stay dead ...
+
+---
+
+# The Frame Problem 
+
+  - The Yale Shooting Problem is an illustration of the Frame Problem: Everything that is not changed by an action (the "frame") should stay the same 
+  
+  - But how would we even write this in logical formulas?
+  
+  - There are several solutions!
+  
+  - One approach: Frame axioms. For each action state what the action leaves unchanged. This may require a lot of extra formulas.
+  
+  - Another approach: Distinguish states and actions, and represent changes as a transition system 
+  
+---
+
+# Transition System Approach 
+
+  - We start with an initial state `\(s_0 = \{\mathit{alive}(\mathit{Fred}), \neg \mathit{loaded}(\mathit{Gun}) \}\)` (or, using the closed-world assumption simply `\(s_0 = \{\mathit{alive}(\mathit{Fred})\}\)`), which we can use for logical queries such as
+  `\(s_0 \models \mathit{alive}(\mathit{Fred}) \)`
+  
+  - We have an action `load(Gun)` which turns a state into another state:
+  
+     - If the Gun is not loaded, it becomes loaded 
+     - If the Gun is already loaded, nothing happens 
+     
+  - `\(s_1 = \{\mathit{alive}(\mathit{Fred}), \mathit{loaded}(\mathit{Gun}) \}\)`
+  
+  - Now we can query `\(s_1 \models \mathit{alive}(\mathit{Fred})\)`
+  
+---
+
+# Transition System Approach
+
+  - This forms the basis for the planning problem, which we will discuss for the rest of the semester
+  
+  - We can express many interesting problems this way, such as how to distribute packages using trucks and airplanes, determine a robot's actions to perform a task, play games, etc.
+  
+  - However, it also has drawbacks: If our states only represent individual time steps, we can't (easily) query things like "how long was Fred alive"
+  
+  - As another part of task 1 you will implement a way to apply actions to worlds/states
+  
+---
+
+# What is an action?
+
+  * We consider our actions to consist of two parts: a precondition and an effect
+  
+  * The precondition tells us when we can use an action (e.g. we can only shoot if we even have the gun)
+  
+  * The effect tells us what happens (if the gun is loaded, we kill the turkey, otherwise nothing happens)
+  
+  * We can determine if a precondition holds in a world with our `models` function 
+  
+  * We also need to be able to apply an effect, which is where `apply` comes in 
+  
+---
+
+# What is an effect 
+
+  * For simplicity, we will assume our effects are also represented as a logical formula, which tells us what is true after the action 
+  
+  * However, we will only support a subset of formulas as possible effects 
+  
+  * For example, what would a formula like `\(a \vee b\)` mean as an effect?
+  
+--
+
+  * We'll call the subset of formulas we allow the *effect formulas*
+  
+  * An effect formula can be a conjunction of:
+     - Literals (atoms and negated atoms)
+     - Forall-quantifiers where the inner formula is also an effect formula
+     - `when` expressions
+	 
+---
+
+# Effect Application
+
+   * Since an effect is just a formula, we could add a method to our base class:
+   
+```
+def apply(self, world):
+    return world
+```
+
+   * Depending on the formula, we can then override this method and apply the changes of the subformulas
+   
+   * This may be tricky to get right (particularly negated literals), I'll show you another way later
+   
+   * For `And` you can do something like:
+
+```
+def apply(self, world):
+    result = world 
+	for c in self.children:
+	    result = c.apply(result)
+    return result
+```
+
+---
+
+# When-Expressions 
+
+  * Some actions have different effects, depending on what is already true in the world, like firing the gun which as a different effect when the gun is loaded 
+  
+  * We could make two actions: `fire-gun-if-loaded` and `fire-gun-if-not-loaded`, but this becomes cumbersome to write 
+  
+  * Instead we allow conditional effects that are only applied when a condition holds:
+  
+$$
+\operatorname{when}\:(\phi)\:(\psi)
+$$
+
+  * Note that the condition can be *any* logical formula, but the conditional effect has to be an effect formula
+  
+---
+
+# When-Expressions Example
+
+Say we have the worlds 
+
+$$
+s_0 = \\{\mathit{alive}(\mathit{Fred})\\}\\\\
+s_1 = \\{ \mathit{alive}(\mathit{Fred}), \mathit{loaded}(\mathit{Gun}) \\}
+$$
+
+And the effect of the shoot action:
+
+$$
+e = \operatorname{when}\:(\mathit{loaded}(\mathit{Gun}))\:(\neg \mathit{alive}(\mathit{Fred}) \wedge \neg \mathit{loaded}(\mathit{Gun})
+$$
+
+What happens when we apply e to `\(s_0\)`?<br/>
+What happens when we apply it to `\(s_1\)`?
+  
+---
+
+# When-Expressions, Implementation
+
+  * We can represent a when-expression as a tuple in the Abstract Syntax Tree `("when", x, y)`, where x is the condition and y is the conditional effect
+  
+  * Just like with the logical connectives, we introduce a subclass of `LogicalFormula` that represents a when-expression
+  
+  * When we apply the when-expression to a world, we apply the y-part iff the x-part holds, e.g.
+  
+```
+class When(LogicalFormula):
+   def apply(self, world):
+       if self.condition.isModeledBy(world):
+           return self.effect.apply(world)
+       return world
+```
+  
+---
+
+class: medium
+
+# Implementing Action Application
+
+  * There are several ways to implement action application
+  
+  * One is with the `apply` method in all `LogicalFormula` subclasses 
+  
+  * Another is to determine the additions and deletions a formula causes and use set operations on the set of atoms 
+  
+```
+class LogicalFormula
+   def getChanges(self, world):
+       return (self.getAdditions(world),self.getDeletions(world))
+```
+  
+  * The latter is probably (depending on the exact implementation, and the rest of the code) slightly faster, because it makes fewer copies of the atom set, and you could precompute a lot (minus conditional expressions)
+  
+  * My solution uses add/delete lists
+  
+---
+
+# Homework
+
+  * [Homework 1](/PF-3335/assets/pdf/homework1.pdf) has been posted on the class website
+  
+  * There are 5 problems involving logical formulas, interpretations and effect application
+  
+  * There is also a bonus problem involving a (short) proof
+  
+---
+
+# References
+
+  - [Logic and AI](https://plato.stanford.edu/entries/logic-ai/)
+  
+  - [The Frame Problem](https://plato.stanford.edu/entries/frame-problem/) 
+  
+  - Sign up for Piazza: <a href="http://piazza.com/ucr.ac.cr/fall2019/pf3335">http://piazza.com/ucr.ac.cr/fall2019/pf3335</a>
+  
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script>
+      var slideshow = remark.create({"highlightStyle": "dark"});
+      
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>

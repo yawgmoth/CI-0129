@@ -1,0 +1,460 @@
+---
+permalink: /slides/lecture10.html
+---
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 10: Dynamic Epistemic Logic</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .ssmall li {  font-size: 0.9em; }
+      
+      .oneline li { font-size: 1.25em; line-height: 1.25em; }
+      .oneline li p { font-size: 1.25em; line-height: 1.25em; }
+      .oneline p { font-size: 1.25em; line-height: 1.25em; }
+      .oneline div { font-size: 1.25em; line-height: 1.25em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      .medium li {  font-size: 1.1em; }
+     
+      .mmedium li {  font-size: 1.05em; }
+      
+        
+      .left-column {
+        color: #777;
+        width: 40%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 60%;
+        float: right;
+        padding-top: 1em;
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Artificial Intelligence: Planning
+
+### Dynamic Epistemic Logic 
+
+---
+
+# Review: The Planning Problem
+
+A planning problem consists of three parts:
+
+  * A definition of the current state of the world
+  
+  * A definition of a desired state of the world
+  
+  * A definition of the actions the agent can take
+  
+---
+
+class: medium
+
+# Uncertainty about the world
+
+* Imagine we have a robot that should perform tasks 
+
+* We tell it to go to the grocery store
+
+* If it is raining, it will need some sort of protection, like an umbrella
+
+* But the robot may not know the weather outside 
+
+* It could go and check!
+
+---
+
+class: medium
+
+# Uncertainty about the world
+
+* Or we want to play a game 
+
+* There are cards that are shuffled
+
+* We know which cards exist, but not the order 
+
+* We know our cards, so we can figure out what's missing 
+
+* We also know that our opponent knows which cards they have
+
+---
+
+class: medium
+
+# Knowledge and Beliefs 
+
+  * "Epistemic Logic", which we will discuss today is the "Logic of Knowledge and Beliefs"
+  
+  * Some people make a distinction between the two: Beliefs may be false, knowledge has to be true 
+     
+  * Other people require that knowledge not only be true, but be "justified" ("Knowledge is justified, true belief")
+  
+Example: A farmer looks from his farm house to the field, to check if his favorite cow is still there. He sees a black and white paper that got caught in the tree, and looks exactly like his cow from far away. In reality, the cow was sleeping in a hollow behind a bush on the field. 
+  
+
+---
+
+class: medium
+
+# Beliefs 
+
+  * Agent beliefs are often represented using "possible worlds"
+  
+  * There is an "actual world", with the things that are factually true 
+  
+  * Each agent then has a set of worlds that they consider possible, but they don't know which of these worlds is the actual one (if any)
+  
+  * For example: I secretly flip a coin, and look at it. Now you consider two worlds possible: One in which the coin shows heads, and one in which it shows tails
+  
+---
+
+class: medium
+
+# Beliefs about Beliefs
+
+  * Now consider my beliefs about your beliefs 
+  
+  * I know what the coin shows, so I only consider one world possible, but I know that you consider two worlds possible 
+  
+  * Likewise, for each of the worlds you consider possible, you know that I know what the coin shows, i.e. that I only consider one world possible
+  
+  * We can draw such relationships in diagrams, with one node for each possible world, and arrows that show which worlds are considered possible by each agent 
+  
+---
+
+# A Diagram of the Coins Example
+
+<img src="/PF-3341/assets/img/prekripke.png" width="80%"/>
+
+---
+
+# A Diagram of the Coins Example
+
+<center>
+<img src="/PF-3341/assets/img/kripke.png" width="60%"/>
+</center>
+
+---
+
+class: center, middle 
+
+# Epistemic Logic
+
+---
+
+# Epistemic Logic
+
+  * We call what is represented by such a diagram an *epistemic state*
+  
+  * Just like with propositional states, we can use these states to determine which formulas it models 
+  
+  * Regular formulas are just interpreted using the actual world
+  
+  * We just need some way to talk about beliefs to "access" the possible worlds
+  
+---
+
+# The Belief Modality
+
+Beliefs are usually represented using the modal operator `\(\Box\)` (pronounced "box"). For example:
+
+$$
+\Box_M H
+$$
+
+"M believes that H holds"
+
+$$
+\Box_M \Box_Y (H \vee T)
+$$
+
+"M believes that Y believes that H or T holds"
+
+
+How do we interpret this operator? When does someone believe something? 
+--
+When it holds in **all** worlds they consider possible.
+
+---
+
+# Some more examples
+
+.left-column[
+<img src="/PF-3341/assets/img/kripkev.png" width="70%"/>
+]
+
+.right-column[
+
+
+
+$$
+\models \Box_M H
+$$
+
+$$
+\not \models \Box_Y H
+$$
+
+$$
+\not \models \Box_Y \neg H
+$$
+
+$$
+\models \Box_M \Box_Y (H \vee T)
+$$
+
+$$
+\not \models  \Box_M ((\Box_Y H) \vee (\Box_Y T))
+$$
+
+
+]
+
+---
+
+class: middle, center
+
+# Dynamic Epistemic Logic
+
+---
+
+class: medium
+
+# Dynamic Epistemic Logic
+
+  * Now that we have a representation for static beliefs, we just need to figure out how to change them 
+  
+  * We need some sort of action language 
+  
+  * Idea: Treat actions similar to states 
+  
+  * There is an "actual action", and a set of "possible actions" for each agent (the *appearance* of an action to an agent) 
+  
+  * For example: If I draw a card from a deck, the actual action is "draw the ace of spades", but each other agent (that does not see the card) believes it's possible that I have drawn any card remaining in the deck
+  
+---
+
+class: ssmall
+
+# Action Language
+
+  * The basic action we have is `flip`, which changes the truth value of some atomic proposition 
+  
+  * By default, actions are not visible to any agent, and only change the actual world 
+  
+  * The action token `\((a)^x\)` means that agent `x` believes that action `a` happens (but it does not actually happen)
+  
+  * The action token `\((a)^{\star{}x}\)` means action `a` happens, agent `x` believes that action `a` happens, they believe that they believe that `a` happens, etc.
+  
+  * We can combine two actions sequentially: `\( a \cdot b \)`
+  
+  * We can combine two actions as alternatives: `\( a + b \)`
+  
+  * Actions can have *preconditions* of the form `\(?p \)`
+  
+---
+
+# For Example 
+  
+$$
+\text{flip}\: p \cdot (\text{flip} \: q + \text{flip} \: q)^x 
+$$
+
+<center>
+<img src="/PF-3341/assets/img/delaction.png" width="60%"/>
+</center>
+
+---
+
+class: medium
+
+# So how does this actually work?
+
+  * An *Epistemic State* consists of worlds that each agent considers possible 
+  
+  * An *Epistemic Action* consists of actions that each agent considers possible 
+  
+  * If an action appears as multiple possibilities to an agent, they will end up with *more* worlds they consider possible (one for each possible action)
+  
+  * However, if some of these appearances have preconditions, they can only be applied to worlds in which these preconditions hold, and other worlds will be eliminated
+  
+---
+
+class: medium
+
+# An Example
+ 
+  * I draw a card (the ace of spades) from the deck 
+  
+  * You don't know which card I drew, so now you have 52 possible worlds (one for each possible card)
+  
+  * I then show you the ace of spades: This action has the precondition that I actually have the ace of spades
+  
+  * Since you know that I show you the ace of spades, you can try to apply that action in every world you consider possible, but it will not be applicable in worlds in which you consider it possible that I have a different card, and these worlds will be eliminated
+  
+---
+
+# A Joke
+ 
+  * Three logicians walk into a bar
+  
+  * The barkeeper asks: "Three beers?"
+  
+  * The first logician says: "I don't know"
+  
+  * The second logician says: "I don't know"
+  
+  * The third logician says: "Yes!"
+  
+---
+
+class: small
+
+# Explaining the Joke 
+
+* Every logician knows if they themself want a beer or not
+
+* Imagine if the first logician did not want a beer 
+
+  - She would know about it 
+  
+  - Therefore, she would know that the order is not "three beers"
+  
+  - Therefore, she would have said "No"
+  
+* The second logician knows that the first logician knows if she wants a beer or not
+
+* So, when the first logician says "I don't know", the second logician can conclude that she wants one (otherwise she'd say "No")
+
+---
+
+class: medium
+
+# An Epistemic View 
+
+* There are 8 possible worlds: Each logician may want a beer, or they may not
+
+* The answer of a logician follows three rules:
+
+   - If they know that all three logicians want a beer, they say "yes"
+   
+   - If they know that at least one logician does not want a beer, they say "no"
+   
+   - Otherwise, they say "I don't know"
+
+* How do we write that in Dynamic Epistemic Logic?
+
+---
+
+# A Logician in Logic 
+
+- If they know that all three logicians want a beer, they say "yes"
+
+$$
+?(\Box_l \forall x\:\: \mathit{wb}(x)) \cdot \text{flip}\: \mathit{say}(l, \text{yes})
+$$
+   
+- If they know that at least one logician does not want a beer, they say "no"
+
+$$
+?(\Box_l \exists x\:\: \neg \mathit{wb}(x)) \cdot \text{flip}\: \mathit{say}(l, \text{no})
+$$
+   
+- Otherwise, they say "I don't know"
+   
+$$
+?((\neg \Box_l \forall x\:\: \mathit{wb}(x)) \wedge (\neg \Box_l \exists x\:\: \neg \mathit{wb}(x)))\cdot \\\\
+\text{flip}\: \mathit{say}(l, \text{idk})
+$$
+
+---
+
+# What about the other two?
+
+Let `\(\mathit{all}, \mathit{one}, \mathit{else}\)` be the three sentences from the previous slide:
+
+The action the logician l performs is:
+$$
+\mathit{all} + \mathit{one} + \mathit{else}
+$$
+
+But the other two can observe this:
+
+$$
+(\mathit{all})^{\star{}L} + (\mathit{one})^{\star{}L} + (\mathit{else})^{\star{}L}
+$$
+
+---
+
+# Homework
+
+* [Homework 10](/PF-3335/assets/pdf/homework10.pdf) has been posted on the class website
+  
+* There are 5 problems 
+
+* *All* problems are "bonus problems", but they are of regular difficulty
+
+* Basically, if you need to catch up on points, this will give you extra points
+  
+---
+
+# References
+
+* [101 Philosophy Problems](http://dl.lilibook.ir/2016/11/101-Philosophy-Problems.pdf)
+
+* [Intentional Agents for Doxastic Games](https://repository.lib.ncsu.edu/handle/1840.20/35747)
+  
+* [A Logic For Suspicious Players](https://www.vub.ac.be/CLWF/SS/BER.pdf)
+
+* [Dynamic Epistemic Logic](http://www.iep.utm.edu/wp-content/media/DynamicEpistemicLogic.pdf)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+
+    <script>
+      var slideshow = remark.create();
+      
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>

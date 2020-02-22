@@ -1,0 +1,433 @@
+---
+permalink: /slides/lecture7.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 7: Neural Networks 4</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.7em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      
+      .tiny li {  font-size: 0.8em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .tiny { font-size: 0.8em; }
+      
+      .small li {  font-size: 0.8em; }
+      
+      .medium li {  font-size: 1.1em; }
+      
+      .mediumt {  font-size: 0.24em; }
+      .mmedium li {  font-size: 0.95em; }
+      
+      .mmmedium li {  font-size: 0.9em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      .left-column {
+        color: #777;
+        width: 30%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 65%;
+        float: right;
+        padding-top: 1em;
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Machine Learning
+
+## Neural Networks 4
+
+### III-Verano 2019
+
+---
+
+# Artificial Neural Networks
+
+
+<p style="margin-top: 5cm; text-align: center; font-size: 2em">
+What is an (Artificial) Neural Network?
+</p>
+
+---
+
+# Artificial Neural Networks 
+
+.left-column[
+<img src="/CI-2600/assets/img/ANN.svg" width="100%"/>
+]
+
+.right-column[
+We introduced one or more "hidden layers", which will hold intermediate values h
+
+$$
+\vec{h} = f_1(W_1 \cdot \vec{x})\\\\
+y = f_2(\vec{w_2} \cdot \vec{h})\\\\
+y = f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x}))
+$$
+]
+
+---
+
+class: center, middle 
+
+# Squeeze, Unsqueeze, View 
+
+---
+
+# Review: Tensors in PyTorch
+
+* A Tensor consists of an array of memory and a way to look at that memory 
+
+* The **dimensionality** of a tensor defines how many "sizes" it has 
+
+* The **shape** of a tensor tells us how many elements exist in each dimension 
+
+* A tensor with shape `[24,1]` has a different shape than a tensor using the same data with shape `[12,2]`, but also from a tensor with shape `[24]`, or `[24,1,1]`
+
+---
+
+# Review: Tensors in PyTorch
+
+Let `x` be a tensor with shape `[12,2]`
+
+* `x[0,0]` is the first element 
+
+* `x[0]` (or `x[0,:]`) is the first **row** (a tensor of shape `[2]`)
+
+* `x[:,0]` is the first **column** (a tensor of shape `[12]`)
+
+* `x.T` is a tensor with shape `[2,12]` (the transpose)
+
+---
+
+# Squeeze 
+
+Squeeze is used to *remove* one/all dimension(s) of size 1:
+
+* If `x.shape` is `[12,2]`, `x.squeeze()` does *nothing*
+
+* If `x.shape` is `[24,1]`, `x.squeeze()` produces a tensor of shape `[24]`
+
+* If `x.shape` is `[24,1,1]`, `x.squeeze()` produces a tensor of shape `[24]`
+
+* If `x.shape` is `[24,1,1]`, `x.squeeze(1)` produces a tensor of shape `[24,1]`
+
+---
+
+# Unsqueeze 
+
+Unsqueeze is used to *insert* a dimension of size 1:
+
+* If `x.shape` is `[12,2]`, `x.unsqueeze(0)` produces a tensor of shape `[1,12,2]`
+
+* If `x.shape` is `[12,2]`, `x.unsqueeze(1)` produces a tensor of shape `[12,1,2]`
+
+* If `x.shape` is `[12,2]`, `x.unsqueeze(2)` produces a tensor of shape `[12,2,1]`
+
+---
+
+class: mmmedium
+
+# View 
+
+View is used to convert the shape of a tensor to something "arbitrary" (with the same total number)
+
+* If `x.shape` is `[12,2]`, `x.view(24)` produces a tensor of shape `[24]`
+
+* If `x.shape` is `[24]`, `x.view((24,1))` produces a tensor of shape `[24,1]` (exactly like `x.unsqueeze(1)`)
+
+* If `x.shape` is `[24]`, `x.view((2,3,4))` produces a tensor of shape `[2,3,4]`
+
+* If `x.shape` is `[24,1]`, `x.view(24)` produces a tensor of shape `[24]` (exactly like `x.squeeze(1)`)
+
+* If `x.shape` is `[12,2]`, `x.view((8,3))` produces a tensor of shape `[8,3]`
+
+* If `x.shape` is `[12,2]`, `x.view((8,6))` produces an error
+
+---
+
+class: medium
+
+# View 
+
+**One** dimension passed to `view` can be `-1`. Because `view` knows how many elements there are in total, it will just put "the rest"
+
+* If `x.shape` is `[12,2]`, `x.view(-1)` produces a tensor of shape `[24]`
+
+* If `x.shape` is `[n]`, `x.view((n,-1))` produces a tensor of shape `[n,1]` (exactly like `x.unsqueeze(1)`)
+
+* If `x.shape` is `[24]`, `x.view((2,-1,4))` produces a tensor of shape `[2,3,4]`
+
+* If `x.shape` is `[24,1]`, `x.view(-1)` produces a tensor of shape `[24]` (exactly like `x.squeeze(1)`)
+
+---
+
+# Why?
+
+* PyTorch Neural Networks **always** need a matrix as input and **always** produce a matrix as output (efficiency)
+
+* For MSELoss, the tensors have to have the same shape
+
+* If we only have one feature as input, or only one output (regression), we need to reshape the tensors!
+
+* Always check your tensor shapes!
+
+---
+
+class: center, middle
+
+# Recurrent Neural Networks 
+
+---
+
+# Recurrent Neural Networks 
+
+* So far we have looked at Neural Networks with a static number of inputs 
+
+* However, often we have variable length input, for example if we collect time series data (like cards played in Hearthstone)
+
+* One approach to this is to feed the network one time step at the time and give it "memory"
+
+* We can conceptualize this memory as a "hidden variable", or **hidden state**
+
+---
+
+class: medium
+
+# Recurrent Neural Networks 
+
+.left-column[
+<img src="/CI-2600/assets/img/rnn.svg" width="800pt"/>
+]
+
+.right-column[
+
+* The hidden state is initialized to some values (zeros)
+
+* Then the first input element/step is passed to the network, and it produces output **and** a new hidden state 
+
+* This new hidden state is passed to the network with the next input element/step
+]
+
+---
+
+# Recurrent Neural Networks: Unfolding
+
+<img src="/CI-2600/assets/img/rnnunfold.svg" width="100%"/>
+
+---
+
+# Recurrent Neural Networks: Modes
+
+<img src="/CI-2600/assets/img/rnnmodes.png" width="100%"/>
+
+---
+
+class: center, middle 
+
+# Generative, Adversarial Networks 
+
+---
+
+# Generative, Adversarial Networks 
+
+* So far we have used Neural Networks to classify images, or predict some value 
+
+* Could we **generate** things with a Neural Network?
+
+* Crazy idea: We pass the Neural Network some random numbers and it produces a new Picasso-like painting
+
+--
+
+* That's exactly what we'll do!
+
+---
+
+# First: Classification
+
+* To produce a Picasso-like painting, we first need to know which paintings *are* Picasso-like 
+
+* We could train a Neural Network that detects "real" Picassos
+
+* Input: An image 
+
+* Output: "True" Picasso, or "fake"
+
+* So we'll need some real and fake Picassos to start with ...
+
+---
+
+# Art Connoisseur Network
+
+* After some training, our network will be able to distinguish real and fake picassos
+
+* This means we can give this network a new painting, and it will tell us if it is real or not 
+
+* Now we can define the task for our generator more clearly: Fool the detector network, i.e. generate paintings that the detector recognizes as "real" Picassos 
+
+---
+
+class: medium
+
+# The Generator Network 
+
+* The Generator Network takes, as we wanted, a vector of random numbers as input, and produces a picture as output
+
+* The **loss function** for this network then consists of passing the produced image through the detector and determining if it believes the painting to be real or not 
+
+* We can then use backpropagation and gradient descent, as usual, to update the weights in our generator 
+
+* Over time, our generator will learn to fool the detector!
+
+---
+
+# Not quite enough ...
+
+* If our detector was "perfect", this would already be enough 
+
+* However, to start, we needed some "fake" Picassos, which we just generated randomly 
+
+* Once the Generator produces some images, we actually have "better fakes"!
+
+* So we can improve the Detector with that
+
+* And then we need to improve the Generator again, etc.
+
+---
+
+# Generative, Adversarial Networks 
+
+* Generative: We **generate** images 
+* Adversarial: The Generator and the Detector play a "game" against each other
+
+<center>
+<img src="/CI-2600/assets/img/GAN.jpeg" width="80%"/>
+</center>
+
+---
+
+class: center, middle
+
+# Exam Preparation
+
+---
+
+# Question 
+
+## What is Regression?
+
+## What is Classification?
+
+---
+
+# Question 
+
+## You are given a set of images, with 100x100 pixels, some of which are spoons, and some are forks
+
+## What Neural Network architecture would you propose for this task (layers, neurons, activation functions)?
+
+## What if there are spoons, forks, and knives?
+
+---
+
+# Question
+
+## Your model has the weights `w`, and you just calculated the loss and the gradient. Assume a learning rate of `0.1`, and calculate the new values for `w`
+
+$$
+w = \begin{pmatrix}1.2\\\\ 2.1\end{pmatrix}\\\\
+\nabla w = \begin{pmatrix}7\\\\11\end{pmatrix}
+$$
+
+
+---
+
+# Question
+
+## Your binary model constructed for the task of discriminating between dogs and non-dogs has resulted in the following confusion matrix
+      
+<img src="/CI-2600/assets/img/binary_dog_conf_mat.png" width="80%"/>
+
+Calculate the precision and recall and F1
+      
+---
+class: medium      
+      
+# Question
+
+## OK, now that you are warmed up with metrics, Your multiclass model constructed for the task of discriminating between dogs, cats and hens has resulted in the following confusion matrix
+      
+<img src="/CI-2600/assets/img/multiclassd_animal_matrix.png" width="65%"/>
+
+Calculate the precision and recall for each class. Also the F1 for each class and the macro F1, macro recall and macro precision.
+
+---
+
+# Question
+
+## Exploratory Data Analysis is an important part of any machine learning project. EDA is the first step of any ML project.
+## Explain briefly why EDA is important, what can we discover and what potential pitfalls or problems can we avoid if we explore and get to know our data before constructing the model?
+
+      
+---
+
+# References 
+
+  * [Torch Tensor Operations Overview](https://jhui.github.io/2018/02/09/PyTorch-Basic-operations/)
+  
+  * [RNN Introduction](https://medium.com/explore-artificial-intelligence/an-introduction-to-recurrent-neural-networks-72c97bf0912)
+  
+  * [GAN Introduction](https://machinelearningmastery.com/how-to-develop-a-generative-adversarial-network-for-an-mnist-handwritten-digits-from-scratch-in-keras/)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-0.14.0.min.js">
+    </script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script>
+      var slideshow = remark.create();
+      
+       // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>

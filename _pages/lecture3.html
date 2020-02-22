@@ -1,0 +1,651 @@
+---
+permalink: /slides/lecture3.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 3: Search</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .medium li {  font-size: 1.15em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Artificial Intelligence
+
+### Search
+
+---
+
+class: center, middle 
+
+# Representation
+
+---
+
+# Graphs
+
+  * A graph G = (V,E) consists of *vertices* (nodes) V and *edges* (connections) `\( E \subseteq V \times V \)`
+  
+  * Graphs can be connected, or have multiple components
+  
+  * Graphs can be directed (one-way streets) or undirected 
+  
+  * Edges can have weights (costs) associated with them: `\( w: E \mapsto \mathbb{R} \)`
+  
+  * We can represent many things in graphs
+  
+---
+
+# Graphs
+
+  * We can "walk" around our graph 
+  
+  * Say we start at some node, and follow an edge 
+  
+  * If we can get back to our start node without visiting any edge twice we have found a "cycle"
+  
+  * Cycles can complicate some things, so we like graphs without them 
+  
+  * These graphs are called "trees"
+  
+---
+
+# Trees
+
+  * An alternative view: We take some node and call it the *root*
+  
+  * All nodes connected to the root are its *children*, which we put in another layer
+  
+  * We then add another layer with the children's children, etc. 
+  
+  * In the end, we have the root at the top, with a number of layers below it 
+  
+---
+
+# Trees 
+
+<svg version="1.1"
+    xmlns="http://www.w3.org/2000/svg" 
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	overflow="visible"
+	viewBox="-10 -10 380 240"
+	width="600" height="400"
+	enable-background="new -10 -10 380 240" 
+	>
+
+<desc>Tree of breadth first search</desc>
+
+<defs>
+	<radialGradient id="radialGradient00">
+      <stop style="stop-color:#c0d9ea;stop-opacity:1;" offset="70%"/>
+      <stop style="stop-color:#7d7d7d;stop-opacity:1;" offset="100%"/>
+    </radialGradient>
+
+    <symbol id="node" >
+        <circle cx="22" cy="22" r="20" style="fill:url(#radialGradient00)"/>
+    </symbol>	
+
+	
+	<filter  id="GaussianBlur00" x="-0.2" width="1.3" y="-0.2" height="1.3">
+		<feGaussianBlur  stdDeviation="3"></feGaussianBlur>
+	</filter>
+	
+	<symbol id="gr1" >
+		<g id="g01" style="stroke:#000000;stroke-width:2">
+			<path d="M 200 20 L 20 200"/>
+			<path d="M 200 20 L 320 140"/>	
+			<path d="M 200 20 L 200 80"/>	
+			<path d="M 260 80 L 260 140"/>
+			<path d="M 140 80 L 140 140"/>	
+			<path d="M 260 140 L 320 200"/>
+			<path d="M 260 140 L 260 200"/>
+			<path d="M 80 140 L 80 200"/>
+		</g>
+		<g id="g02">
+			<use x="178" y="-1" xlink:href="#node"/>
+			<use x="118" y="60" xlink:href="#node"/>
+			<use x="178" y="60" xlink:href="#node"/>
+			<use x="238" y="60" xlink:href="#node"/>	
+			<use x="58" y="118" xlink:href="#node"/>
+			<use x="118" y="118" xlink:href="#node"/>
+			<use x="238" y="118" xlink:href="#node"/>
+			<use x="298" y="118" xlink:href="#node"/>
+			<use x="0" y="178" xlink:href="#node"/>
+			<use x="58" y="178" xlink:href="#node"/>
+			<use x="238" y="178" xlink:href="#node"/>
+			<use x="298" y="178" xlink:href="#node"/>
+		</g>
+		<g id="g03" style="font-family:Calibri; font-size:25px; text-anchor:middle;" transform = "translate(1, -2)">
+			<text x="200" y="32">1</text>
+			<text x="139" y="93">2</text>
+			<text x="200" y="93">3</text>
+			<text x="259" y="93">4</text>
+			<text x="79" y="150">5</text>
+			<text x="139" y="150">6</text>
+			<text x="259" y="150">7</text>
+			<text x="319" y="150">8</text>
+			<text x="22" y="210">9</text>
+			<text x="79" y="210">10</text>
+			<text x="259" y="210">11</text>
+			<text x="319" y="210">12</text>
+		</g>
+    </symbol>
+</defs>
+
+<use x="1" y="1" xlink:href="#gr1" filter="url(#GaussianBlur00)" />
+<use xlink:href="#gr1" />
+
+</svg>
+
+---
+
+# A note on Trees 
+
+* Our choice of "root" was completely arbitrary in this case 
+
+* We can redraw the same tree with a different node as the root 
+
+* For many applications in AI we have some *interpretation* of the nodes, though 
+
+* For example: In Single-player games the root is the current game state, and each edge is an action the player could perform
+
+---
+
+# Sliding Puzzle Tree
+
+<img src="/CI-2700/assets/img/slidingtree.png" width="80%"/>
+
+---
+
+class: center, middle 
+
+# Tree Search
+
+---
+
+# Tree Search 
+
+* Let's say we want to win this game
+
+* We start at the root node and then we *search* for a *path* that leads to a solution state 
+
+* What strategies/algorithms could we use to perform this search?
+
+---
+
+# Tree Search: Summary
+
+<img src="/CI-2700/assets/img/bfsdfs.jpeg" width="100%"/>
+
+---
+
+class: medium
+
+# Uninformed Search
+
+  - The simplest pathfinding algorithm(s) works like this:
+  
+      - Keep track of which nodes are candidates for expansion (starting with the start node)
+      - Take one of these nodes and expand it 
+      - If you reach the target, you have found a path
+      
+  - How do you "keep track" of nodes?
+  
+      - Use a list/queue: You now have "breadth-first search"
+      - Use a stack: You now have "depth-first search"
+      
+---
+
+# Another example: Romania 
+
+<img src="/CI-2700/assets/img/romania.png" width="100%"/>
+
+---
+
+# How could we find a path?
+
+<img src="/CI-2700/assets/img/pathproblem.png" width="100%"/>
+
+---
+
+class: center, middle 
+
+# Graph Search
+
+---
+
+# Graph Search 
+
+* Instead of a tree, many problems are actually better represented as a (general) graph 
+
+* That means we may have loops 
+
+* During the search process we need to avoid "running in circles"
+
+* Other than that, we can use the same approach!
+
+---
+
+# The (undirected) Pathfinding problem
+
+Given a graph G = (V,E), with edge weights w, a start node `\( s \in V \)`, a destination node `\( d \in V \)`, find a sequence of vertices `\( v_1, v_2, \ldots, v_n  \)`, such that `\(v_1 = s, v_n = d \)` and `\( \forall i: (v_i, v_{i+1}) \in E \)`
+
+We call the sequence `\( v_1, v_2, \ldots, v_n \)` a *path*, and the *cost* of the path is `\( \sum_i w((v_i,v_{i+1})) \)`
+
+--
+
+This means what you would expect: To find a path from a start node to a destination node means to find vertices to walk through that lead from the start to the 
+destination by being connected with edges. The cost is the sum of the costs of edges that need to be traversed.
+
+---
+
+class: medium
+
+# Uninformed Search
+
+  - The simplest pathfinding algorithm(s) works like this:
+  
+      - .red[Keep track of which nodes have already been expanded]
+      - Keep track of which nodes are candidates for expansion (starting with the start node)
+      - Take one of these nodes and expand it .red[(avoid revisiting expanded nodes)]
+      - If you reach the target, you have found a path
+      
+  - How do you "keep track" of nodes?
+  
+      - Use a list/queue: You now have "breadth-first search"
+      - Use a stack: You now have "depth-first search"
+      
+---
+
+# Uninformed Search
+
+<img src="/PF-3341/assets/img/bfsdfs.png" width="100%"/>
+
+---
+
+class: small
+
+# Depth-First Search
+
+  * Save the "frontier" as a stack, initialized with the starting node 
+  
+  * If the goal is in the frontier, we are done
+  
+  * Else, for each node in the frontier, add all of its neighbors that have not yet been expanded to the frontier 
+  
+  * Repeat
+  
+  * Basically: Add all neighbors, then add the first neighbor's neighbors, then add the first neighbor's first neighbor's neighbors, etc.
+
+---
+
+# Depth-First Search
+
+<img src="/CI-2700/assets/img/pathproblem.png" width="100%"/>
+
+---
+
+# Depth-First Search
+
+<img src="/CI-2700/assets/img/dfs/1.png" width="100%"/>
+75
+
+---
+
+# Depth-First Search
+
+<img src="/CI-2700/assets/img/dfs/2.png" width="100%"/>
+75 + 71 = 146
+
+---
+
+# Depth-First Search
+
+<img src="/CI-2700/assets/img/dfs/3.png" width="100%"/>
+75 + 71 + 151 = 297
+
+---
+
+# Depth-First Search
+
+<img src="/CI-2700/assets/img/dfs/4.png" width="100%"/>
+75 + 71 + 151 + 99 = 396
+
+---
+
+# Depth-First Search
+
+<img src="/CI-2700/assets/img/dfs/5.png" width="100%"/>
+75 + 71 + 151 + 99 + 211 = 607
+
+---
+
+# Depth-First Search: What if?
+
+<img src="/CI-2700/assets/img/dfs/reuse.png" width="100%"/>
+
+---
+
+# Depth-First Search: Revisiting nodes
+
+<img src="/CI-2700/assets/img/dfs/revisit.png" width="100%"/>
+
+---
+
+# Depth-First Search: What if?
+
+<img src="/CI-2700/assets/img/dfs/longway.png" width="100%"/>
+
+---
+
+# Depth-First Search: Long way
+
+<img src="/CI-2700/assets/img/dfs/longwaysol.png" width="100%"/>
+
+---
+
+class: small
+
+# Breadth-First Search
+
+  * Save the "frontier" as a list, initialized with the starting node 
+  
+  * If the goal is in the frontier, we are done
+  
+  * Else, for each node in the frontier, add all of its neighbors that to the frontier 
+  
+  * Repeat
+  
+  * Basically: Add all neighbors, then add all neighbor's neighbors, then add all neighbor's neighbor's neighbors, etc.
+  
+---
+  
+# Breadth-First Search
+
+<img src="/CI-2700/assets/img/pathproblem.png" width="100%"/>
+
+---
+
+# Breadth-First Search
+
+<img src="/CI-2700/assets/img/bfs/1.png" width="100%"/>
+
+---
+
+# Breadth-First Search
+
+<img src="/CI-2700/assets/img/bfs/2.png" width="100%"/>
+
+
+---
+
+# Breadth-First Search
+
+<img src="/CI-2700/assets/img/bfs/3.png" width="100%"/>
+
+---
+
+class: small
+
+# Limitations
+
+  * Depth-First Search can lead to some very long paths 
+  
+  * If we have an infinite graph, Depth-First Search will probably even fail completely
+  
+  * Breadth-First Search may need a lot of memory to remember the frontier and paths to get there 
+  
+  * Both of them ignore costs
+  
+---
+
+class: small
+
+# Some improvements
+
+  * We can limit the depth that Depth-First Search should explore
+  
+     - Now it will "work" on infinite graphs 
+     - We may also avoid some of the long paths
+  
+  * Idea: start with a depth limit of 1, run Depth-First Search, and if it can't find a path, increase the depth limit
+  
+  * This is called "Iterative Deepening"
+  
+  * To account for costs, we can use the cost as the order for Depth-First Search, and only make Breadth-First Search expand the node it can reach with the lowest cost in each iteration
+  
+---
+
+class: center, middle 
+
+# More Graphs
+  
+---
+
+class: small
+
+# Another Application
+
+  * Graphs are a very flexible way to represent problems!
+  
+  * Take, for example, Super Mario
+  
+  * Each action Mario performs will generate a "new" game state, and we can search for a way to beat a level this way!
+  
+<img src="/CI-2700/assets/img/marioas.png" width="50%"/>
+
+---
+
+# Search Graphs
+
+  * What if we have infinite (or at least very large) graphs?
+  
+  * We can't really store the entire graph in memory 
+  
+  * But do we need to?
+  
+---
+
+# Lazy Evaluation
+
+  * Some programming languages (like Haskell) use something called *lazy evaluation*
+  
+  * This means a value is only evaluated when it is needed 
+  
+  * For example `[1..]` is an infinite list of integers in Haskell 
+  
+  * But as long as you don't try to access *all* elements, it does not need to generate them 
+  
+  * We can "simulate" this behavior in other languages using functions
+  
+---
+
+# Lazy Evaluation for Graphs 
+
+  * Instead of representing an entire graph in memory, let's say we just store one node 
+  
+  * Each node can, when requested, give us its neighbors
+  
+  * We can then even "forget" the original node, if we want to
+  
+  * The only requirement is that each node only has finitely many neighbors (and preferably not too many)
+  
+---
+
+# An Infinite Graph
+
+* Let's say we have a graph with one node for each integer 
+
+* Each node has 2 to 4 neighbors: The predecessor and successor, twice its value, and half its value (if it is even). All distances are 1
+
+* "1" has the neighbors "0" and "2"
+
+* "3" has the neighbors "2", "4", and "6"
+
+* "4" has the neighbors "3", "5", "8", and "2"
+
+* "16" has the neighbors "15", "17", "32", and "8"
+
+---
+
+# Goal Conditions
+
+* We often also don't want to look for one specific (of our infinitely many) nodes, but rather a node that satisfies some condition
+
+* For example, what if we want a node that is greater than 1000 and a power of 2? 
+
+* Each of the nodes "1024", "2048", "4096", etc. would be a valid solution 
+
+* How could we find a path starting from "127" to find such a goal node?
+
+---
+
+class: medium
+
+# Why are we doing this?
+
+* (Almost) anything can be described as a graph
+
+* As long as we have a representation of a "node", a way to get "neighbors", a predicate that tells us what is a "goal", we can use our search algorithms
+
+* Nodes can be anything: locations, game states, sentences, etc.
+
+* Edges connect nodes: roads, game actions, adding/removing words, etc.
+
+---
+
+class: center, middle 
+
+# Lab 1
+  
+---
+
+class: medium
+
+# For the Lab
+
+* In Lab 1 you will implement Breadth-First Search, Depth-First Search, Greedy Search and A* (we will cover the last two next time) for arbitrary graphs
+
+* You will get a python "framework" that contains some example graphs you can test your algorithms on
+
+* You should also come up with at least one graph of your own (a map of your home town, campus, your favorite video game, ...)
+
+* You will have the class hours of 23/3 and 30/3 in the lab, where I will be able to directly assist you 
+
+* You should be able to finish in these 6 hours, but the submission deadline is on Friday, 3/4, AoE
+
+---
+
+# For the Lab 
+
+* The framework contains a definition of a graph that makes use of a lazy evaluation scheme
+
+```python
+class Node:
+    def get_neighbors(self):
+        # returns a list of edges to neighbors
+        return []
+        
+        
+# Each edge contains the target node, the cost of taking 
+# that path and a name 
+class Edge:
+    def __init__(self, target, cost, name):
+        self.target = target 
+        self.cost = cost
+        self.name = name
+```
+
+---
+
+# For the Lab
+
+* Take a look at `graph.py` to see how these classes are used to set up a finite graph (of Austria), as well as an infinite graph (the integer graph we discussed earlier).
+
+* You do not have to change anything in `graph.py`, but you are encouraged to come up with more examples to test your implementation 
+
+---
+
+class: medium
+
+# For the Lab 
+
+The actual task is to complete `search.py` by implementing `bfs`, `dfs`, `greedy` and `astar`:
+
+```python
+def bfs(start, goal):
+    # returns: 
+    #    path (list of edges) or None if no path found
+    return []
+```
+
+Note that the goal is a function!
+
+```python
+def atgoal(n):
+    return n.get_id() == target
+```
+
+---
+
+class: small
+
+# References
+
+  * [BFS and DFS](https://medium.com/basecs/breaking-down-breadth-first-search-cebe696709d9)
+  
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+   
+      
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+    <script src="sprite-animation.js"></script>
+  </body>
+</html>

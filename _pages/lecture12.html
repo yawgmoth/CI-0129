@@ -1,0 +1,358 @@
+---
+permalink: /slides/lecture4.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 4: Neural Networks</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.7em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      
+      .tiny li {  font-size: 0.8em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .tiny { font-size: 0.8em; }
+      
+      .small li {  font-size: 0.8em; }
+      
+      .medium li {  font-size: 1.1em; }
+      
+      
+      .mmedium li {  font-size: 0.95em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      .left-column {
+        color: #777;
+        width: 50%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 45%;
+        float: right;
+        padding-top: 1em;
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Machine Learning
+
+## Neural Networks
+
+### III-Verano 2019
+
+---
+
+# Artificial Neural Networks
+
+
+<p style="margin-top: 5cm; text-align: center; font-size: 2em">
+What is an (Artificial) Neural Network?
+</p>
+
+
+---
+
+# Neural Networks
+
+What is a Neural Network?
+
+ - A parameterized, non-linear function
+ 
+ - ... that has a gradient
+ 
+What is a Neural Network **not**?
+
+ - How the brain works 
+ 
+ - A black box that no one understands
+ 
+---
+
+# Braaaaaains
+
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="es"><p lang="en" dir="ltr">4yo child is one thing but we need to explain how Megaphragma mymaripenne can fly and navigate with a brain of only 7400 neurons. Each neuron must be doing much more (1000x) than our Perceptron model explains. <a href="https://t.co/xNPq0RAgPj">pic.twitter.com/xNPq0RAgPj</a></p>&mdash; Mark Sugrue (@marksugruek) <a href="https://twitter.com/marksugruek/status/1206130412260646912?ref_src=twsrc%5Etfw">15 de diciembre de 2019</a></blockquote>
+
+---
+
+# A Linear Model
+
+$$
+y = \vec{w} \cdot \vec{x} + b
+$$
+
+Alternatively:
+
+$$
+y = \vec{w}' \cdot \vec{x}'
+$$
+
+Where we add b to the end of w and 1 to the end of x
+
+---
+
+# Activation Functions 
+
+* Often we want to limit our output between 0 and 1 (or -1 and 1)
+
+* We do this by sending the result of the linear combination through an activation function 
+
+<img src="/CI-2600/assets/img/activationfunctions.png" width="100%"/>
+
+---
+
+# An Example: Boolean Operators
+
+* Let's use an even simpler activation function: If the result of the linear combination is greater than 0, the output is 1, otherwise it is 0 (step function)
+
+<img src="/CI-2600/assets/img/stepfunction.png" width="35%"/>
+
+* How could we model a logical "or"? "and"? "nand"?
+
+* How about an "xor"?
+
+---
+
+# Limitation
+
+* Our simple model can not model XOR (technical reason: It is not linearly separable)
+
+* What could we do?
+
+* Maybe adding more Neurons helps?
+
+---
+
+# Artificial Neural Networks 
+
+.left-column[
+<img src="/CI-2600/assets/img/ANN.svg" width="100%"/>
+]
+
+.right-column[
+We introduced a "hidden layer", which will hold intermediate values h
+
+$$
+\vec{h} = f_1(W_1 \cdot \vec{x})\\\\
+y = f_2(\vec{w_2} \cdot \vec{h})\\\\
+y = f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x}))
+$$
+]
+
+---
+
+# An Example 
+
+<img src="/CI-2600/assets/img/xorann.png" width="60%"/>
+
+What is the weight matrix for the hidden layer?
+
+What is the weight vector for the output?
+
+What happens for different inputs, e.g. 1 and 0?
+
+---
+
+# Weights
+
+* How did we get these weights?
+
+* What if the output is wrong? How do we update the weights?
+
+* We need a measure of error
+
+---
+
+# Gradient Descent on Neural Networks 
+
+* Take the (Sum/Mean) Squared Error!
+
+Remember:
+$$
+y = f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x}))
+$$
+
+Error:
+
+$$
+(y - \hat{y})^2 = (f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) - \hat{y})^2 = \text{minimal}
+$$
+
+So we want:
+
+$$
+\nabla (y - \hat{y})^2 = \vec{0}
+$$
+
+---
+
+# The Gradient
+
+$$
+\nabla (y - \hat{y})^2 = \vec{0} = \nabla (f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) - \hat{y})^2
+$$
+
+This means we need to calculate the gradient, with respect to the weights (i.e. what we want to change!)
+
+$$
+\frac{\text{d}}{\text{d} w_2} (y - \hat{y})^2 = \frac{\text{d}}{\text{d} w_2} (f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) - \hat{y})^2\\\\
+\frac{\text{d}}{\text{d} W_1} (y - \hat{y})^2 = \frac{\text{d}}{\text{d} W_1} (f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) - \hat{y})^2
+$$
+
+---
+
+# The Chain Rule
+
+Remember:
+
+$$
+f(g(x))' = f'(g(x)) \cdot g'(x)\\\\
+\frac{\text{d}}{\text{d} x} f(g(x)) = \frac{\text{d}}{\text{d} g(x)} f(g(x)) \cdot \frac{\text{d}}{\text{d} x} g(x) = \frac{\text{d}f(g(x))}{\text{d} g(x)}  \cdot \frac{\text{d}g(x)}{\text{d} x} 
+$$
+
+For our model that was:
+
+$$
+\frac{\text{d}}{\text{d} w} L(M(x)) = \frac{\text{d}}{\text{d} M(x)} L(M(x)) \cdot \frac{\text{d}}{\text{d} w} M(x)
+$$
+
+Our **only** requirements are the derivatives of M and L!
+
+---
+
+# For our neural network
+
+To get the gradient for the weights of the second layer:
+
+$$
+\frac{\text{d}}{\text{d} w_2} (f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) - \hat{y})^2 = \\\\
+2\cdot(f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) - \hat{y})\cdot \frac{\text{d}}{\text{d} w_2} f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) \cdot f_1(W_1 \cdot \vec{x}) =\\\\
+2\cdot(y - \hat{y})\cdot \frac{\text{d}}{\text{d} w_2} f_2(\vec{w_2} \cdot \vec{h}) \cdot \vec{h}
+$$
+
+---
+
+# Takeaways
+
+* For the weight matrix we can proceed the same way, with more chain rule applications
+
+* If we have more layers, that means more chain rule applications
+
+* Good news: PyTorch does all of that automatically (remember `requires_grad=True`?)
+
+* So now we "have" the gradient
+
+---
+
+# Learning!
+
+* Give the network an input sample 
+
+* Record the output 
+
+* Calculate the error **and the gradient**
+
+* Change the weights "a little" in the opposite direction of the gradient
+
+---
+
+# Learning 
+
+$$
+y = f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x}))\\\\
+\Delta w_2 = 2\cdot(y - \hat{y})\cdot \frac{\text{d}}{\text{d} w_2} f_2(\vec{w_2} \cdot \vec{h}) \cdot \vec{h} \\\\
+w_2 = w_2 - \alpha\cdot \Delta w_2
+$$
+
+* How do we start?
+
+* How often do we do update?
+
+* What is `\(\alpha\)`?
+
+* Any problems with this approach?
+
+---
+
+# Gradient Descent: Problems
+
+<img src="/CI-2600/assets/img/localoptimum.png" width="60%"/>
+
+---
+
+# Gradient Descent: More Problems
+
+<img src="/CI-2600/assets/img/learningproblems.png" width="100%"/>
+
+---
+
+# Gradient Descent 
+
+* Gradient Descent is the basis for learning in neural networks
+
+* We will see some ways to work around these problems 
+
+* So far we have also only seen Neural Networks with a single numerical output (Regression)
+
+* Next week: Neural Networks for classification
+
+---
+  
+# References
+  
+  * [Machine Learning 4 All: Guides](https://ml4a.github.io/guides/)
+  
+  * [PyTorch](https://pytorch.org/)
+  
+  * [DeepLearning with PyTorch](https://pytorch.org/deep-learning-with-pytorch)
+  
+  * [Introduction to Neural Networks](http://mt-class.org/jhu/slides/lecture-nn-intro.pdf)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-0.14.0.min.js">
+    </script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script>
+      var slideshow = remark.create();
+      
+       // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>
