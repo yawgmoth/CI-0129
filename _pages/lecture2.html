@@ -432,6 +432,122 @@ class: center, middle
 
 ---
 
+class: center, middle 
+
+# Environments 
+
+---
+
+class: small
+
+# Environments 
+
+* Observability
+
+* Single-agent/multi-agent 
+
+* Deterministic or stochastic 
+
+* Episodic or sequential 
+
+* Static or dynamic
+
+* Discrete or continuous
+
+* Known or unknown
+
+---
+
+# Observability 
+
+* In some environments, the agent has full knowledge 
+
+* Often, though, they can not "see" everything
+
+* For example: In Poker the opponent's cards are hidden
+
+---
+
+class: medium
+
+# Single vs. Multi-Agent 
+
+* Single-Agent: The agent does not have to "worry" about what other agents are doing 
+
+* Multi-Agent: There are other entities in the world that pursue goals
+
+* For example, "physics" is not really an agent, it has no goal 
+
+* In games we often have opponents, and need to perform actions that take into account what the opponent is likely going to do
+
+---
+
+# Deterministic or Stochastic
+
+* Deterministic: Each action always does the same thing, and nothing else changes the world
+
+* Stochastic: The state of the world may change by chance, or actions may have random effects
+
+* Note: Poker is **not** stochastic: The deck has a predetermined order (even if it is unknown to the agent)
+
+* Often, however, we abstract away unobservable information as stochasticity (self-driving cars)
+
+---
+
+# Episodic vs. Sequential 
+
+* Episodic: Each action is independent from other actions
+
+* Sequential: An action may have effects on future actions 
+
+* Most games are sequential: If we perform an action, we change what we do in the future 
+
+* Many tasks are episodic, though: Spam filtering, face recognition, path finding, etc.
+
+---
+
+# Static vs. Dynamic 
+
+* Static: The environment does not change if the agent does nothing 
+
+* Dynamic: While the agent deliberates or acts, the environment may change 
+
+* Note: This change may be due to "physics", or other agents
+
+* Semi-dynamic: The environment does not change, but the score does (chess clock)
+
+---
+
+# Discrete vs. Continuous
+
+* Discrete: There is a finite/countable number of states and time moves in steps 
+
+* Continuous: There is an uncountable number of states (like positions of a car in the real world), or time moves continuously
+
+* We can often discretize continuous variables
+
+* Many of our AI algorithms' complexity depends on the number of possible states
+
+---
+
+# Known vs. Unknown
+
+* Known: The agent knows how the environment "works" (the "rules")
+
+* Unknown: The agent has to determine what each action does 
+
+* Technically this isn't a property of the environment itself, but of the agent 
+
+* For example, we can build an agent that knows the rules of Poker, or we could have one that learns them by trial and error
+
+---
+
+# Environments 
+
+<img src="/CI-0129/assets/img/environments.jpg" width="70%"/>
+
+---
+
 # References 
    
   * [Finite State Machines for Game AI (ES)](https://gamedevelopment.tutsplus.com/es/tutorials/finite-state-machines-theory-and-implementation--gamedev-11867)
