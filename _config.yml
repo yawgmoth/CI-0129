@@ -180,8 +180,8 @@ exclude:
   - Rakefile
   - README
   - tmp
-  - "*.tex"
-  - /*.pdf
+  - "exam*.tex"
+  - /exam*.pdf
   - /docs # ignore Minimal Mistakes /docs
   - /test # ignore Minimal Mistakes /test
 keep_files:
