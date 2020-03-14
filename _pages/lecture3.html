@@ -5,7 +5,7 @@ permalink: /slides/lecture3.html
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lecture 3: Search</title>
+    <title>Lecture 3: Uninformed Search</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -184,13 +184,7 @@ class: center, middle
 
 # Sliding Puzzle Tree
 
-<img src="/CI-2700/assets/img/slidingtree.png" width="80%"/>
-
----
-
-class: center, middle 
-
-# Tree Search
+<img src="/CI-0129/assets/img/slidingtree.png" width="80%"/>
 
 ---
 
@@ -204,27 +198,83 @@ class: center, middle
 
 ---
 
-# Tree Search: Summary
+class: center, middle 
 
-<img src="/CI-2700/assets/img/bfsdfs.jpeg" width="100%"/>
+# Tree Search
 
+---
+
+# Tree Search 
+
+* We start at some node 
+
+* We can look at that nodes neighbors 
+
+* Then we can pick one of these neighbors to continue 
+
+* Or we look at all the neighbors and continue from there?
+
+---
+
+# Uninformed Search
+
+The simplest pathfinding algorithm works like this:
+  
+    - Keep track of which nodes are candidates for expansion (starting with the start node)
+    
+    - Take one of these nodes and expand it 
+    
+    - If you reach the target, you have found a path
+    
 ---
 
 class: medium
 
-# Uninformed Search
+# Breadth-First Search
 
-  - The simplest pathfinding algorithm(s) works like this:
+How do you "keep track" of nodes? Use a list/queue:
   
-      - Keep track of which nodes are candidates for expansion (starting with the start node)
-      - Take one of these nodes and expand it 
-      - If you reach the target, you have found a path
-      
-  - How do you "keep track" of nodes?
+  - You add all neighbors of the start node to the queue
+  - Then add the neighbors of the first, second, ... neighbor, to the end of your queue 
+  - When you are done with all neighbors, you continue with the neighbor's neighbors, etc.
+  - This is called "breadth-first search"
   
-      - Use a list/queue: You now have "breadth-first search"
-      - Use a stack: You now have "depth-first search"
+---
+
+class: medium
+
+# Depth-First Search
+
+How do you "keep track" of nodes? Use a stack:
+      - You add all neighbors of the start node to the stack (in reverse order)
+      - You start with the first neighbor, and add all its neighbors to the stack (in reverse order)
+      - Then you continue with the first neighbor of the first neighbor, etc. 
+      - This is called "depth-first search"
       
+---
+
+# Path Extraction
+
+When we reach the target, we have "found a path". How do we get it?
+
+  - Whenever we "add" a node, we also remember which node we just expanded to get there
+  
+  - In our tree, this means each node will remember its parent
+  
+  - This will become more important when we talk about general graphs later
+
+---
+
+# Tree Search: Summary
+
+<img src="/CI-0129/assets/img/bfsdfs.jpeg" width="100%"/>
+
+---
+
+class: center, middle 
+
+# Graph Search
+
 ---
 
 # Another example: Romania 
@@ -237,11 +287,6 @@ class: medium
 
 <img src="/CI-2700/assets/img/pathproblem.png" width="100%"/>
 
----
-
-class: center, middle 
-
-# Graph Search
 
 ---
 
@@ -276,15 +321,15 @@ class: medium
 
   - The simplest pathfinding algorithm(s) works like this:
   
-      - .red[Keep track of which nodes have already been expanded]
+      - <span style="font-color: red;">Keep track of which nodes have already been expanded</span>
       - Keep track of which nodes are candidates for expansion (starting with the start node)
-      - Take one of these nodes and expand it .red[(avoid revisiting expanded nodes)]
+      - Take one of these nodes and expand it <span style="font-color: red;">(avoid revisiting expanded nodes)</span>
       - If you reach the target, you have found a path
       
   - How do you "keep track" of nodes?
   
-      - Use a list/queue: You now have "breadth-first search"
-      - Use a stack: You now have "depth-first search"
+      - Use a list/queue: "Breadth-first search"
+      - Use a stack: "Depth-first search"
       
 ---
 
@@ -445,12 +490,26 @@ class: small
   
   * To account for costs, we can use the cost as the order for Depth-First Search, and only make Breadth-First Search expand the node it can reach with the lowest cost in each iteration
   
+
+  
 ---
 
 class: center, middle 
 
 # More Graphs
+
+---
+
+# Path Extraction
+
+When we reach the target, we have "found a path". How do we get it?
+
+  - Whenever we "add" a node, we also remember which node we just expanded to get there
   
+  - In our tree, this means each node will remember its parent
+  
+  - This will become more important when we talk about general graphs later
+
 ---
 
 class: small
@@ -543,79 +602,7 @@ class: medium
 
 * Edges connect nodes: roads, game actions, adding/removing words, etc.
 
----
 
-class: center, middle 
-
-# Lab 1
-  
----
-
-class: medium
-
-# For the Lab
-
-* In Lab 1 you will implement Breadth-First Search, Depth-First Search, Greedy Search and A* (we will cover the last two next time) for arbitrary graphs
-
-* You will get a python "framework" that contains some example graphs you can test your algorithms on
-
-* You should also come up with at least one graph of your own (a map of your home town, campus, your favorite video game, ...)
-
-* You will have the class hours of 23/3 and 30/3 in the lab, where I will be able to directly assist you 
-
-* You should be able to finish in these 6 hours, but the submission deadline is on Friday, 3/4, AoE
-
----
-
-# For the Lab 
-
-* The framework contains a definition of a graph that makes use of a lazy evaluation scheme
-
-```python
-class Node:
-    def get_neighbors(self):
-        # returns a list of edges to neighbors
-        return []
-        
-        
-# Each edge contains the target node, the cost of taking 
-# that path and a name 
-class Edge:
-    def __init__(self, target, cost, name):
-        self.target = target 
-        self.cost = cost
-        self.name = name
-```
-
----
-
-# For the Lab
-
-* Take a look at `graph.py` to see how these classes are used to set up a finite graph (of Austria), as well as an infinite graph (the integer graph we discussed earlier).
-
-* You do not have to change anything in `graph.py`, but you are encouraged to come up with more examples to test your implementation 
-
----
-
-class: medium
-
-# For the Lab 
-
-The actual task is to complete `search.py` by implementing `bfs`, `dfs`, `greedy` and `astar`:
-
-```python
-def bfs(start, goal):
-    # returns: 
-    #    path (list of edges) or None if no path found
-    return []
-```
-
-Note that the goal is a function!
-
-```python
-def atgoal(n):
-    return n.get_id() == target
-```
 
 ---
 

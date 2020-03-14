@@ -5,7 +5,7 @@ permalink: /slides/lecture4.html
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lecture 3: Search</title>
+    <title>Lecture 4: Informed Search</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -43,31 +43,17 @@ class: center, middle
 
 # Artificial Intelligence
 
-### Search
+### Informed Search
 
 ---
 
 class: center, middle 
 
 # Search
-  
+    
 ---
 
-# Graphs
-
-  * A graph G = (V,E) consists of *vertices* (nodes) V and *edges* (connections) `\( E \subseteq V \times V \)`
-  
-  * Graphs can be connected, or have multiple components
-  
-  * Graphs can be directed (one-way streets) or undirected 
-  
-  * Edges can have weights (costs) associated with them: `\( w: E \mapsto \mathbb{R} \)`
-  
-  * We can represent many things in graphs
-  
----
-
-# The (undirected) Pathfinding problem
+# Reminder: The (undirected) Pathfinding problem
 
 Given a graph G = (V,E), with edge weights w, a start node `\( s \in V \)`, a destination node `\( d \in V \)`, find a sequence of vertices `\( v_1, v_2, \ldots, v_n  \)`, such that `\(v_1 = s, v_n = d \)` and `\( \forall i: (v_i, v_{i+1}) \in E \)`
 
@@ -80,7 +66,7 @@ destination by being connected with edges. The cost is the sum of the costs of e
 
 ---
 
-# Another example: Romania 
+# Reminder: Romania 
 
 <img src="/CI-2700/assets/img/romania.png" width="100%"/>
 
@@ -89,29 +75,6 @@ destination by being connected with edges. The cost is the sum of the costs of e
 # How could we find a path?
 
 <img src="/CI-2700/assets/img/pathproblem.png" width="100%"/>
-
----
-
-class: medium
-
-# Uninformed Search
-
-  - The simplest pathfinding algorithm(s) works like this:
-  
-      - Keep track of which nodes are candidates for expansion (starting with the start node)
-      - Take one of these nodes and expand it 
-      - If you reach the target, you have found a path
-      
-  - How do you "keep track" of nodes?
-  
-      - Use a list/queue: You now have "breadth-first search"
-      - Use a stack: You now have "depth-first search"
-      
----
-
-# Uninformed Search
-
-<img src="/PF-3341/assets/img/bfsdfs.png" width="100%"/>
   
 ---
 
@@ -511,7 +474,7 @@ class: small
 
   * To find *optimal* solution, keep expanding nodes until the goal node is the best node in the frontier
   
-  * A* is actually guaranteed to find the optimal solution if the heuristic is:
+  * A* is guaranteed to find the optimal solution if the heuristic is:
   
      - Admissible: Never overestimate the cost 
      - Consistent: For a node x and its neighbor y, the heuristic value for x has to be less than or equal to that of y plus the cost of getting from x to y
@@ -533,72 +496,6 @@ class: small
   
   * This will give you a shortest path tree, which may be useful if you have to repeatedly find a path to different destinations
   
----
-
-class: small
-
-# Search
-
-  * While we have looked at finding paths in physical spaces so far, there are many other applications 
-  
-  * Take, for example, Super Mario
-  
-  * An AI agent could play the game using A*
-  
-<img src="/CI-2700/assets/img/marioas.png" width="50%"/>
-
----
-
-# Search Graphs
-
-  * What if we have infinite (or at least very large) graphs?
-  
-  * We can't really store the entire graph in memory 
-  
-  * But do we need to?
-  
----
-
-# Lazy Evaluation
-
-  * Some programming languages (like Haskell) use something called *lazy evaluation*
-  
-  * This means a value is only evaluated when it is needed 
-  
-  * For example `[1..]` is an infinite list of integers in Haskell 
-  
-  * But as long as you don't try to access *all* elements, it does not need to generate them 
-  
-  * We can "simulate" this behavior in other languages using functions
-  
----
-
-# Lazy Evaluation for Graphs 
-
-  * Instead of representing an entire graph in memory, let's say we just store one node 
-  
-  * Each node can, when requested, give us its neighbors
-  
-  * We can then even "forget" the original node, if we want to
-  
-  * The only requirement is that each node only has finitely many neighbors (and preferably not too many)
-  
----
-
-# An Infinite Graph
-
-* Let's say we have a graph with one node for each integer 
-
-* Each node has 2 to 4 neighbors: The predecessor and successor, twice its value, and half its value (if it is even). All distances are 1
-
-* "1" has the neighbors "0" and "2"
-
-* "3" has the neighbors "2", "4", and "6"
-
-* "4" has the neighbors "3", "5", "8", and "2"
-
-* "16" has the neighbors "15", "17", "32", and "8"
-
 ---
 
 # Goal Conditions
@@ -627,27 +524,34 @@ What does it do? Look for the next lowest power of two of the current node and t
 
 Now let's do A*!
 
+
+---
+
+class: center, middle 
+
+# Lab 1
+  
 ---
 
 class: medium
 
-# Why are we doing this?
+# For the Lab
 
-* (Almost) anything can be described as a graph
+* In Lab 1 you will implement Breadth-First Search, Depth-First Search, Greedy Search and A* (we will cover the last two next time) for arbitrary graphs
 
-* As long as we have a representation of a "node", a way to get "neighbors", a predicate that tells us what is a "goal" and a heuristic, we can do A*
+* You will get a python "framework" that contains some example graphs you can test your algorithms on
 
-* In some cases, we can just use a constant 0 for the heuristic (what happens then?)
+* You should also come up with at least one graph of your own (a map of your home town, campus, your favorite video game, ...)
 
-* In *planning* our nodes will be logical states, the neighbors will be produced by actions and we will be given a logical goal condition 
+* You will have the class hours of 23/3 and 30/3 in the lab, where I will be able to directly assist you 
 
-* There has been quite some research in different planning heuristics
+* You should be able to finish in these 6 hours, but the submission deadline is on Friday, 3/4, AoE
 
 ---
 
-# For the Project
+# For the Lab 
 
-* For the project, the framework contains a definition of a graph that makes use of this lazy evaluation scheme
+* The framework contains a definition of a graph that makes use of a lazy evaluation scheme
 
 ```python
 class Node:
@@ -657,7 +561,7 @@ class Node:
         
         
 # Each edge contains the target node, the cost of taking 
-# that path and a name (particularly useful for planning)
+# that path and a name 
 class Edge:
     def __init__(self, target, cost, name):
         self.target = target 
@@ -667,7 +571,7 @@ class Edge:
 
 ---
 
-# For the Project
+# For the Lab
 
 * Take a look at `graph.py` to see how these classes are used to set up a finite graph (of Austria), as well as an infinite graph (the integer graph we discussed earlier).
 
@@ -677,52 +581,23 @@ class Edge:
 
 class: medium
 
-# For the Project 
+# For the Lab 
 
-The actual task is to complete `pathfinding.py` by implementing `astar`:
+The actual task is to complete `search.py` by implementing `bfs`, `dfs`, `greedy` and `astar`:
 
 ```python
-def astar(start, heuristic, goal):
+def bfs(start, goal):
     # returns: 
-    #    path (list of edges)
-    #    cost of path (sum of cost of the edges)
-    #    number of nodes visited (added to the search frontier)
-    #    number of nodes expanded (removed from the search
-    #                              frontier, with its neighbors 
-    #                              added instead)
-    return [],0,0,0
+    #    path (list of edges) or None if no path found
+    return []
 ```
 
-Note that the goal and heuristic are functions!
+Note that the goal is a function!
 
 ```python
 def atgoal(n):
     return n.get_id() == target
 ```
-
----
-
-# For the Project
-
-* You can implement A* independently from the logical formula representation 
-
-* The deadline for this task is September 27
-
-* The deadline for task 1 is September **20** (one day later than originally stated, to also be on a Friday)
-  
----
-
-# Homework
-
-  * [Homework 2](/PF-3335/assets/pdf/homework2.pdf) has been posted on the class website
-  
-  * There are 5 problems involving A*
-  
-  * There is also a bonus problem involving a (short) proof
-  
-  * Homework is due **in two weeks**, on Sep 6
-  
-  * No class next week, because I will be at a conference!
 
 ---
 
