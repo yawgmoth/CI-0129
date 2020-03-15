@@ -53,6 +53,17 @@ class: center, middle
 
 ---
 
+<div style="margin:20px; margin-top:5px; border: 1px solid #3bbfe7;" class="codebox">
+<dt style="height:40px; text-align: center;"><strong>Answer:</strong>
+<input type="button" value="Show" style="width:78px; font-size:10px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
+if ( this.value == 'Hide' ) { this.value = 'Show'; } else { this.value = 'Hide'; };
+return false;"></dt>
+<dd><div class="content" name="spoiler" style="display: none;">
+  Holaaaaa, Bienvenido!!!!!
+</div></dd></div>
+
+---
+
 # Graphs
 
   * A graph G = (V,E) consists of *vertices* (nodes) V and *edges* (connections) `\( E \subseteq V \times V \)`
@@ -104,7 +115,7 @@ class: center, middle
 	enable-background="new -10 -10 380 240" 
 	>
 
-<desc>Tree of breadth first search</desc>
+<desc>Tree</desc>
 
 <defs>
 	<radialGradient id="radialGradient00">
@@ -613,7 +624,7 @@ class: small
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
     </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
-
+<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     
     <script type="text/javascript">
