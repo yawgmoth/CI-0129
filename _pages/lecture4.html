@@ -533,7 +533,7 @@ class: center, middle
   
 ---
 
-class: medium
+class: mmedium
 
 # For the Lab
 
@@ -575,7 +575,7 @@ class Edge:
 
 * Take a look at `graph.py` to see how these classes are used to set up a finite graph (of Austria), as well as an infinite graph (the integer graph we discussed earlier).
 
-* You do not have to change anything in `graph.py`, but you are encouraged to come up with more examples to test your implementation 
+* You do not have to change anything in `graph.py`, but you can use it to create more test examples
 
 ---
 
@@ -589,7 +589,10 @@ The actual task is to complete `search.py` by implementing `bfs`, `dfs`, `greedy
 def bfs(start, goal):
     # returns: 
     #    path (list of edges) or None if no path found
-    return []
+	#    length of the path 
+	#    nodes visited (added to the frontier)
+	#    nodes expanded (removed from the frontier)
+    return [],0,0,0
 ```
 
 Note that the goal is a function!

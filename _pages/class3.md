@@ -20,16 +20,20 @@ via email. Please indicate which section your question is about, to make it easi
 This page contains all materials for classes 3 **and** 4, because they form one logical unit. For each section, I will also indicate how long it should take you to work through it. The class is designed to be
 held as two separate 2 hour lectures, as indicated below. The videos will use the slides for [lecture 3](/CI-0129/slides/lecture3.html) and [lecture 4](/CI-0129/slides/lecture4.html) from the website. 
 
-## Trees ( + 10 minutes discussion)
+## Trees (14 minutes video + 10 minutes discussion)
 
 First, watch this video: 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/u-MqUsu-0Ks" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Think about, or discuss with a partner, how you would perform a search in this game tree, starting with the root node, until you have found a solution. Think about it from an algorithmic perspective, 
 and how you write code to solve the problem.
 
-## Tree Search ( + 15 minutes discussion)
+## Tree Search (12 minutes video + 15 minutes discussion)
 
 Continue with this video:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/O22NjL9GUJU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Assuming the nodes are ordered from left to right in the tree below, how many nodes would you visit (add to the frontier) and expand (remove from the frontier to add all of its children to the frontier) when you 
 search for a path from the root (1) to the node labeled 7, with Breadth-First Search? How about Depth-First Search? Discuss with a partner, or try to figure it out yourself, before checking your answer below.
@@ -119,9 +123,11 @@ Breadth-First Search will start with 1 in the frontier, then add 2, 3, 4, then a
 Depth-First Search will start with 1 in the frontier, then add 2, 3, 4, then add 5, 6, then add 9, 10, and finally add 7 and stop. We visited 1, 2, 3, 4, 5, 6, 9, 10, 7, and expanded 1, 2, 5, 9, 10, 6, 3, 4.
 </div></dd></div>
 
-## Uninformed Search in Graphs ( + 25 minutes discussion)
+## Uninformed Search in Graphs (25 minutes video + 25 minutes discussion)
 
 Continue with this video:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/J-0smpL5p-s" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
 Look at the map of UCR campus below. Find a path from Chemistry (Quimica) to ECCI Anexo using Breadth-First Search. Which nodes do you visit and expand? How about Depth-First Search? (Assume that the neighbors are 
@@ -201,11 +207,7 @@ The shorter path is Quimica - Biologia - Farmacia - RSN - ECCI - ECCI Anexo with
 even though each edge is short. Depth-First Search, on the other hand, searched in the completely wrong "direction", given our node ordering. 
 </div></dd></div>
 
-## Heuristics (video)
-
-Continue with this video:
-
-## Greedy Search (video + 10 minutes discussion)
+## Heuristics and Greedy Search (video + 10 minutes discussion)
 
 Continue with this video:
 
