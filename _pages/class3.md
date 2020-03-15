@@ -154,12 +154,12 @@ Instituo Confucio - Economicas - ECCI Anexo, with a total length of 35 + 60 + 10
 
 Is there a shorter path than the ones found by Breadth-First and Depth-First Search? Which one? Why did we not find it?
 
-<div style="margin:20px; margin-top:5px; border: 1px solid #3bbfe7;" class="codebox">
+<div style="margin:20px; margin-top:5px; margin-right:15px; border: 1px solid #3bbfe7;" class="codebox">
 <dt style="height:40px; text-align: center;"><strong>Answer:</strong>
-<input type="button" value="Show" style="width:78px; font-size:10px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
+<input type="button" value="Show" style="width:78px; font-size:14px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
 if ( this.value == 'Hide' ) { this.value = 'Show'; } else { this.value = 'Hide'; };
 return false;"></dt>
-<dd><div class="content" name="spoiler" style="display: none;">
+<dd><div class="content" name="spoiler" style="display: none; margin-right:15px;">
 The shorter path is Quimica - Biologia - Farmacia - RSN - ECCI - ECCI Anexo with a total length of 25 + 40 + 50 + 17 + 20 = 152. Breadth-First Search does not find it, because it has more edges than the path it found, 
 even though each edge is short. Depth-First Search, on the other hand, searched in the completely wrong "direction", given our node ordering. 
 </div></dd></div>
