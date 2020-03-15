@@ -11,7 +11,7 @@ categories: []
 * TOC
 {:toc}
 
-## Search Algorithm
+## Search Algorithms
 
 In this lab, you will implement four "different" (directed) graph search algorithms in python:
  - Breadth-First Search 
@@ -43,7 +43,7 @@ outgoing edges. Each `Edge` object stores its target, the cost to use the edge, 
 and so on. Note that to simplify development, nodes do not need to be cached between calls, and are instead identified by a unique id, which can be obtained from the `get_id` method. `graph.py` shows how this 
 representation can be used to represent finite and infinite graphs.
 
-Mandatory function in `pathfinding.py`, following the API described there (and above):
+Mandatory functions in `pathfinding.py`, following the API described there (and above):
    - `bfs`
    - `dfs`
    - `greedy`

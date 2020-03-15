@@ -337,6 +337,47 @@ class: medium
   
       - Use a list/queue: "Breadth-first search"
       - Use a stack: "Depth-first search"
+      
+---
+
+class: small
+
+# Breadth-First Search
+
+  * Save the "frontier" as a list, initialized with the starting node 
+  
+  * If the goal is in the frontier, we are done
+  
+  * Else, for the first node in the frontier, add all of its neighbors <span style="color: red;">that have not yet been expanded</span> to the frontier 
+  
+  * Repeat
+  
+Basically: Add all neighbors, then add all neighbor's neighbors, then add all neighbor's neighbor's neighbors, etc.
+  
+---
+  
+# Breadth-First Search
+
+<img src="/CI-2700/assets/img/pathproblem.png" width="100%"/>
+
+---
+
+# Breadth-First Search
+
+<img src="/CI-2700/assets/img/bfs/1.png" width="100%"/>
+
+---
+
+# Breadth-First Search
+
+<img src="/CI-2700/assets/img/bfs/2.png" width="100%"/>
+
+
+---
+
+# Breadth-First Search
+
+<img src="/CI-2700/assets/img/bfs/3.png" width="100%"/>
 
 ---
 
@@ -348,7 +389,7 @@ class: small
   
   * If the goal is in the frontier, we are done
   
-  * Else, for each node in the frontier, add all of its neighbors that have not yet been expanded to the frontier 
+  * Else, for the first node in the frontier, add all of its neighbors <span style="color: red;">that have not yet been expanded</span> to the frontier 
   
   * Repeat
   
@@ -421,44 +462,15 @@ Basically: Add all neighbors, then add the first neighbor's neighbors, then add 
 
 ---
 
-class: small
+# Path Extraction
 
-# Breadth-First Search
+When we reach the target, we have "found a path". How do we get it?
 
-  * Save the "frontier" as a list, initialized with the starting node 
+  - Whenever we "add" a node, we also remember which node we just expanded to get there
   
-  * If the goal is in the frontier, we are done
+  - Basically, we store a dictionary that remembers for each node where "it came from"
   
-  * Else, for each node in the frontier, add all of its neighbors that to the frontier 
-  
-  * Repeat
-  
-Basically: Add all neighbors, then add all neighbor's neighbors, then add all neighbor's neighbor's neighbors, etc.
-  
----
-  
-# Breadth-First Search
-
-<img src="/CI-2700/assets/img/pathproblem.png" width="100%"/>
-
----
-
-# Breadth-First Search
-
-<img src="/CI-2700/assets/img/bfs/1.png" width="100%"/>
-
----
-
-# Breadth-First Search
-
-<img src="/CI-2700/assets/img/bfs/2.png" width="100%"/>
-
-
----
-
-# Breadth-First Search
-
-<img src="/CI-2700/assets/img/bfs/3.png" width="100%"/>
+  - When we find the goal we walk backwards through this dictionary
 
 ---
 
@@ -497,17 +509,7 @@ class: center, middle
 
 # More Graphs
 
----
 
-# Path Extraction
-
-When we reach the target, we have "found a path". How do we get it?
-
-  - Whenever we "add" a node, we also remember which node we just expanded to get there
-  
-  - In our tree, this means each node will remember its parent
-  
-  - This will become more important when we talk about general graphs later
 
 ---
 
