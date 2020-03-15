@@ -118,7 +118,7 @@ if ( this.value == 'Hide' ) { this.value = 'Show'; } else { this.value = 'Hide';
 return false;"></dt>
 <dd><div class="content" name="spoiler" style="display: none;">
 Breadth-First Search will start with 1 in the frontier, then add 2, 3, 4, then add 5, 6, and then reach 7 and stop. The nodes we visited were therefore 1, 2, 3, 4, 5, 6, 7, and the nodes we expanded were 1, 2, 
-3 (which has no children), and 4.
+3 (which has no children), and 4.<br/>
 
 Depth-First Search will start with 1 in the frontier, then add 2, 3, 4, then add 5, 6, then add 9, 10, and finally add 7 and stop. We visited 1, 2, 3, 4, 5, 6, 9, 10, 7, and expanded 1, 2, 5, 9, 10, 6, 3, 4.
 </div></dd></div>
@@ -143,8 +143,9 @@ return false;"></dt>
 <dd><div class="content" name="spoiler" style="display: none;">
 Breadth-First Search will start at Quimica, and add Educacion, Estudios Generales and Biologia. Then, we will add Instituto Confucio, Economicas, Farmacia. Then we will add Registro (neighbor of Instituto Confucio), Derecho, 
 and ECCI Anexo and we are done. The resulting path is Quimica - Estudios Generales - Economicas - ECCI Anexo, with a total length of 80 + 55 + 35 = 170
+<br/>
 
-Depth-First Search start at Quimica, and add Educacion, Estudios Generales and Biologia in reverse order, so that the top element of the stack is Educacion. Then we expand Educacion, and add Estudios Generales (note: 
+Depth-First Search will start at Quimica, and add Educacion, Estudios Generales and Biologia in reverse order, so that the top element of the stack is Educacion. Then we expand Educacion, and add Estudios Generales (note: 
 we **only** avoid adding Quimica, because we have already expanded it, but we will add a node that we have already added, such as Estudios Generales, if we have **not** expanded it yet. In an actual implementation, 
 you can either remove the other node from the stack right now, or ignore it later when it might be expanded a second time). Then we expand Estudios Generales, adding Instituto Confucio, and Economicas in reverse order. 
 The top element of the stack is now Instituto Confucio, we expand that, and add Economicas and Registro. Then we expand Economicas, adding Derecho and ECCI Anexo. We have found a path Quimica - Educacion - Estudios Generales -
@@ -171,45 +172,11 @@ Continue with this video:
 
 This concludes the material for lecture 3. Continue below for lecture 4.
 
-## Best-First Search ( + 15 minutes discussion)
+## Heuristic Search ( + 25 minutes discussion)
 
 In lecture 4, we are looking at how we can incorporate the distances/edge weights we have, and how we could use extra information we may have about a search problem. Continue with this video:
 
-Recall the map of UCR campus (also shown below). Find a path from Chemistry (Quimica) to ECCI Anexo using Best-First Search. Which nodes do you visit and expand? 
 
-<img src="/CI-0129/assets/img/campo.png" width="100%"/>
-
-<div style="margin:20px; margin-top:5px; border: 1px solid #3bbfe7;" class="codebox">
-<dt style="height:40px; text-align: center;"><strong>Answer:</strong>
-<input type="button" value="Show" style="width:78px; font-size:10px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
-if ( this.value == 'Hide' ) { this.value = 'Show'; } else { this.value = 'Hide'; };
-return false;"></dt>
-<dd><div class="content" name="spoiler" style="display: none;">
-Breadth-First Search will start at Quimica, and add Educacion, Estudios Generales and Biologia. Then, we will add Instituto Confucio, Economicas, Farmacia. Then we will add Registro (neighbor of Instituto Confucio), Derecho, 
-and ECCI Anexo and we are done. The resulting path is Quimica - Estudios Generales - Economicas - ECCI Anexo, with a total length of 80 + 55 + 35 = 170
-
-Depth-First Search start at Quimica, and add Educacion, Estudios Generales and Biologia in reverse order, so that the top element of the stack is Educacion. Then we expand Educacion, and add Estudios Generales (note: 
-we **only** avoid adding Quimica, because we have already expanded it, but we will add a node that we have already added, such as Estudios Generales, if we have **not** expanded it yet. In an actual implementation, 
-you can either remove the other node from the stack right now, or ignore it later when it might be expanded a second time). Then we expand Estudios Generales, adding Instituto Confucio, and Economicas in reverse order. 
-The top element of the stack is now Instituto Confucio, we expand that, and add Economicas and Registro. Then we expand Economicas, adding Derecho and ECCI Anexo. We have found a path Quimica - Educacion - Estudios Generales -
-Instituo Confucio - Economicas - ECCI Anexo, with a total length of 35 + 60 + 100 + 70 + 35 = 300
-</div></dd></div>
-
-Is there a shorter path than the ones found by Breadth-First and Depth-First Search? Which one? Why did we not find it?
-
-<div style="margin:20px; margin-top:5px; border: 1px solid #3bbfe7;" class="codebox">
-<dt style="height:40px; text-align: center;"><strong>Answer:</strong>
-<input type="button" value="Show" style="width:78px; font-size:10px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
-if ( this.value == 'Hide' ) { this.value = 'Show'; } else { this.value = 'Hide'; };
-return false;"></dt>
-<dd><div class="content" name="spoiler" style="display: none;">
-The shorter path is Quimica - Biologia - Farmacia - RSN - ECCI - ECCI Anexo with a total length of 25 + 40 + 50 + 17 + 20 = 152. Breadth-First Search does not find it, because it has more edges than the path it found, 
-even though each edge is short. Depth-First Search, on the other hand, searched in the completely wrong "direction", given our node ordering. 
-</div></dd></div>
-
-## Heuristics and Greedy Search (video + 10 minutes discussion)
-
-Continue with this video:
 
 Look at the map of Austria (and Bavaria) given below. You want to find a path from Graz to Munich. From the map, you have calculated the straight-line distances from each city to Munich as follows:
 
@@ -225,14 +192,15 @@ Find a path from Graz to Munich using Greedy Search. Which nodes do you visit? W
 if ( this.value == 'Hide' ) { this.value = 'Show'; } else { this.value = 'Hide'; };
 return false;"></dt>
 <dd><div class="content" name="spoiler" style="display: none;">
-We start with the initial node, Graz (301) in the frontier, which we expand, adding Klagenfurt (202), Bruck (203), Vienna (300) and Eisenstadt (400). We then expand Klagenfurt, adding Lienz (201) to the frontier.
+We start with the initial node, Graz (301) in the frontier, which we expand, adding Klagenfurt (202), Bruck (203), Vienna (300) and Eisenstadt (400). We then expand Klagenfurt, adding Lienz (201) to the frontier.<br/>
+
 Lienz has the lowest heuristic value, so we expand it, adding Innsbruck (100) to the frontier. Innsbruck now has the lowest heuristic value, and we'll add Munich (0) (and Bregenz (101)), and we are done. The path we found 
 is Graz - Klagenfurt - Lienz - Innsbruck - Munich, with a total length of 136 + 145 + 180 + 151 = 612. We have visited Graz, Klagenfurt, Bruck, Vienna, Eisenstadt, Lienz, Innsbruck and Munich (and Bregenz), and have 
 expanded Graz, Klagenfurt, Lienz, and Innsbruck.
 </div></dd></div>
 
 
-## A* (video + 15 minutes discussion)
+## A* (video + 25 minutes discussion)
 
 Continue with this video:
 
@@ -252,7 +220,7 @@ return false;"></dt>
 We start with the initial node, Graz (0 + 301 = 301) in the frontier, which we expand, adding Bruck (55 + 203 = 258), Klagenfurt (136 + 202 = 338), Vienna (200 + 300 = 500) and Eisenstadt (173 + 400 = 573). We then expand 
 Bruck, adding Salzburg (55 + 215 + 100 = 370), and Linz (55 + 195 + 200 = 450) to the frontier. <b>Important:</b> We also have to check if Klagenfurt has a lower cost if we go via Bruck. Currently, Klagenfurt is in our 
 frontier with a cost of 136. Via Bruck the cost would be 55 + 152 = 207, which is more, so we do not change the value (and ancestor) of Klagenfurt in our list. If we had found a lower cost way we would have to update 
-the frontier entry!
+the frontier entry!<br/>
 
 Continuing, the lowest sum of heuristic and cost is now the one of Klagenfurt (338), so we expand this node, adding Lienz (136 + 145 + 201 = 482). Here we also have to check if we need to update Salzburg in the frontier, 
 which has a cost of 136 + 223 = 359 to reach via Klagenfurt, which is more than we already have and is thus not changed. Next, the lowest sum of heuristic and cost is held by Salzburg (370), which we expand, 
