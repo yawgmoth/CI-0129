@@ -220,11 +220,11 @@ class: center, middle
 
 The simplest pathfinding algorithm works like this:
   
-    - Keep track of which nodes are candidates for expansion (starting with the start node)
-    
-    - Take one of these nodes and expand it 
-    
-    - If you reach the target, you have found a path
+- Keep track of which nodes are candidates for expansion (starting with the start node), called the **(search) frontier**
+
+- Take one of these nodes and expand it, adding all its children to the frontier
+
+- If you reach the target, you have found a path
     
 ---
 
@@ -234,10 +234,13 @@ class: medium
 
 How do you "keep track" of nodes? Use a list/queue:
   
-  - You add all neighbors of the start node to the queue
-  - Then add the neighbors of the first, second, ... neighbor, to the end of your queue 
-  - When you are done with all neighbors, you continue with the neighbor's neighbors, etc.
-  - This is called "breadth-first search"
+- You add all neighbors of the start node to the queue
+
+- Then add the neighbors of the first, second, ... neighbor, to the end of your queue 
+
+- When you are done with all neighbors, you continue with the neighbor's neighbors, etc.
+
+- This is called "breadth-first search"
   
 ---
 
@@ -246,10 +249,14 @@ class: medium
 # Depth-First Search
 
 How do you "keep track" of nodes? Use a stack:
-      - You add all neighbors of the start node to the stack (in reverse order)
-      - You start with the first neighbor, and add all its neighbors to the stack (in reverse order)
-      - Then you continue with the first neighbor of the first neighbor, etc. 
-      - This is called "depth-first search"
+
+- You add all neighbors of the start node to the stack (in reverse order)
+
+- You start with the first neighbor, and add all its neighbors to the stack (in reverse order)
+
+- Then you continue with the first neighbor of the first neighbor, etc. 
+
+- This is called "depth-first search"
       
 ---
 
@@ -321,21 +328,15 @@ class: medium
 
   - The simplest pathfinding algorithm(s) works like this:
   
-      - <span style="font-color: red;">Keep track of which nodes have already been expanded</span>
+      - <span style="color: red;">Remember which nodes have already been expanded</span>
       - Keep track of which nodes are candidates for expansion (starting with the start node)
-      - Take one of these nodes and expand it <span style="font-color: red;">(avoid revisiting expanded nodes)</span>
+      - Take one of these nodes and expand it <span style="color: red;">(avoid revisiting expanded nodes)</span>
       - If you reach the target, you have found a path
       
   - How do you "keep track" of nodes?
   
       - Use a list/queue: "Breadth-first search"
       - Use a stack: "Depth-first search"
-      
----
-
-# Uninformed Search
-
-<img src="/PF-3341/assets/img/bfsdfs.png" width="100%"/>
 
 ---
 
@@ -351,7 +352,7 @@ class: small
   
   * Repeat
   
-  * Basically: Add all neighbors, then add the first neighbor's neighbors, then add the first neighbor's first neighbor's neighbors, etc.
+Basically: Add all neighbors, then add the first neighbor's neighbors, then add the first neighbor's first neighbor's neighbors, etc.
 
 ---
 
@@ -432,7 +433,7 @@ class: small
   
   * Repeat
   
-  * Basically: Add all neighbors, then add all neighbor's neighbors, then add all neighbor's neighbor's neighbors, etc.
+Basically: Add all neighbors, then add all neighbor's neighbors, then add all neighbor's neighbor's neighbors, etc.
   
 ---
   
@@ -489,8 +490,6 @@ class: small
   * This is called "Iterative Deepening"
   
   * To account for costs, we can use the cost as the order for Depth-First Search, and only make Breadth-First Search expand the node it can reach with the lowest cost in each iteration
-  
-
   
 ---
 
@@ -596,13 +595,11 @@ class: medium
 
 * (Almost) anything can be described as a graph
 
-* As long as we have a representation of a "node", a way to get "neighbors", a predicate that tells us what is a "goal", we can use our search algorithms
+* As long as we have a representation of a "node", a way to get "neighbors", and a something that tells us what is a "goal", we can use our search algorithms
 
 * Nodes can be anything: locations, game states, sentences, etc.
 
 * Edges connect nodes: roads, game actions, adding/removing words, etc.
-
-
 
 ---
 
