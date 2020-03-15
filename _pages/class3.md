@@ -264,4 +264,4 @@ until Munich has the lowest value.
 Finally, watch this video:
 
 
-Next week (Monday, 23/3), you will start with [lab 1](/labs/lab1.html), in which you will implement Breadth-First Search, Depth-First Search, Greedy Search and A*.
+Next week (Monday, 23/3), you will start with [lab 1](/CI-0129/labs/lab1.html), in which you will implement Breadth-First Search, Depth-First Search, Greedy Search and A*.
