@@ -111,12 +111,12 @@ search for a path from the root (1) to the node labeled 7, with Breadth-First Se
 
 </svg>
 
-<div style="margin:20px; margin-top:5px; border: 1px solid #3bbfe7;" class="codebox">
+<div style="margin:20px; margin-top:5px; margin-right:15px; border: 1px solid #3bbfe7;" class="codebox">
 <dt style="height:40px; text-align: center;"><strong>Answer:</strong>
-<input type="button" value="Show" style="width:78px; font-size:10px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
+<input type="button" value="Show" style="width:78px; font-size:14px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
 if ( this.value == 'Hide' ) { this.value = 'Show'; } else { this.value = 'Hide'; };
 return false;"></dt>
-<dd><div class="content" name="spoiler" style="display: none;">
+<dd><div class="content" name="spoiler" style="display: none; margin-right:15px;">
 Breadth-First Search will start with 1 in the frontier, then add 2, 3, 4, then add 5, 6, and then reach 7 and stop. The nodes we visited were therefore 1, 2, 3, 4, 5, 6, 7, and the nodes we expanded were 1, 2, 
 3 (which has no children), and 4.<br/>
 
@@ -135,12 +135,12 @@ ordered starting north, and continuing clockwise. For example, the neighbors of 
 
 <img src="/CI-0129/assets/img/campo.png" width="100%"/>
 
-<div style="margin:20px; margin-top:5px; border: 1px solid #3bbfe7;" class="codebox">
+<div style="margin:20px; margin-top:5px; margin-right:15px; border: 1px solid #3bbfe7;" class="codebox">
 <dt style="height:40px; text-align: center;"><strong>Answer:</strong>
-<input type="button" value="Show" style="width:78px; font-size:10px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
+<input type="button" value="Show" style="width:78px; font-size:14px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
 if ( this.value == 'Hide' ) { this.value = 'Show'; } else { this.value = 'Hide'; };
 return false;"></dt>
-<dd><div class="content" name="spoiler" style="display: none;">
+<dd><div class="content" name="spoiler" style="display: none; margin-right:15px;">
 Breadth-First Search will start at Quimica, and add Educacion, Estudios Generales and Biologia. Then, we will add Instituto Confucio, Economicas, Farmacia. Then we will add Registro (neighbor of Instituto Confucio), Derecho, 
 and ECCI Anexo and we are done. The resulting path is Quimica - Estudios Generales - Economicas - ECCI Anexo, with a total length of 80 + 55 + 35 = 170
 <br/>
@@ -186,12 +186,12 @@ Bregenz: 101, Bruck: 203, Eisenstadt: 400, Graz: 301, Innsbruck: 100, Klagenfurt
 
 Find a path from Graz to Munich using Greedy Search. Which nodes do you visit? Which ones do you expand? How long is the resulting path?
 
-<div style="margin:20px; margin-top:5px; border: 1px solid #3bbfe7;" class="codebox">
+<div style="margin:20px; margin-top:5px; margin-right:15px; border: 1px solid #3bbfe7;" class="codebox">
 <dt style="height:40px; text-align: center;"><strong>Answer:</strong>
-<input type="button" value="Show" style="width:78px; font-size:10px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
+<input type="button" value="Show" style="width:78px; font-size:14px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
 if ( this.value == 'Hide' ) { this.value = 'Show'; } else { this.value = 'Hide'; };
 return false;"></dt>
-<dd><div class="content" name="spoiler" style="display: none;">
+<dd><div class="content" name="spoiler" style="display: none; margin-right:15px;">
 We start with the initial node, Graz (301) in the frontier, which we expand, adding Klagenfurt (202), Bruck (203), Vienna (300) and Eisenstadt (400). We then expand Klagenfurt, adding Lienz (201) to the frontier.<br/>
 
 Lienz has the lowest heuristic value, so we expand it, adding Innsbruck (100) to the frontier. Innsbruck now has the lowest heuristic value, and we'll add Munich (0) (and Bregenz (101)), and we are done. The path we found 
@@ -211,12 +211,12 @@ Which nodes do you visit? Which ones do you expand? How long is the resulting pa
 
 Bregenz: 101, Bruck: 203, Eisenstadt: 400, Graz: 301, Innsbruck: 100, Klagenfurt: 202, Lienz: 201, Linz: 200, Munich: 0, Salzburg: 100, Vienna: 300
 
-<div style="margin:20px; margin-top:5px; border: 1px solid #3bbfe7;" class="codebox">
+<div style="margin:20px; margin-top:5px; margin-right:15px; border: 1px solid #3bbfe7;" class="codebox">
 <dt style="height:40px; text-align: center;"><strong>Answer:</strong>
-<input type="button" value="Show" style="width:78px; font-size:10px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
+<input type="button" value="Show" style="width:78px; font-size:14px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
 if ( this.value == 'Hide' ) { this.value = 'Show'; } else { this.value = 'Hide'; };
 return false;"></dt>
-<dd><div class="content" name="spoiler" style="display: none;">
+<dd><div class="content" name="spoiler" style="display: none; margin-right:15px;">
 We start with the initial node, Graz (0 + 301 = 301) in the frontier, which we expand, adding Bruck (55 + 203 = 258), Klagenfurt (136 + 202 = 338), Vienna (200 + 300 = 500) and Eisenstadt (173 + 400 = 573). We then expand 
 Bruck, adding Salzburg (55 + 215 + 100 = 370), and Linz (55 + 195 + 200 = 450) to the frontier. <b>Important:</b> We also have to check if Klagenfurt has a lower cost if we go via Bruck. Currently, Klagenfurt is in our 
 frontier with a cost of 136. Via Bruck the cost would be 55 + 152 = 207, which is more, so we do not change the value (and ancestor) of Klagenfurt in our list. If we had found a lower cost way we would have to update 
