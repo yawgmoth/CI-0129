@@ -231,7 +231,7 @@ Our search frontier currently has Munich (415), Linz (450), Lienz (482), Vienna 
 until Munich has the lowest value.
 </div></dd></div>
 
-## Lab 1: Introduction (video)
+## Lab 1: Introduction (11 minute video)
 
 Finally, watch this video:
 
