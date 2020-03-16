@@ -11,6 +11,8 @@ categories: []
 * TOC
 {:toc}
 
+Lab 1: Search, deadline: 3/4/2020, [AoE](https://en.wikipedia.org/wiki/Anywhere_on_Earth)
+
 ## Search Algorithms
 
 In this lab, you will implement four "different" (directed) graph search algorithms in python:
@@ -57,5 +59,5 @@ algorithms on it. Try to define a reasonable heuristic, and see how it affects p
 ## Submission
 
 Send the finished code (all python files you have!), and your report pdf in a zip file by email to me and Christian ([markus.eger.ucr@gmail.com](mailto:markus.eger.ucr@gmail.com), 
-[aiexistencialrisk@gmail.com](mailto:aiexistencialrisk@gmail.com)). Use `[CI-0129]Lab 1, carn&eacute; 1 carn&eacute; 2` as the subject line. Do not forget to put the names and 
+[aiexistencialrisk@gmail.com](mailto:aiexistencialrisk@gmail.com)). Use `[CI-0129]Lab 1, carné 1 carné 2` as the subject line. Do not forget to put the names and 
 carn&eacute;'s of both team members in the report as well!

@@ -20,7 +20,7 @@ via email. Please indicate which section your question is about, to make it easi
 This page contains all materials for classes 3 **and** 4, because they form one logical unit. For each section, I will also indicate how long it should take you to work through it. The class is designed to be
 held as two separate 2 hour lectures, as indicated below. The videos will use the slides for [lecture 3](/CI-0129/slides/lecture3.html) and [lecture 4](/CI-0129/slides/lecture4.html) from the website. 
 
-## Trees (14 minutes video + 10 minutes discussion)
+## Trees (14 minute video + 10 minutes discussion)
 
 First, watch this video: 
 
@@ -29,7 +29,7 @@ First, watch this video:
 Think about, or discuss with a partner, how you would perform a search in this game tree, starting with the root node, until you have found a solution. Think about it from an algorithmic perspective, 
 and how you write code to solve the problem.
 
-## Tree Search (12 minutes video + 15 minutes discussion)
+## Tree Search (12 minute video + 15 minutes discussion)
 
 Continue with this video:
 
@@ -123,7 +123,7 @@ Breadth-First Search will start with 1 in the frontier, then add 2, 3, 4, then a
 Depth-First Search will start with 1 in the frontier, then add 2, 3, 4, then add 5, 6, then add 9, 10, and finally add 7 and stop. We visited 1, 2, 3, 4, 5, 6, 9, 10, 7, and expanded 1, 2, 5, 9, 10, 6, 3, 4.
 </div></dd></div>
 
-## Uninformed Search in Graphs (25 minutes video + 25 minutes discussion)
+## Uninformed Search in Graphs (25 minute video + 25 minutes discussion)
 
 Continue with this video:
 
@@ -164,19 +164,19 @@ The shorter path is Quimica - Biologia - Farmacia - RSN - ECCI - ECCI Anexo with
 even though each edge is short. Depth-First Search, on the other hand, searched in the completely wrong "direction", given our node ordering. 
 </div></dd></div>
 
-## Graphs (video)
+## Graphs (13 minute video)
 
 Continue with this video:
 
-
+<iframe width="560" height="315" src="https://www.youtube.com/embed/72sdqckDbpU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 This concludes the material for lecture 3. Continue below for lecture 4.
 
-## Heuristic Search ( + 25 minutes discussion)
+## Heuristic Search (14 minute video + 25 minutes discussion)
 
 In lecture 4, we are looking at how we can incorporate the distances/edge weights we have, and how we could use extra information we may have about a search problem. Continue with this video:
 
-
+<iframe width="560" height="315" src="https://www.youtube.com/embed/N7pLotrDMeM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Look at the map of Austria (and Bavaria) given below. You want to find a path from Graz to Munich. From the map, you have calculated the straight-line distances from each city to Munich as follows:
 
@@ -200,9 +200,11 @@ expanded Graz, Klagenfurt, Lienz, and Innsbruck.
 </div></dd></div>
 
 
-## A* (video + 25 minutes discussion)
+## A* (25 minute video + 25 minutes discussion)
 
 Continue with this video:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RypPdA0Zbn0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Using the same map and heuristic information, find a path from Graz to Munich using A*. 
 Which nodes do you visit? Which ones do you expand? How long is the resulting path?
@@ -233,5 +235,6 @@ until Munich has the lowest value.
 
 Finally, watch this video:
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jr3oNDfocfg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Next week (Monday, 23/3), you will start with [lab 1](/CI-0129/labs/lab1.html), in which you will implement Breadth-First Search, Depth-First Search, Greedy Search and A*.

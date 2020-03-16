@@ -8,4 +8,4 @@ frontpageorder: 3
 categories: [frontpage]
 ---
 
-Coming soon
+[Lab 1: Mar 23-Mar 30, 2020](lab1.html)<br/>
