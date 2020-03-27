@@ -1,7 +1,7 @@
 ---
 title: "Lab 2"
 layout: single
-excerpt: "Lab 2: Learning as Model Fitting"
+excerpt: "Lab 2: Monte Carlo Tree Search"
 sitemap: true
 permalink: /labs/lab2.html
 frontpageorder: 4
@@ -11,143 +11,79 @@ categories: []
 * TOC
 {:toc}
 
+Lab 2: Monte Carlo Tree Search, deadline: TBD
+
 ## Introduction
 
-In this lab, we will use data collected from players in StarCraft II to predict the number of actions per minute of a new player. Note: This lab is essentially chapter 4.1 of "Deep Learning with PyTorch: Essential Excerpts", 
-and you may want to refer to it for more details if anything is unclear.
-
-## Report 
-
-You are required to document your work in a report, that you should write while you work on the lab. Include all requested images, and any other graphs you deem interesting, and describe what you observe. The lab text will 
-prompt you for specific information at times, but you are expected to fill in other text to produce a coherent document. At the end of the lab, send an email with the names and carn&eacute;s of the students in the group as well
-as the zip file containing the lab report as a pdf, and all code you wrote to the two professors and the assistant ([markus.eger.ucr@gmail.com](mailto:markus.eger.ucr@gmail.com), [joseaguevara@gmail.com](mailto:joseaguevara@gmail.com), [diegomoraj@outlook.com](mailto:diegomoraj@outlook.com)) **with the subject** "\[CI-2600\]Lab 2, carn&eacute; 1, carn&eacute; 2". Do **not** include the data sets in this zip file or email. 
-
-## The SkillCraft1 Master Table Dataset
-
-The [SkillCraft1 Master Table Dataset](https://archive.ics.uci.edu/ml/datasets/SkillCraft1+Master+Table+Dataset) contains information collected from [StarCraft 2](https://starcraft2.com/en-us/) replay files and includes a measure of player activity. Basically, the researchers noted when the screen was moving, and when it was at rest and used that to determine when the players were focusing on something. The delay between when the screen came to a rest and when the player actually performed an action is called the *Action Latency*. An important measure for player skill in StarCraft 2 are the player's actions per minute (APM). All other things being equal, a player that can perform more actions per minute has an advantage. It would be reasonable to assume that a lower latency also means a higher number of actions per minute, which we will investigate in this lab.
-
-Your first task is to read the data set from the provided CSV file and put the data into tensors. We will need two tensors: One for the input (the column `ActionLatency`) and one for the variable we want to predict (the column `APM`). Implement a function `read_csv` that takes a file name, and two column names and returns two tensors, one for each of the columns. Split the data into three sets: Use the first 30 entries as test set 1, then split the 
-rest randomly into 20% test set and 80% training set. Plot each of the sets in a scatter plot using matplotlib.
+In this lab, you will implement a simple Monte Carlo Tree Search (MCTS) agent for the game blackjack. Start by downloading [this python file](/CI-0129/assets/blackjack.py), which contains an implementation of the game and 
+several sample agents. The game is implemented in the class `Game`, and can be played by any agent that implements the `Player` interface, described below.
   
-## Fitting a Linear Model
+In the game Blackjack (you can find the full rules online, for example [here](https://bicyclecards.com/how-to-play/blackjack/)), a player bets an amount of money and
+is then dealt two cards, and can keep asking for more from the dealer until the total value of their cards is over 21. The dealer then does the same, following fixed rules, 
+where they ask for more cards as long as their total is below 17. The goal for the player is to get a higher total than the dealer, without getting more than 21 points. After 
+being dealt their initial two cards, the dealer is also dealt two cards, one of which is dealt face-up so that the player can see it. A player then has up to four different options, 
+which are repeated until the player chooses the option to stand:
 
-Recall that a linear model has the general form 
+  - **Stand**, which means not taking any more cards 
+  - **Hit**, which means asking for another card 
+  - **Double Down**, which means doubling the initial bet and getting *exactly* one more card 
+  - **Split**, which can only be done if the player has two cards of the same rank or value (exact rules vary from place to place), and separates these two cards into *two* new hands, each of which is played separately. 
+    
+After a player stands (or stands for both of their hands in case they split), the dealer follows their fixed procedure, of hitting until their total is 17 or more. If the player has a higher total than 21, they lose the
+amount they bet. If the player has more points than the dealer, or the dealer has more than 21 points, the player wins the amount bet. If the two scores are the same (a so-called *push*), no one wins. A *blackjack* is 
+a hand consisting of an ace and one card worth 10 points (10, Jack, Queen, King), and wins against other hands that would also be worth 21 points. If the player has a blackjack, and the dealer does not, the player wins 
+an additional bonus of one half times their bet. 
 
-$$
-M(x) = y = w\cdot x + b
-$$
+Note that there are several basic strategies for Blackjack, which are often presented in tables that give the best action depending on the player's cards and the face-up dealer card. Our goal is to develop an agent 
+that uses a forward simulation of the game to determine the action that is likely to produce the highest expected value, using a simple Monte Carlo Tree Search procedure. This agent has the advantage that it will 
+work with all kinds of rules variations, and even with non-standard decks (what if there was a card worth 12 in each suit?).
 
-In our case, x is the action latency, and y are the actions per minute. Your task is to find "good" values for w and b. First, write a function `model` that accepts three tensors, `w`, `x` and `b` and returns the value for `y`.
-Then, write a function `loss_fn` that takes a tensor containing output values y from our model, and another tensor containing observed output values, and computes the mean squared distance between the two
- (i.e. for each pair, calculate the difference and square it, then calculate the mean value over the entire tensor). 
+## The Framework 
 
-Mathematically, our loss function has the form: 
+The implementation you are provided with contains the `Game` class, which can be passed a deck of cards, and a player, and then provides two key methods:
+   
+   - `round` will start a game of blackjack using the rules outlined above, and returns the amount of money won (or lost) by the player 
+   - `continue_round` can be used to pass an initial hand of cards to the player and the dealer, and will continue the game from there 
+   
+The player that is passed to the game has to implement two methods:
 
-$$
-L(\hat{\vec{y}}) = \text{mean} (\vec{y} - \hat{\vec{y}})^2
-$$
+   - `get_action` which selects the action the player should perform on their turn. This method is passed the current game state, consisting of the player's cards, the actions they have available to them (which may or may 
+   not include the option to split), as well as the visible card in the dealer's hand. 
+   - `reset`, which can be used to clear any member variables the player might use during a game, such as remembering which sequence of actions it used.
+   
+   
+The framework provides several sample players, including `Player` (randomly chooses an action), `TimidPlayer` (always stands), `BasicStrategyPlayer` (hits when the dealer card is less than a seven until it has more than 12 
+points, or until it has more than 17 points otherwise), and `MCTS` (the skeleton for an MCTS implementation, to be completed by you). Take some time to look through the different player types. Apart from the MCTS player, 
+their implementations should be self-explanatory.
 
-In order to actually learn good values for the model parameters w and b, we will use an optimization procedure, namely gradient descent. In order to minimize the loss, we calculate it for some parameter values, and then 
-"move" in the direction in which the loss decreases. This "movement" is done by changing the parameters w and b appropriately, and the direction in which the loss decreases is calculated using the gradient. What we 
-want to calculate are the partial derivatives:
+## MCTS for Blackjack
 
-$$
-\frac{\partial }{\partial w} L(M(x)) = \frac{1}{n} \cdot \frac{\partial }{\partial w} (y - M(x))^2 = \frac{1}{n} \cdot \frac{\partial }{\partial w} (y - (w\cdot x + b))^2\\\\
-\frac{\partial }{\partial b} L(M(x)) = \frac{1}{n} \cdot \frac{\partial }{\partial b} (y - M(x))^2 = \frac{1}{n} \cdot \frac{\partial }{\partial b} (y - (w\cdot x + b))^2
-$$
+Your task is to implementat an agent using Monte Carlo Tree Search to play Blackjack. You can use the already implemented `MCTS` agent as the basis. Concretely, you will need to implement:
 
-For this, we use the chain rule
-
-$$
-\frac{\partial }{\partial w} f(g(x)) = \frac{\partial }{\partial g(x)} f(g(x)) \cdot \frac{\partial }{\partial w} g(x)
-$$
-
-In our case, we have: 
-
-$$
-\frac{\partial }{\partial w} L(M(x)) = \frac{1}{n} \cdot \frac{\partial }{\partial M(x)} L(M(x)) \cdot \frac{\partial }{\partial w} M(x) = \frac{1}{n} \cdot 2\cdot(y - M(x)) \cdot x\\\\ 
-\frac{\partial }{\partial b} L(M(x)) = \frac{1}{n} \cdot \frac{\partial }{\partial M(x)} L(M(x)) \cdot \frac{\partial }{\partial b} M(x) = \frac{1}{n} \cdot 2\cdot(y - M(x)) \cdot 1 
-$$
-
-What does this tell us? First, we "randomly" choose starting values for w and b (you can just try 1 and 0, for example), then we calculate the gradient (which tells us the direction of ascent), and then we move in the 
-other direction (to descend/minimize). However, we need to be careful how far we move, and for that we introduce a constant called the "learning rate" alpha. 
-
-$$
-w' = w - \alpha \cdot \frac{\partial }{\partial w} L(M(x))\\\\
-b' = b - \alpha \cdot \frac{\partial }{\partial b} L(M(x))\\\\
-$$
-
-Implement functions `dmodel_w`, `dmodel_b`, `dloss_m`, corresponding to the partial derivatives of the model and the loss function, and then implement a function `training(n, w, b, alpha, x, y)`:
-
-Do `n` times:
-  1. Calculate the current estimate for y using the current values for w and b, as well as the loss 
-  2. Calculate the gradient
-  3. Print the current loss, gradient and iteration count
-  4. Update w and b using the gradient
+  - A selection strategy 
+  - A rollout strategy 
+  - State evaluation
+  - Backpropagation 
   
-After the loop, return the values of w and b. For now, use a constant number for `n` (e.g. 1000 iterations), and guess values for `w`, `b`, and `alpha` (**Important**: Even though `w` and `b` are just single numbers, make sure 
-that they are tensors with one entry!). When you call this function using the training set as x and y, and run this loop, you should see the loss gradually decrease, until a time when it does not change much anymore. If 
-not, especially if the loss is increasing over time: Try changing the learning rate. Note this in your report, and how you determined a good learning rate. Another issue that may come up: `w` and `b` use very different 
-scales (`w` should be between -5 and 5, `b` will grow to over `200`), so if you set your learning rate to a low value, `b` will take forever to be updated properly, but if you set it to a high value, `w` will "blow up". 
-In practice, you will try to **normalize** your inputs, so that they are (roughly) between -1 and 1. Create a new variable `xn` that is a copy of `x`, where you subtract the mean and divide by half of the range of values. 
-Try using this new `xn` for as a parameter to `training` and note any differences you notice. 
+Take the time to read through and understand the existing implementation. What it does is to play `MCTS_N` games starting from the observed game state, where each game is played with a shuffled deck with the 
+observed cards removed, and actions are chosen at random. For each game, the result is recorded based on the first action taken, and at the end, the average score (over these forward simulations) for each 
+potential action is calculated, and the action resulting in the maximum value used. What this implementation does **not** do is construct the actual tree needed for a smarter selection. 
 
-Create another plot that contains the training data as a scatterplot like before, and add the learned model (line) to it. What is the loss? Is it a good fit? 
-Also plot the model compared to the two test sets, and calculate their corresponding loss values. Does the model generalize well to the test set?
+What you have to do: When the agent has to decide on an action, you have to run `MCTS_N` simulations, which construct a tree of possible state/action sequences, with the current (observed) game state at the top. 
+In the first iteration, the tree only consists of this root node. You then have to use your rollout strategy (which may just be the `RolloutPlayer`, i.e. a random selection) to play the game until the end, and record 
+the result (state evaluation), for which you can use the money won by the agent. With this result, you then have to **add** a child node to the root, using the first action taken by your rollout, and mark it with the
+obtained result as its expected value. In subsequent iterations the agent then has to decide whether to use the child with the highest expected value, or choose one at random (this is the selection strategy). After 
+`MCTS_N` iterations, you should have a tree of actions, each of which is played until the end of the game, and for each node you have the expected value for the amount of money the player wins/loses. 
 
-## Automated Gradients and Optimization
+Note that blackjack is a rather simple game, where the tree will rarely be deeper than 2 or 3 actions, as players are likely to reach more than 21 points with a few cards. **However**, the implementation allows the use
+of custom decks. Try, for example, what happens if the deck only contains low valued cards. You can run `blackjack.py` with the `--help` option (or read the source code) to see the various command line parameters that 
+are offered, which includes playing games with different types of decks. Also note that the default number of games (100) results in a very high variance of results, and you should test your implementation with 10000 
+or more simulations at the end. You may want to keep a copy of the original implementation to have a baseline to compare to. In your report, please note how your agent performs with the different deck types, 
+and any observations you have made about its behavior. Also note that the number of rollouts (the `MCTS_N`) your agent performs will have an impact on its performance, and you should try different values and report 
+how that affects your agent's expected performance. 
 
-In practice, our models will be a lot more complex than simple lines, and calculating gradients by hand, while possible, is a bit annoying. Fortunately, PyTorch can automatically calculate gradients for us! All you have to do
-is add an additional parameter `requires_grad=True` when you create the tensors `w` and `b` (that's why they have to be tensors!). Create a new function `training_auto`, which is a copy of the original training function, but 
-instead of calculating the gradient manually, you can have PyTorch caculate it automatically as an attribute of `w` and `b`:
+## Submission
 
-Recall that every tensor "remembers" where it comes from. When you calculate the loss the resulting tensor knows that it is the result of `w` and `b`, which require a gradient. You can then call `backward()` on the loss tensor, 
-which will cause PyTorch to **backpropagate** the gradient and accumulate it in the leaves (in our case `w` and `b`). Then, you can access it as the `.grad` attribute of `w` and `b`. There are two pitfalls:
-
-- The gradient will **accumulate**, which means you have to manually set it back to zero on every iteration (call `w.grad.zero_()`, but make sure `w.grad` is not `None`!)
-- When you update `w` and `b`, they will be the results of tensor operations, so they will **also track** where they are coming from (namely the old `w` and `b`), which would mean that you will keep the entire history of 
-computation in memory (and calculate the gradients for everything). In order to "break" this connection, call the "detach" method on `w` and `b` **after** the update, **and** also call `requires_grad_()` in order to reenable 
-the gradient calculation.
-
-This new version of the training function should behave exactly like the old one, with one big advantage: We can now use **any** (differentiable) function as our model without having to calculate the gradient manually!
-
-Finally, the combination of calculating the gradient and updating some model parameters to minimize a loss function is so common that PyTorch also provides support for it: Optimizers. In fact, one challenge with optimization 
-is that you may run into a local minimum (in our toy example the loss function does not have any local minima, so we avoided that problem), and there are also different ways of using the learning rate, adding additional 
-parameters, etc. PyTorch therefore provides not just the simple gradient descent that we used, but several different kinds of optimizers with different advantages and trade-offs. The common API for them consists of the 
-constructor, which takes a list of parameters to optimize (in our case `w` and `b`) and a learning rate `lr`, a method called `step`, which updates the parameters using the calculated gradients, and a method called `zero_grad`,
- which you have to call to reset the gradients. Implement a new function `training_opt`, which uses the optimizer `SGD` ("Stochastic Gradient Descent") in the following loop:
- 
-Do `n` times: 
-   1. Call `zero_grad` on the optimizer
-   2. Calculate the current estimate for y using the current values for w and b, as well as the loss  
-   3. Print the current loss, gradient and iteration count
-   4. Call the `step` method of the optimizer
-
-As before, plot the learned line with this method. Is it the same as before? Better, worse? Why? How does it behave on the test sets?
-
-Also try a different optimizer, such as `ADAM`, using the scaled as well as the unscaled data.
-
-## A Better Fit
-
-As you may have noticed, the data itself is not exactly suited for a linear model. As a last step, come up with a better family of functions to model the behavior of the data. Write a new function `training_nonlin`, which uses 
-a new model `model_nonlin`, which should be a parameterized function, and performs the optimization procedure using that function's parameters. You could use something like:
-
-$$
-y = a\cdot x^b + c
-$$
-
-or 
-
-$$
-y = a\cdot e^{b\cdot x} + c
-$$
-
-Where a, b, and c are the model parameters. Try several different functions, and note which produced the best fit in your report. **Always** perform your training on the training data, and calculate the performance on the 
-test sets!
-
-## Useful Resources
-
- - [PyTorch Tensor Documentation](https://pytorch.org/docs/stable/tensors.html)
- - [Deep Learning with PyTorch: Essential Excerpts](https://pytorch.org/deep-learning-with-pytorch)
- - [Basic PyTorch operations](https://jhui.github.io/2018/02/09/PyTorch-Basic-operations/)
- - [matplotlib sample plots](https://matplotlib.org/3.1.1/tutorials/introductory/sample_plots.html)
+Send the finished code (all python files you have!), and your report pdf in a zip file by email to me and Christian ([markus.eger.ucr@gmail.com](mailto:markus.eger.ucr@gmail.com), 
+[aiexistencialrisk@gmail.com](mailto:aiexistencialrisk@gmail.com)). Use `[CI-0129]Lab 2, carné 1 carné 2` as the subject line. Do not forget to put the names and 
+carn&eacute;'s of both team members in the report as well!

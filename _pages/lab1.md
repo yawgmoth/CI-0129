@@ -11,7 +11,7 @@ categories: []
 * TOC
 {:toc}
 
-Lab 1: Search, deadline: 3/4/2020, [AoE](https://en.wikipedia.org/wiki/Anywhere_on_Earth)
+Lab 1: Search, deadline: TBD
 
 ## Search Algorithms
 
