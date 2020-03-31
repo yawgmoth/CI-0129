@@ -262,7 +262,7 @@ if __name__ == "__main__":
                         help='Do not print game output (only average score at the end is printed)')
     parser.add_argument('-r', '--rank', '--rank-split', dest='split', action='store_const', default=same_value, const=same_rank,
                         help="Only allow split when the player's cards have the same rank (default: allow split when they have the same value)")
-    parser.add_argument('-d', "--deck", metavar='D', dest="deck", nargs=1, default="default", 
+    parser.add_argument('-d', "--deck", metavar='D', dest="deck", nargs=1, default=["default"], 
                         help='the deck type to use (available values: %s)'%(", ".join(deck_types.keys())))
     args = parser.parse_args()
     if args.player not in player_types:
