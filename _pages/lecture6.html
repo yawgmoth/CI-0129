@@ -29,6 +29,7 @@ permalink: /slides/lecture6.html
       .small p {font-size: 1em;}
       .small li {  font-size: 1em; }
       .medium li {font-size: 1.1em;}
+      .mmedium li {font-size: 0.95em;}
       .tiny table {  font-size: 0.8em; }
       
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
@@ -41,7 +42,7 @@ class: center, middle
 
 # Artificial Intelligence
 
-### Game Trees
+### Monte Carlo Tree Search
 
 ---
 
@@ -91,7 +92,7 @@ class: center, middle
   
 ---
 
-class: medium
+class: mmedium
 
 # Monte Carlo Tree Search
 
@@ -1477,6 +1478,85 @@ Our algorithm will construct a game tree piece by piece. Each iteration it expan
                                                                                                                                                                     </g> 
 </svg>
 
+  
+---
+
+# MCTS for Tic-Tac-Toe
+
+<img src="/CI-0129/assets/img/mcts/step1.jpg" width="100%"/>
+
+---
+
+# MCTS for Tic-Tac-Toe
+
+<img src="/CI-0129/assets/img/mcts/step2.jpg" width="100%"/>
+
+---
+
+# MCTS for Tic-Tac-Toe
+
+<img src="/CI-0129/assets/img/mcts/step3.jpg" width="100%"/>
+
+---
+
+# MCTS for Tic-Tac-Toe
+
+<img src="/CI-0129/assets/img/mcts/step4.jpg" width="100%"/>
+
+---
+
+# MCTS for Tic-Tac-Toe
+
+<img src="/CI-0129/assets/img/mcts/step5.jpg" width="100%"/>
+
+---
+
+# MCTS for Tic-Tac-Toe
+
+<img src="/CI-0129/assets/img/mcts/step6.jpg" width="100%"/>
+
+---
+
+# MCTS for Tic-Tac-Toe
+
+<img src="/CI-0129/assets/img/mcts/step7.jpg" width="100%"/>
+
+---
+
+# MCTS for Tic-Tac-Toe
+
+<img src="/CI-0129/assets/img/mcts/step8.jpg" width="100%"/>
+
+---
+
+# MCTS for Tic-Tac-Toe
+
+<img src="/CI-0129/assets/img/mcts/step9.jpg" width="100%"/>
+
+---
+
+# MCTS for Tic-Tac-Toe
+
+<img src="/CI-0129/assets/img/mcts/step10.jpg" width="100%"/>
+
+---
+
+# MCTS for Tic-Tac-Toe
+
+<img src="/CI-0129/assets/img/mcts/step11.jpg" width="100%"/>
+
+---
+
+# MCTS for Tic-Tac-Toe
+
+<img src="/CI-0129/assets/img/mcts/step12.jpg" width="100%"/>
+
+---
+
+# MCTS for Tic-Tac-Toe
+
+<img src="/CI-0129/assets/img/mcts/step13.jpg" width="100%"/>
+
 ---
 
 # Selection 
@@ -1503,7 +1583,7 @@ Our algorithm will construct a game tree piece by piece. Each iteration it expan
 
 ---
 
-class: middle
+class: medium
 
 # Roulette-Wheel Selection 
 
@@ -1517,10 +1597,18 @@ class: middle
  
  * This is also called "fitness proportionate selection"
  
+---
+
+# Roulette-Wheel Selection 
+
+<center>
+
+<img src="/CI-0129/assets/img/roulette.png" width="50%"/>
+</center>
  
 ---
 
-class: medium
+class: mmedium
 
 # UCT
 
@@ -1562,6 +1650,8 @@ $$
 
 ---
 
+class: medium
+
 # Simulation 
 
 * What if we don't actually simulate?
@@ -1576,11 +1666,119 @@ $$
 
 ---
 
+# Randomness
+
+* What if we have a (shuffled) deck?
+
+* We already sample our actions, we can also sample from the deck!
+
+* For every iteration, we shuffle the deck, too (using known information)
+
+---
+
+# Example: Blackjack 
+
+* In Blackjack the player can request to draw cards from the deck
+
+* The goal is to get a sum of card values close to 21, but not over 21
+
+* For example: Ten of Spades, Three of Hearts, Seven of Clubs are 10+3+7=20 points 
+
+* Jack, Queen and King are 10 points each, an Ace can count as 1 **or** 11 points (player's choice)
+
+---
+
+class: medium
+
+# Blackjack 
+
+* After the player has performed their actions, the dealer draws cards until they have more than 16 points 
+
+* If the player has more than 21 points, they lose 
+
+* If the dealer has more than 21 points, the player wins
+
+* If the player then has more points than the dealer, the player wins
+
+* If there is a tie, no one wins
+
+* The winner gets an amount of money (like $1)
+
+---
+
+# Blackjack: Player Actions 
+
+A player can do one of four things:
+
+ * **Hit**: Request one more card 
+ 
+ * **Stand**: Stop taking cards, passing the turn to the dealer 
+ 
+ * **Double Down**: Draw exactly one more card and then stand, and double the bet (win or lose $2)
+ 
+ * **Split**: If the first two cards have the same value, the player can split them into two hands, and continue playing with these two independently (each hand wins/loses $1)
+
+---
+
+# MCTS for Blackjack
+
+<img src="/CI-0129/assets/img/mcts2/step1.jpg" width="100%"/>
+
+---
+
+# MCTS for Blackjack
+
+<img src="/CI-0129/assets/img/mcts2/step2.jpg" width="100%"/>
+
+---
+
+# MCTS for Blackjack
+
+<img src="/CI-0129/assets/img/mcts2/step3.jpg" width="100%"/>
+
+---
+
+# MCTS for Blackjack
+
+<img src="/CI-0129/assets/img/mcts2/step4.jpg" width="100%"/>
+
+---
+
+# MCTS for Blackjack
+
+<img src="/CI-0129/assets/img/mcts2/step5.jpg" width="100%"/>
+
+---
+
+# MCTS for Blackjack
+
+<img src="/CI-0129/assets/img/mcts2/step6.jpg" width="100%"/>
+
+---
+
+# MCTS for Blackjack
+
+<img src="/CI-0129/assets/img/mcts2/step7.jpg" width="100%"/>
+
+---
+
+# Why Blackjack 
+
+* Implementing MCTS for Blackjack is Lab 2 (4/5-22/5)
+
+* You will get a framework with a Blackjack implementation (and some AI agents)
+
+* Your task is to expand the existing sampling player with a proper action selection and tree construction 
+
+* Weird feature: You can play with non-standard decks (e.g. only even cards), and your agent will figure it out!
+
+---
+
 class: small
 
 # References
   
-  * [Building a Chess AI with Minimax](https://medium.freecodecamp.org/simple-chess-ai-step-by-step-1d55a9266977)
+  * [MCTS]()
 
 
 <!-- https://visjs.github.io/vis-network/examples/ -->
