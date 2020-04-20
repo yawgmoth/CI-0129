@@ -82,7 +82,7 @@ class: center, middle
 
 # Monte Carlo Tree Search 
 
-  * Idea: Don't calculat the entire tree, but instead *sample* random(-ish) sequences ("*rollouts*")
+  * Idea: Don't calculate the entire tree, but instead *sample* random(-ish) sequences ("*rollouts*")
   
   * Record the outcomes for these playouts
   
@@ -1559,6 +1559,22 @@ Our algorithm will construct a game tree piece by piece. Each iteration it expan
 
 ---
 
+class: medium
+
+# Monte Carlo Tree Search
+
+Algorithm:
+
+ - *Select* actions from the tree until we reach a node we haven't fully expanded yet 
+ 
+ - *Expand* a new action from that node 
+ 
+ - *Simulate* the game until the end, and note the result 
+ 
+ - *Backpropagate* this result back up the tree 
+
+---
+
 # Selection 
 
  * We use the scores we have obtained so far to choose which action to select until we reach a leaf 
@@ -1663,6 +1679,12 @@ class: medium
 * In Chess, for example, we can say whoever has more valuable pieces on the board will likely win
 
 * Advanced ideas: Play a few random turns and then evaluate the state, use a Neural Network to evaluate the board state, etc.
+
+---
+
+class: center, middle 
+
+# Randomness
 
 ---
 
@@ -1778,10 +1800,10 @@ class: small
 
 # References
   
-  * [MCTS]()
+  * [MCTS Tutorial](https://www.cs.swarthmore.edu/~bryce/cs63/s16/reading/mcts.html)
+  
+  * [MCTS Slides](https://www.lri.fr/~sebag/Slides/InvitedTutorial_CP12.pdf)
 
-
-<!-- https://visjs.github.io/vis-network/examples/ -->
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
