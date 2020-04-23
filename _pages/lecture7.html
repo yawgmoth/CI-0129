@@ -31,253 +31,9 @@ permalink: /slides/lecture7.html
 
 class: center, middle
 
-# Artificial Intelligence: Planning
+# Artificial Intelligence
 
-### II Ciclo 2019
-
----
-# Instructor and Schedule
-
- * Instructor: Dr. *Markus* Eger
- 
- * Email: <a href="mailto:markus.eger.ucr@gmail.com">markus.eger.ucr@gmail.com</a>
- 
- * Office hours: Tuesday, Friday, 2-2.55pm
-    
- * Class: Friday, 5-9pm
- 
----
- 
-# About Me
-
- * Originally from Austria
- 
----
-
-# About Me
-
-<img src="/CI-2700/assets/img/austria.png" width="70%"/>
- 
----
- 
-# About Me
-
- * Originally from Austria
- 
- * BSc and MSc in Computer Science from University of Technology Graz, Austria 
- 
- * PhD in Computer Science from NC State University, USA
- 
- * Games: Overwatch, Smite, Guild Wars 2, Incremental Games 
- 
- * I also like board games (Dominion, Pandemic, Ricochet Robots, ...)
-
----
- 
-# About Me
-
-<img src="/PF-3341/assets/img/cats.jpg" width="50%"/>
-
----
- 
-# About My Research
-
-  - For my dissertation ("Intentional Agents for Doxastic Games") I worked on games involving communication 
-  
-  - Hanabi: Cooperative card game with restricted communication 
-  
-  - One Night Ultimate Werewolf: Unrestricted communication, featuring lies and deception 
-  
-  - I also worked on narrative generation for a bit, particularly detective stories 
-  
-  - The basis for my work were Dynamic Epistemic Logic, *Planning*, and Intentionality
- 
----
- 
-# About You
-
- * Name
- 
- * What do you work on?
- 
- * Games
- 
- * Fun facts?
- 
----
-
-# Class Resources
-
-  * Website: <a href="http://bit.ly/PF-3335">http://bit.ly/PF-3335</a>
-  
-  * Piazza: <a href="http://piazza.com/ucr.ac.cr/fall2019/pf3335">http://piazza.com/ucr.ac.cr/fall2019/pf3335</a>
-  
----
-  
-# Class contents
-  
-  * Logic
-  
-  * Pathfinding 
-  
-  * Classical Planning 
-     
-     - State-Space Planning 
-     - Plan-Space Planning 
-     - Planning Graphs
-     - Planning Heuristics 
-
-  * Advanced Planning
-  
----
-
-# Textbook
-
-  * There is no required textbook for this class 
-  
-  * [Automated Planning: Theory and Practice](http://projects.laas.fr/planning/aptp/index.html) covers most of our content
- 
-  * *[Artificial Intelligence: A Modern Approach](http://aima.cs.berkeley.edu/)* by Stuart Russell and Peter Norvig, chapters 10 and 11 is a good start 
-  
-  * *[An introduction to least commitment planning](https://homes.cs.washington.edu/~weld/papers/pi.pdf)* by Daniel S. Weld 
-  
-  * *[A Logic for Suspicious Players: Epistemic Actions and Belief-Updates in Games](https://www.vub.be/CLWF/SS/BER.pdf)* by Alexandru Baltag
-  
----
-
-# Homework 
-
-  * (Almost) every week there will be homework
-    
-  * In the following week we discuss the homework:
-     
-     - For each problem, you indicate if you solved it or not 
-     
-     - Then I will (semi-randomly) choose someone to present each problem on the board 
-     
-     - In addition to your solution, I will also grade how well you present it
-  
----
-
-# Homework: Scoring
-
-  * The homework counts for 40% of the grade, 20% for problems solved, 20% for presentations 
-  
-  * You get a fraction of the 20% equal to the fraction of problems you solved (i.e. if you solve every homework problem, you get the full 20%, if you only solve half, you get 10%)
-  
-  * For each presentation, you can get up to 5%
-  
-  * If it becomes clear during your presentation that you did not actually solve a problem, I may take away points
-  
----
-
-# Selection Algorithm
-
-  - Order problems by how many students solved them
-  
-  - Assign each student a number depending on how often they've already presented this semester
-  
-  - For each problem, in order, choose a student at random, biased by this number (higher = less likely to be chosen)
-  
-  - Remove chosen student from the list of all other problems
-  
-  - May need to backtrack/manually fix assignments in rare cases 
-  
-  - If no one solves a problem, I'll present it
-  
----
-
-# Selection Algorithm: Effects
-
-  - If you solved a harder problem, you are more likely to present that
-  
-  - You should not have to present more than once per class (unless you are the only one to solve 2 or more of the problems)
-  
-  - Everyone should present about an equal number of times over the course of the semester 
-  
-  - Presentation scores are additive, so a good presentation can make up for a less good one
-
----
-
-class: small
-
-# Project
-
-  * In addition to the homeworks (which are basically math problems), you will complete a project (worth the other 60% of the grade)
-  
-  * The project consists of the implementation of a simplified planner in python 3
-  
-  * You will implement this in four parts (15% of the grade each):
-  
-     - Data structures representing logical formulas, due Sep 19
-     - The A* pathfinding algorithm, due Sep 27
-     - A parser for Planning Domain Definition Language (PDDL) files, and connecting everything, due Nov 8
-     - A planning heuristic to improve performance, due Nov 22
-     
-  * Submission as a zip-file of all code via email to me (<a href="mailto:markus.eger.ucr@gmail.com">markus.eger.ucr@gmail.com</a>)
-     
-  * At the end of the semester we'll also have a small competition between all of your planners
-
-  * If you want to submit a version with some experimental optimizations, you can also do that on Nov 22
-
----
-    
-# Grading
-  
-  * 60%: Project, consisting of 4 tasks worth 15% each
-  
-  * 40%: Homework
-  
-     - 20% for problems solved 
-     - 20% for presentations
-  
-  * If you are signed up for the lab: Your project counts as the lab
-
----
-
-class: middle, center
-
-# What is AI?
-
----
-
-# What is AI?
-
-  * If you ask 20 AI researchers what AI is, you will get 25 different definitions 
-  
-  * Some include Machine Learning, some say ML and AI are distinct things 
-  
-  * Commonly, "the science of intelligent agents"
-  
-  * Behavior that can be applied in unknown situations 
-  
-  * Or, as Douglas R. Hofstadter said "AI is whatever hasn't been done yet"
-  
-  * "Everything in AI is either representation or search"
-  
----
-
-# AI vs. Machine Learning 
-
-  * There is a great deal of disagreement about the distinction between AI and Machine Learning (ML)
-  
-  * Some people say ML is a part of AI
-  
-  * Some people view them as different things: ML deals with deriving information from data, AI with formulating intelligence explicitly (mostly through logic)
-  
-  * I will use the term *symbolic AI* to refer to the field of study of solving problems through logic-based representations
-  
----
-
-# What is Planning?
-
-  * Planning is one of the central topics in symbolic AI
-  
-  * It is the idea that we want to tell an AI agent to "solve a problem" by itself
-  
-  * The general formulation involves actions that the agent can perform, and a definition of a goal 
-  
-  * The agent will then automatically determine a sequence of actions that allows it to reach the goal
+### Logic
   
 ---
 
@@ -289,7 +45,7 @@ class: center, middle
 
 # Why Logic?
 
-  * As mentioned earlier, everything in AI is either representation or search 
+  * Remember: Everything in AI is either representation or search 
   
   * Logical formulas are often a very convenient representation
   
@@ -299,7 +55,7 @@ class: center, middle
       - Can be processed automatically 
       - Are very expressive
 
-  * We will use logic extensively!
+  * Logic is used extensively in AI!
   
 ---
 
@@ -542,7 +298,7 @@ class: medium
 
 # Data Structures 
 
-  * In task 1, you will implement these data structures 
+  * In lab 3, you will implement these data structures 
   
   * Start with the code on the previous slides as guidelines 
   
@@ -554,7 +310,7 @@ class: medium
       - `models`, which gets a world and a formula (as returned by `make_expression` and `make_world`) and determines if the formula holds 
       - `substitute`, which gets a formula, a variable and a value, and has to produce a new formula with the substitution performed 
       - `apply`, which we will talk about now
-  
+
 ---
 
 # Actions? 
@@ -781,17 +537,9 @@ class LogicalFormula
   
   * The latter is probably (depending on the exact implementation, and the rest of the code) slightly faster, because it makes fewer copies of the atom set, and you could precompute a lot (minus conditional expressions)
   
-  * My solution uses add/delete lists
-  
 ---
 
-# Homework
-
-  * [Homework 1](/PF-3335/assets/pdf/homework1.pdf) has been posted on the class website
-  
-  * There are 5 problems involving logical formulas, interpretations and effect application
-  
-  * There is also a bonus problem involving a (short) proof
+# Applications
   
 ---
 
@@ -800,9 +548,7 @@ class LogicalFormula
   - [Logic and AI](https://plato.stanford.edu/entries/logic-ai/)
   
   - [The Frame Problem](https://plato.stanford.edu/entries/frame-problem/) 
-  
-  - Sign up for Piazza: <a href="http://piazza.com/ucr.ac.cr/fall2019/pf3335">http://piazza.com/ucr.ac.cr/fall2019/pf3335</a>
-  
+   
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
