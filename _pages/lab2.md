@@ -11,7 +11,7 @@ categories: []
 * TOC
 {:toc}
 
-Lab 2: Monte Carlo Tree Search, deadline: TBD
+Lab 2: Monte Carlo Tree Search, deadline: May 22
 
 ## Introduction
 

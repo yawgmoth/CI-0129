@@ -11,7 +11,7 @@ categories: []
 * TOC
 {:toc}
 
-Lab 1: Search, deadline: TBD
+Lab 1: Search, deadline: 1/5
 
 ## Search Algorithms
 
