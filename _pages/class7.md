@@ -26,14 +26,14 @@ Follow the lecture on propositional logic given by the instructor before you con
 
 
 
-You are given an interpretation `\(W = \{ a, b, c \}\)`. For each of the following formulas determine if `\(W\)` is a model for that formula.
+You are given an interpretation $W = \{ a, b, c \}$. For each of the following formulas determine if $W$ is a model for that formula.
 $$
-1. (a \wedge b)\\
-2. (b \rightarrow d)\\
-3. (d \rightarrow b)\\
-4. b \wedge ((c \rightarrow e) \rightarrow d)\\
-5. e \vee (c \wedge \neg d)\\
-6. \neg d \rightarrow \neg e
+\text{1.} (a \wedge b)\\
+\text{2.} (b \rightarrow d)\\
+\text{3.} (d \rightarrow b)\\
+\text{4.} b \wedge ((c \rightarrow e) \rightarrow d)\\
+\text{5.} e \vee (c \wedge \neg d)\\
+\text{6.} \neg d \rightarrow \neg e
 $$
 <div style="margin:20px; margin-top:5px; margin-right:15px; border: 1px solid #3bbfe7;" class="codebox">
 <dt style="height:40px; text-align: center;"><strong>Answer:</strong>
@@ -41,27 +41,28 @@ $$
 if ( this.value == 'Hide' ) { this.value = 'Show'; } else { this.value = 'Hide'; };
 return false;"></dt>
 <dd><div class="content" name="spoiler" style="display: none; margin-right:15px;">
-W is a model of 1., because both a and b are elements of the interpretation.
+$W$ is a model of 1., because both $a$ and $b$ are elements of the interpretation.
 
-W is not a model of 2., because b is an element of the interpretation, but d is not. The implication holds if the antecedent (here b) is false or the consequence (here d) is true, which is not the case.
+$W$ is not a model of 2., because $b$ is an element of the interpretation, but d is not. The implication holds if the antecedent (here b) is false or the consequence (here d) is true, which is not the case.
 
-W is a model of 3., because d is not an element of the interpretation, which means that the antecedent is false, which makes the entire implication true!
+$W$ is a model of 3., because d is not an element of the interpretation, which means that the antecedent is false, which makes the entire implication true!
 
-W is a model of 4. First, note that b is an element of W. Then we determine if W is a model for the right hand side of the conjunction: `\(c \rightarrow e\)` is false, since e is not an element of W, but c is. Therefore, 
-the larger implication is true, because its antecedent is false!
+$W$ is a model of 4. First, note that $b$ is an element of $W$. Then we determine if $W$ is a model for the right hand side of the conjunction: $c \rightarrow e$ is false, since $e$ is not an element of $W$, but $c$ is. 
+Therefore, the larger implication is true, because its antecedent is false!
 
-W is a model of 5. While e is false, c is true, and the negation of d is also true.
+$W$ is a model of 5. While $e$ is false, $c$ is true, and the negation of $d$ is also true.
 
-W is a model of 6. The negation of d is true, as is the negation of e.
+$W$ is a model of 6. The negation of $d$ is true, as is the negation of $e$.
 </div></dd></div>
 
-Next, define your own interpretation `W`, which is a model for **all** of the following formulas:
+Next, define your own interpretation $W$, which is a model for **all** of the following formulas:
+
 $$
-1. (a \wedge \neg b)\\
-2. (b \rightarrow c)\\
-3. (c \vee d \vee \neg a)\\
-4. (a \rightarrow e)\\
-5. (e \rightarrow (\neg a \vee \neg b \vee \neg c \vee \neg d))
+\text{1.} (a \wedge \neg b)\\
+\text{2.} (b \rightarrow c)\\
+\text{3.} (c \vee d \vee \neg a)\\
+\text{4.} (a \rightarrow e)\\
+\text{5.} (e \rightarrow (\neg a \vee \neg b \vee \neg c \vee \neg d))
 $$
 
 <div style="margin:20px; margin-top:5px; margin-right:15px; border: 1px solid #3bbfe7;" class="codebox">
@@ -70,8 +71,8 @@ $$
 if ( this.value == 'Hide' ) { this.value = 'Show'; } else { this.value = 'Hide'; };
 return false;"></dt>
 <dd><div class="content" name="spoiler" style="display: none; margin-right:15px;">
-From 1 we conclude that `a` has to be an element of `W`, but `b` must not be. Using `3`, we determine that `c` or `d` have to be in `W`, so let us choose `c`. From 4 we can then conclude, since `a` is in `W`, `e` 
-has to be too. Checking 2, we see that since `b` is not in `W`, `W` is already a model for 2. Finally, for 5 the consequence must hold (since `e` is an element of `W`). We already know that `b` is not an element of `W`, 
+From 1 we conclude that a has to be an element of W, but b must not be. Using 3, we determine that c or d have to be in W, so let us choose c. From 4 we can then conclude, since a is in W, e 
+has to be too. Checking 2, we see that since b is not in W, W is already a model for 2. Finally, for 5 the consequence must hold (since e is an element of W). We already know that b is not an element of W, 
 so the consequence also holds, and we found an interpretation that is a model for all five formulas:
 
 $$
@@ -85,20 +86,20 @@ Follow the lecture on predicate logic given by the instructor before you continu
 
 You are given an interpretation
 $$
-W = \{ & \mathit{Lannister}(\mathit{Tywin}), \mathit{Lannister}(\mathit{Tyrion}), \\
-       & \mathit{Lannister}(\mathit{Cersei}), \mathit{Lannister}(\mathit{Jaime}),\\
-       & \mathit{owes}(\mathit{Tyrion}, \mathit{Bronn}), \mathit{owes}(\mathit{Jaime},\mathit{Brienne}), \\
-       & \mathit{owes}(\mathit{Brienne}, \mathit{Catelyn}),\\
-       & \mathit{paidDebt}(\mathit{Tyrion}, \mathit{Bronn}), \\
+W = \{ & \mathit{Lannister}(\mathit{Tywin}), \mathit{Lannister}(\mathit{Tyrion}), \\\\
+       & \mathit{Lannister}(\mathit{Cersei}), \mathit{Lannister}(\mathit{Jaime}),\\\\
+       & \mathit{owes}(\mathit{Tyrion}, \mathit{Bronn}), \mathit{owes}(\mathit{Jaime},\mathit{Brienne}), \\\\
+       & \mathit{owes}(\mathit{Brienne}, \mathit{Catelyn}),\\\\
+       & \mathit{paidDebt}(\mathit{Tyrion}, \mathit{Bronn}), \\\\
        & \mathit{paidDebt}(\mathit{Jaime}, \mathit{Brienne}) \}
 $$
 Over the domain
 $$
-D= \{&\mathit{Tywin},  \mathit{Tyrion}, \mathit{Cersei}, \\
-     &\mathit{Jaime}, \mathit{Bronn}, \mathit{Brienne}, \mathit{Catelyn}\}
+D= \{\mathit{Tywin},  \mathit{Tyrion}, \mathit{Cersei}, \\
+     \mathit{Jaime}, \mathit{Bronn}, \mathit{Brienne}, \mathit{Catelyn}\}
 $$
 
-For each of the following formulas, determine if W is a model of that formula over D.
+For each of the following formulas, determine if $W$ is a model of that formula over $D$.
 
 $$
 1. \forall x \forall y \in Lannister: \mathit{owes}(y,x) \rightarrow \mathit{paidDebt}(y,x)\\
