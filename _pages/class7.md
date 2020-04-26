@@ -228,10 +228,10 @@ the resulting state $s_2$. Finally, apply $e_3$ to $s_2$ and determine a final s
 
 $$
 s_0 = \{ \mathit{at}(\mathit{Sherlock}, \mathit{BakerStreet}), \mathit{murderer}(\mathit{Moriarty}), \mathit{victim}(\mathit{ReginaldMusgrave}) \}\\
-e_1 = \left(\forall x: \when\:(\mathit{at}(\mathit{Sherlock}, x))\:(\neg \mathit{at}(\mathit{Sherlock}, x)) \right) \wedge \mathit{at}(\mathit{Sherlock}, \mathit{ScotlandYard})\\
-e_2 = \left(\forall x: \when\:(\mathit{victim}(x))\:(\mathit{knowsVictim}(\mathit{Sherlock}, x))\right) \wedge \\
-      \left(\forall x: \when\:(\mathit{murderer}(x))\:\mathit{knownsMurderer}(\mathit{Sherlock}, x)\right)\\
-e_3 = \when\:(\exists x: \mathit{murderer}(x) \wedge \mathit{knownsMurderer}(\mathit{Sherlock}, x))\:(\mathit{solvedCrime}(\mathit{Sherlock}))
+e_1 = \left(\forall x: \text{when}\:(\mathit{at}(\mathit{Sherlock}, x))\:(\neg \mathit{at}(\mathit{Sherlock}, x)) \right) \wedge \mathit{at}(\mathit{Sherlock}, \mathit{ScotlandYard})\\
+e_2 = \left(\forall x: \text{when}\:(\mathit{victim}(x))\:(\mathit{knowsVictim}(\mathit{Sherlock}, x))\right) \wedge \\
+      \left(\forall x: \text{when}\:(\mathit{murderer}(x))\:\mathit{knownsMurderer}(\mathit{Sherlock}, x)\right)\\
+e_3 = \text{when}\:(\exists x: \mathit{murderer}(x) \wedge \mathit{knownsMurderer}(\mathit{Sherlock}, x))\:(\mathit{solvedCrime}(\mathit{Sherlock}))
 $$
 
 <div style="margin:20px; margin-top:5px; margin-right:15px; border: 1px solid #3bbfe7;" class="codebox">
@@ -249,14 +249,14 @@ $$
 The second effect causes Sherlock to determine the victim and the murderer: For each x, if the x is the victim, Sherlock will then know that they are the victim, and likewise for the murderer.
 
 $$
-s_2 = \{ \mathit{at}(\mathit{Sherlock}, \mathit{ScotlandYard}), \\\quad\mathit{murderer}(\mathit{Moriarty}), \mathit{victim}(\mathit{ReginaldMusgrave}), \mathit{knowsVictim}(\mathit{Sherlock}, \\\quad
+s_2 = \{ \mathit{at}(\mathit{Sherlock}, \mathit{ScotlandYard}), \\\quad\mathit{murderer}(\mathit{Moriarty}), \mathit{victim}(\mathit{ReginaldMusgrave}),  \\\quad\mathit{knowsVictim}(\mathit{Sherlock},
 \mathit{ReginaldMusgrave}), \mathit{knowsMurderer}(\mathit{Sherlock}, \mathit{Moriarty}) \}
 $$
 
 Finally, effect 3 says when there is an x such that x is the murderer and Sherlock knows that they are the murderer, Sherlock has solved the crime.
 
 $$
-s_3 = \{ \mathit{at}(\mathit{Sherlock}, \mathit{ScotlandYard}), \\\quad\mathit{murderer}(\mathit{Moriarty}), \mathit{victim}(\mathit{ReginaldMusgrave}), \mathit{knowsVictim}(\mathit{Sherlock}, \\\quad
+s_3 = \{ \mathit{at}(\mathit{Sherlock}, \mathit{ScotlandYard}), \\\quad\mathit{murderer}(\mathit{Moriarty}), \mathit{victim}(\mathit{ReginaldMusgrave}), \\\quad\mathit{knowsVictim}(\mathit{Sherlock}, 
          \mathit{ReginaldMusgrave}), \mathit{knowsMurderer}(\mathit{Sherlock}, \\\quad \mathit{Moriarty}), \mathit{solvedCrime}(\mathit{Sherlock}) \}
 $$
 
