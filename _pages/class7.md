@@ -71,8 +71,15 @@ $$
 if ( this.value == 'Hide' ) { this.value = 'Show'; } else { this.value = 'Hide'; };
 return false;"></dt>
 <dd><div class="content" name="spoiler" style="display: none; margin-right:15px;">
-From 1 we conclude that a has to be an element of W, but b must not be. Using 3, we determine that c or d have to be in W, so let us choose c. From 4 we can then conclude, since a is in W, e 
-has to be too. Checking 2, we see that since b is not in W, W is already a model for 2. Finally, for 5 the consequence must hold (since e is an element of W). We already know that b is not an element of W, 
+From 1 we conclude that a has to be an element of $W$, but $b$ must not be. <br/><br/>
+
+Using 3, we determine that $c$ or $d$ have to be in $W$, so let us choose $c$. <br/><br/>
+
+From 4 we can then conclude, since $a$ is in $W$, $e$ has to be too. <br/><br/>
+
+Checking 2, we see that since $b$ is not in $W$, $W$ is already a model for 2. <br/><br/>
+
+Finally, for 5 the consequence must hold (since $e$ is an element of $W$). We already know that $b$ is not an element of $W$, 
 so the consequence also holds, and we found an interpretation that is a model for all five formulas:
 
 $$
@@ -116,14 +123,14 @@ $$
 if ( this.value == 'Hide' ) { this.value = 'Show'; } else { this.value = 'Hide'; };
 return false;"></dt>
 <dd><div class="content" name="spoiler" style="display: none; margin-right:15px;">
-$W$ is a model of 1. We need to consider all x and y (for which y is in the set Lannister). If y owes x (owes(y,x)) is true, they also have to pay their debt (paidDebt(y,x)). Tyrion owes Bronn, and Jaime owes Brienne, 
-which are the only Lannisters to owe anyone, and both paid their debt. *A Lannister always pays his debt*<br/><br/>
+$W$ is a model of 1. We need to consider all $x$ and $y$ (for which $y$ is in the set Lannister). If $y$ owes $x$ $\mathit{owes}(y,x)$ is true, they also have to pay their debt 
+($\mathit{paidDebt}(y,x)$). Tyrion owes Bronn, and Jaime owes Brienne, which are the only Lannisters to owe anyone, and both paid their debt. *A Lannister always pays his debt*<br/><br/>
 
 $W$ is a model of 2. This formula means "There is someone for whom it is false that they owe them, for everyone else" ("There is someone that does not owe anyone"). Tywin, in our interpretation, does not 
 owe anyone, therefore $\mathit{owes}(\mathit{Tywin},y)$ is false for all $y$.<br/><br/>
 
 $W$ is a model of 3. This formula means "There is someone for whom it is false that they are owed something, for everyone else" ("There is someone that is not owed by anyone"). Once again, we can use Tywin as $x$, because 
-$\mathit{owes}(y,\mathit{Tywin})$ is false for all y.<br/><br/>
+$\mathit{owes}(y,\mathit{Tywin})$ is false for all $y$.<br/><br/>
 
 $W$ is not a model of 4. This sentence means "For everyone there is someone that they owe to or that owes them". To check this, we need to look at each character and see if they have any outgoing or incoming 
 debts. However, Tywin has (as we discovered in formula 2) no one that he owes, nor (as we discovered in formula 3) anyone that owed him, and therefore $W$ is not a model for formula 4.<br/><br/>
@@ -182,7 +189,7 @@ Follow the lecture on inference given by the instructor before you continue.
 You have a robot with a knowledge base 
 
 $$
-B = \{ \mathit{tropical}(\mathit{CostaRica}), \mathit{tropical}(\mathit{Singapore}), \mathit{subarctic}(\mathit{Canada}), \mathit{subarctic}(\mathit{Sweden}) \}
+B = \{ \mathit{tropical}(\mathit{CostaRica}), \mathit{tropical}(\mathit{Singapore}), \\\quad\mathit{subarctic}(\mathit{Canada}), \mathit{subarctic}(\mathit{Sweden}) \}
 $$
 
 The robot also knows two rules:
@@ -250,14 +257,14 @@ The second effect causes Sherlock to determine the victim and the murderer: For 
 
 $$
 s_2 = \{ \mathit{at}(\mathit{Sherlock}, \mathit{ScotlandYard}), \\\quad\mathit{murderer}(\mathit{Moriarty}), \mathit{victim}(\mathit{ReginaldMusgrave}),  \\\quad\mathit{knowsVictim}(\mathit{Sherlock},
-\mathit{ReginaldMusgrave}), \mathit{knowsMurderer}(\mathit{Sherlock}, \mathit{Moriarty}) \}
+\mathit{ReginaldMusgrave}), \\\quad\mathit{knowsMurderer}(\mathit{Sherlock}, \mathit{Moriarty}) \}
 $$
 
 Finally, effect 3 says when there is an x such that x is the murderer and Sherlock knows that they are the murderer, Sherlock has solved the crime.
 
 $$
 s_3 = \{ \mathit{at}(\mathit{Sherlock}, \mathit{ScotlandYard}), \\\quad\mathit{murderer}(\mathit{Moriarty}), \mathit{victim}(\mathit{ReginaldMusgrave}), \\\quad\mathit{knowsVictim}(\mathit{Sherlock}, 
-         \mathit{ReginaldMusgrave}), \mathit{knowsMurderer}(\mathit{Sherlock}, \\\quad \mathit{Moriarty}), \mathit{solvedCrime}(\mathit{Sherlock}) \}
+         \mathit{ReginaldMusgrave}), \\\quad\mathit{knowsMurderer}(\mathit{Sherlock},  \mathit{Moriarty}), \mathit{solvedCrime}(\mathit{Sherlock}) \}
 $$
 
 </div></dd></div>
