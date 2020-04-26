@@ -18,10 +18,12 @@ permalink: /slides/lecture7.html
       }
       li p { line-height: 1.25em; font-size: 1.25em; }
       .red { color: #fa0000; }
-      .large { font-size: 2em; }
+      .large { font-size: 1.1em; }
       
       .small li {  font-size: 0.8em; }
       .medium li {  font-size: 0.9em; }
+      
+      .mediumt {  font-size: 0.9em; }
       
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
     </style>
@@ -60,18 +62,34 @@ class: center, middle
 ---
 
 # Propositional Logic 
+  
+  * `\(a \wedge b\)`: a **and** b
+  
+  * `\(a \vee b\)`: a **or** b (or both!)
 
-  * I'm assuming you are all familiar with propositional logic?
+  *  `\(\neg a\)`: **not** a 
   
-  * `\(a \wedge b\)`, `\(a \vee b\)`, `\(\neg a\)`
+  * `\(a \rightarrow b\)`: a **implies** b, which means: if `a` is true, `b` also has to be true (but if `a` is false, `b` can be true or false). Logically equivalent to `\(\neg a \vee b\)`
   
-  * If we have some "interpretation" W of a and b, we can determine truth values
+  * When you see **iff** (or in Spanish "sii", "ssi" or "syss") in text it is not a typo, it means "if and only if", a bidirectional implication ("a iff b" means that if `a` is true `b` is true, but if `a` is false, `b` is also false)
   
-  * `\( W \models  a \wedge b \)` iff a and b are both true in W, i.e. `\( W \models a \)` **and** `\(W \models b \)`
+---
+
+# Propositional Logic 
+
+  * How do we tell if a formula is true?
+  
+  * We need to know if a and b (and all other constants) are "true"
+  
+  * In other words, if we have some "interpretation" `W` of `a` and `b`, we can determine truth values
+  
+  * `\( W \models  a \wedge b \)` iff `a` and `b` are both true in `W`, i.e. `\( W \models a \)` **and** `\(W \models b \)`
   
   * So what is W?
   
 ---
+
+class: medium
 
 # Interpretations
 
@@ -81,7 +99,9 @@ class: center, middle
   
   * Conversely, everything that is not in the set is false ("closed world assumption")
   
-  * You may have heard the term *model*: An interpretation under which a formula is satisfied 
+  * A *model* is an interpretation under which a formula is satisfied 
+  
+  * We say W *models* a formula, if the formula is satisfied under that interpretation
   
   * A formula is a tautology if *all* interpretations are models
   
@@ -103,11 +123,17 @@ $$
 
 ---
 
+class: center, middle 
+
+# Preciate Logic
+
+---
+
 # Predicate Logic 
 
   * Representing any non-trivial state in propositional logic is tedious (imagine chess: there has to be one variable for each possible location of each piece)
   
-  * We will use Predicate Logic instead, which represents the world as objects and relations between them 
+  * *Predicate Logic*, on the other hand, represents the world as objects and relations between them 
   
   * Objects: constants
   
@@ -115,7 +141,7 @@ $$
   
   * (Functors: Assignments of n-tuples of objects to objects)
   
-  * We also have sets of objects, and quantifiers `\( \forall, \exists \)`
+  * We also have quantifiers `\( \forall, \exists \)`
   
 ---
 
@@ -142,6 +168,8 @@ In fact, as we will see, that's how our interpretations work.
 # Predicate Logic: Syntax
 
   * A predicate name with parameters is called an *Atom* or *atomic formula*, e.g. `\(\mathit{human}(h)\)`
+  
+  * A *literal* is an atom of the negation of an atom, e.g. `\(\neg \mathit{human}(h)\)`
   
   * The `h` can either be a constant or a variable 
   
@@ -243,6 +271,24 @@ $$
 
 ---
 
+class: center, middle 
+
+# Data Structures
+
+---
+
+# Data Structures 
+
+  * If we actually want to use logic for something, we need an implementation 
+  
+  * We will start with how to store formulas and interpretations in data structures 
+  
+  * This will provide us with a way to query the truth-values of logical formulas under an interpretation 
+  
+  * Later we will see how we can manipulate these interpretations
+
+---
+
 class: small
 
 # Data Structures 
@@ -267,11 +313,29 @@ class LogicalFormula:
   
 ---
 
+# Data Structure: And 
+
+```
+class And(LogicalFormula):
+    def __init__(self, children):
+        self.children = children
+    
+    def isModeledBy(self, world):
+    
+        result = True 
+        for c in self.children:
+            result = result and c.isModeledBy(world)
+            
+        return result
+```
+
+Note: This and can have more than two children, which is a useful optimization! 
+  
+---
+
 class: small
 
 # Data Structures 
-
-  * Note that I said "all its children" for `And`: It can be beneficial if "and" can connect more than two operators
   
   * For the quantifiers `\(\forall\)` and `\(\exists\)` we need to be able to substitute variables in formulas, so we need to add another method to our base class:
   
@@ -280,7 +344,7 @@ def substitute(self, variable, value):
     return self
 ```
 
-  * This method should replace the given variable with the given value in *all* children, or parameters (in the case of atoms), and return a **copy** of itself with the substitution performed
+  * This method should replace the given variable with the given value in *all* children, or parameters (in the case of atoms), and returns a **copy** of itself with the substitution performed
   
   * `Forall` can then use this in its `isModeledBy` method
   
@@ -294,22 +358,136 @@ def isModeledBy(self, world):
 
 ---
 
-class: medium
-
 # Data Structures 
 
-  * In lab 3, you will implement these data structures 
+  * Now we can represent logical interpretations and formulas 
   
-  * Start with the code on the previous slides as guidelines 
+  * We can use this to determine which formulas hold under our interpretation 
   
-  * There are ways to make this less tedious: `And` and `Or` are almost identical, so they could share a lot of code, or just be modeled as one class 
+  * An agent could, for example, use this to collect some true data and then reason about which rules hold (e.g. collect information about all animals and items in a zoo, and then determine if every animal has something to eat)
   
-  * You will need to implement some high level function: 
-      - `make_expression`, which gets a syntax tree and produces a python object representing the formula
-      - `make_world`, which gets a set of atoms and returns a python object representing the world
-      - `models`, which gets a world and a formula (as returned by `make_expression` and `make_world`) and determines if the formula holds 
-      - `substitute`, which gets a formula, a variable and a value, and has to produce a new formula with the substitution performed 
-      - `apply`, which we will talk about now
+  * The other direction is even more interesting, though: Collect *some* information and have the rules, and "generate" more information
+
+---
+
+class: center, middle
+
+# Inference
+
+---
+
+# Inference 
+
+* Just having a static interpretation of the world is not very interesting 
+
+* One form of intelligence could be to generate/derive "new" knowledge 
+
+* Or answer questions 
+
+* This process is called *inference*
+
+---
+
+# Inference 
+
+* Facts: What we know about the world, which includes literals and formulas 
+
+* Rules: Logical instructions that tell us how we can generate more facts, using properties of logic
+
+* You can also imagine this as a logical proof: We know some things about the world, and we prove that some other things logically follow
+
+---
+
+class: mediumt
+
+# Modus Ponens
+
+Maybe the most "famous" inference rule is the Modus Ponens:
+
+$$
+\{a, a \rightarrow b\} \models b 
+$$
+
+If we know `a` and we know that `a` implies `b`, then we can conclude `b`
+
+Note how the notation is a generalization of what we used for interpretations: Any set can be on the left side!
+
+---
+
+class: medium
+
+# Queries
+
+* With this, an agent can start generating facts that exist and fill a database
+
+* A user can then ask a "question" in the form of a query: Is x true?
+
+* If the agent has the asked fact in their database they answer with yes
+
+* By keeping track of the used rules, the agent can also provide a proof!
+
+---
+
+# Inference Algorithms
+
+* In practice, we may have "many" possible facts 
+
+* Imagine a logical reasoning system for natural numbers: We can say a number is prime if it has some properties (number of proper divisors is equal to two), but we don't want the agent to generate **all** prime numbers 
+
+* Instead we can answer queries: Does a particular formula hold, e.g. "Is 9 a prime number"?
+
+* There are several different algorithms to answer such queries
+
+---
+
+# Resolution
+
+* Resolution is one such algorithm to perform inference
+
+* The idea is to take disjunctions ("or"s) of logical literals as rules
+
+* If we know that one of this literals is false, we can infer that at least one of the others must be true
+
+* Also remember that an implication is also an or!
+
+$$
+a \rightarrow b \Leftrightarrow \neg a \vee b\\\\
+\{\neg a \vee b, a\} \models b
+$$
+
+How to do queries: We negate the query and try to "resolve" it with what we know
+
+$$
+\{\neg a \vee b, a, \neg b\} \models \bot
+$$
+
+---
+
+class: mediumt
+
+# Prolog
+
+Prolog is a logical programming language that allows us to write such disjunctions and then does the inference by resolution for us!
+
+```Prolog
+a.
+b :- a.
+c :- not(b).
+
+?- b 
+true
+
+?- c
+false
+```
+
+Unfortunately we don't have time to go into detail :(
+
+---
+
+class: center, middle
+
+# Actions
 
 ---
 
@@ -379,6 +557,12 @@ The turkey could still die at time step 1 and stay dead ...
   
 ---
 
+class: center, middle 
+
+# Transition Systems
+  
+---
+
 # Transition System Approach 
 
   - We start with an initial state `\(s_0 = \{\mathit{alive}(\mathit{Fred}), \neg \mathit{loaded}(\mathit{Gun}) \}\)` (or, using the closed-world assumption simply `\(s_0 = \{\mathit{alive}(\mathit{Fred})\}\)`), which we can use for logical queries such as
@@ -420,6 +604,8 @@ The turkey could still die at time step 1 and stay dead ...
   * We also need to be able to apply an effect, which is where `apply` comes in 
   
 ---
+
+class: medium
 
 # What is an effect 
 
@@ -530,16 +716,13 @@ class: medium
   * Another is to determine the additions and deletions a formula causes and use set operations on the set of atoms 
   
 ```
-class LogicalFormula
+class LogicalFormula:
    def getChanges(self, world):
        return (self.getAdditions(world),self.getDeletions(world))
 ```
   
   * The latter is probably (depending on the exact implementation, and the rest of the code) slightly faster, because it makes fewer copies of the atom set, and you could precompute a lot (minus conditional expressions)
   
----
-
-# Applications
   
 ---
 
@@ -547,7 +730,10 @@ class LogicalFormula
 
   - [Logic and AI](https://plato.stanford.edu/entries/logic-ai/)
   
+  - [Online Prolog Interpreter](https://swish.swi-prolog.org/)
+  
   - [The Frame Problem](https://plato.stanford.edu/entries/frame-problem/) 
+  
    
 
     </textarea>
