@@ -101,6 +101,7 @@ W = \{ \mathit{Lannister}(\mathit{Tywin}), \mathit{Lannister}(\mathit{Tyrion}), 
        \mathit{paidDebt}(\mathit{Tyrion}, \mathit{Bronn}), \\
        \mathit{paidDebt}(\mathit{Jaime}, \mathit{Brienne}) \}
 $$
+
 Over the domain
 
 $$
@@ -117,6 +118,7 @@ $$
 \text{4. } \forall y \exists x: \mathit{owes}(y,x) \vee \mathit{owes}(x,y)\\
 \text{5. } \forall x: \mathit{owes}(x, \mathit{Catelyn}) \rightarrow \neg \mathit{Lannister}(x)
 $$
+
 <div style="margin:20px; margin-top:5px; margin-right:15px; border: 1px solid #3bbfe7;" class="codebox">
 <dt style="height:40px; text-align: center;"><strong>Answer:</strong>
 <input type="button" value="Show" style="width:78px; font-size:14px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
