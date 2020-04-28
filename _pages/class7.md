@@ -22,11 +22,12 @@ held as two separate 1-1.5 hour lectures, including the exercises. The videos wi
 
 ## Propositional Logic and Interpretations
 
-Follow the lecture on propositional logic given by the instructor before you continue.
+Watch this video:
 
-
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3AhT62-Wn_g" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 You are given an interpretation $W = \\{ a, b, c \\}$. For each of the following formulas determine if $W$ is a model for that formula.
+
 $$
 \text{1. } (a \wedge b)\\
 \text{2. } (b \rightarrow d)\\
@@ -35,6 +36,7 @@ $$
 \text{5. } e \vee (c \wedge \neg d)\\
 \text{6. } \neg d \rightarrow \neg e
 $$
+
 <div style="margin:20px; margin-top:5px; margin-right:15px; border: 1px solid #3bbfe7;" class="codebox">
 <dt style="height:40px; text-align: center;"><strong>Answer:</strong>
 <input type="button" value="Show" style="width:78px; font-size:14px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
@@ -89,7 +91,10 @@ $$
 
 ## Predicate Logic 
 
-Follow the lecture on predicate logic given by the instructor before you continue.
+Continue with this video:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1iWOqcjOYxo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 You are given an interpretation
 
@@ -180,7 +185,9 @@ Note that your solution may look very different. Maybe you have three characters
 
 ## Data Structures
 
-Follow the lecture on data structures for propositional and predicate logic given by the instructor.
+Continue with this video:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZDhfBWxYIcY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 This concludes part 1.
 

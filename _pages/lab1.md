@@ -56,6 +56,10 @@ Do **not** remove or change the `default_heuristic` in `pathfinding.py`.
 In your report, note how the different algorithms perform on the given examples. Which visits/expands the least nodes, which one finds the shortest path? Come up with **at least** one graph of your own and test the four 
 algorithms on it. Try to define a reasonable heuristic, and see how it affects performance (use the `run_all` function, which will run greedy search and A* with the default heuristic as well as with the provided heuristic).
 
+The Austria graph follows this approximate map:
+
+<img src="/CI-2700/assets/img/austriaroads.png" width="100%"/>
+
 ## Submission
 
 Send the finished code (all python files you have!), and your report pdf in a zip file by email to me and Christian ([markus.eger.ucr@gmail.com](mailto:markus.eger.ucr@gmail.com), 
