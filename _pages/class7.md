@@ -26,7 +26,7 @@ Follow the lecture on propositional logic given by the instructor before you con
 
 
 
-You are given an interpretation $W = \{ a, b, c \}$. For each of the following formulas determine if $W$ is a model for that formula.
+You are given an interpretation $W = \\{ a, b, c }$. For each of the following formulas determine if $W$ is a model for that formula.
 $$
 \text{1. } (a \wedge b)\\
 \text{2. } (b \rightarrow d)\\
