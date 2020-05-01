@@ -193,7 +193,10 @@ This concludes part 1.
 
 ## Inference
 
-Follow the lecture on inference given by the instructor before you continue.
+Continue with this video:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BDtRg89VRHg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 You have a robot with a knowledge base 
 
@@ -232,11 +235,9 @@ first applying the first rule and then applying the second rule.
 
 ## Actions
 
-Follow the lecture on logical actions given by the instructor before you continue.
+Continue with this video:
 
-## Transition Systems
-
-Follow the lecture on transition systems given by the instructor before you continue.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tIoX0PO661U" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Below you are given the state $s_0$ and the effects $e_1$, $e_2$, $e_3$ of three actions. 
 Apply $e_1$ to $s_0$ and determine the resulting state $s_1$. Apply $e_2$ to $s_1$ and determine 
