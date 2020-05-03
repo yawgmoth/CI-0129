@@ -4,7 +4,7 @@ permalink: /slides/lecture8.html
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lecture 8: Dynamic Epistemic Logic</title>
+    <title>Lecture 8: Review</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -15,6 +15,9 @@ permalink: /slides/lecture8.html
       h1, h2, h3 {
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.7em !important;
       }
       p { font-size: 1.25em; }
       div { font-size: 1.25em; }
@@ -61,384 +64,251 @@ permalink: /slides/lecture8.html
 
 class: center, middle
 
-# Artificial Intelligence: Planning
+# Artificial Intelligence
 
-### Dynamic Epistemic Logic 
-
----
-
-# Review: The Planning Problem
-
-A planning problem consists of three parts:
-
-  * A definition of the current state of the world
-  
-  * A definition of a desired state of the world
-  
-  * A definition of the actions the agent can take
-  
----
-
-class: medium
-
-# Uncertainty about the world
-
-* Imagine we have a robot that should perform tasks 
-
-* We tell it to go to the grocery store
-
-* If it is raining, it will need some sort of protection, like an umbrella
-
-* But the robot may not know the weather outside 
-
-* It could go and check!
+### Review
 
 ---
 
 class: medium
 
-# Uncertainty about the world
+# Exam
 
-* Or we want to play a game 
+* The exam will happen **next week**
 
-* There are cards that are shuffled
+* Officially on the 14th of May 
 
-* We know which cards exist, but not the order 
+* I will give you the exam on Monday, 11/5 during class hours
 
-* We know our cards, so we can figure out what's missing 
+* We will discuss the exam during the class, and then you have until Friday, 15/5 to finish it 
 
-* We also know that our opponent knows which cards they have
+* Thursday's class will be a good opportunity for questions
 
----
-
-class: medium
-
-# Knowledge and Beliefs 
-
-  * "Epistemic Logic", which we will discuss today is the "Logic of Knowledge and Beliefs"
-  
-  * Some people make a distinction between the two: Beliefs may be false, knowledge has to be true 
-     
-  * Other people require that knowledge not only be true, but be "justified" ("Knowledge is justified, true belief")
-  
-Example: A farmer looks from his farm house to the field, to check if his favorite cow is still there. He sees a black and white paper that got caught in the tree, and looks exactly like his cow from far away. In reality, the cow was sleeping in a hollow behind a bush on the field. 
-  
+* The exam will be available on Mediacionvirtual!
 
 ---
 
 class: medium
 
-# Beliefs 
+# Exam
 
-  * Agent beliefs are often represented using "possible worlds"
-  
-  * There is an "actual world", with the things that are factually true 
-  
-  * Each agent then has a set of worlds that they consider possible, but they don't know which of these worlds is the actual one (if any)
-  
-  * For example: I secretly flip a coin, and look at it. Now you consider two worlds possible: One in which the coin shows heads, and one in which it shows tails
-  
----
+* Topics: Everything we have covered so far (Lecture 1 - 7, Introduction - Logic)
 
-class: medium
+* You can use the slides, videos, the book, etc. during the exam
 
-# Beliefs about Beliefs
+* Ask **me** if anything is unclear, not your classmates
 
-  * Now consider my beliefs about your beliefs 
-  
-  * I know what the coin shows, so I only consider one world possible, but I know that you consider two worlds possible 
-  
-  * Likewise, for each of the worlds you consider possible, you know that I know what the coin shows, i.e. that I only consider one world possible
-  
-  * We can draw such relationships in diagrams, with one node for each possible world, and arrows that show which worlds are considered possible by each agent 
-  
----
-
-# A Diagram of the Coins Example
-
-<img src="/PF-3341/assets/img/prekripke.png" width="80%"/>
+* The answers have to be **your own**
 
 ---
 
-# A Diagram of the Coins Example
+# Lab 2
 
-<center>
-<img src="/PF-3341/assets/img/kripke.png" width="60%"/>
-</center>
+* We will also start Lab 2 **today**
+
+* Deadline: May 22, AoE
+
+* I suggest you start with it before the exam
+
+* MCTS will be part of the exam, and the implementation will help you understand it
 
 ---
 
 class: center, middle 
 
-# Epistemic Logic
+# Review: Intelligence
 
 ---
 
-# Epistemic Logic
+# Question 
 
-  * We call what is represented by such a diagram an *epistemic state*
-  
-  * Just like with propositional states, we can use these states to determine which formulas it models 
-  
-  * Regular formulas are just interpreted using the actual world
-  
-  * We just need some way to talk about beliefs to "access" the possible worlds
-  
+We talked about "Thinking Humanly" as one type of intelligence. Which other three types did we discuss?
+
 ---
 
-# The Belief Modality
+# Question
 
-Beliefs are usually represented using the modal operator `\(\Box\)` (pronounced "box"). For example:
+What is the Turing Test?
 
-$$
-\Box_M H
-$$
+---
 
-"M believes that H holds"
+# Question 
 
-$$
-\Box_M \Box_Y (H \vee T)
-$$
+What was the "AI Winter"? 
 
-"M believes that Y believes that H or T holds"
+Why did it happen?
 
+---
 
-How do we interpret this operator? When does someone believe something? 
+# Question
+
+Define the PEAS for an agent playing Super Mario
+
+---
+
+# Question 
+
+Draw a decision tree for an enemy guard in a video game 
+
+---
+
+# Question 
+
+Draw a finite state machine for a vacuum robot
+
+---
+
+# Question 
+
+Draw a behavior tree for firefighter robot
+
+---
+
+class: center, middle 
+
+# Review: Search
+
+---
+
+# Question
+
+<img src="/CI-2700/assets/img/austriaroads.png" width="100%"/>
+
+Find a path from Graz to Innsbruck using Breadth-First Search
+
 --
-When it holds in **all** worlds they consider possible.
+
+Find a path from Graz to Innsbruck using Depth-First Search, when the neighbors are ordered *clockwise, starting north*.
 
 ---
 
-# Some more examples
+# Question
 
-.left-column[
-<img src="/PF-3341/assets/img/kripkev.png" width="70%"/>
-]
+<img src="/CI-2700/assets/img/austriaroads.png" width="100%"/>
 
-.right-column[
+Find a path from Graz to Munich using Greedy Search with the following heuristic values:
 
+Bregenz: 101, Bruck: 203, Eisenstadt: 400, Graz: 301, Klagenfurt: 202, Lienz: 201, Linz: 200, Salzburg: 100, Vienna: 300
 
-
-$$
-\models \Box_M H
-$$
-
-$$
-\not \models \Box_Y H
-$$
-
-$$
-\not \models \Box_Y \neg H
-$$
-
-$$
-\models \Box_M \Box_Y (H \vee T)
-$$
-
-$$
-\not \models  \Box_M ((\Box_Y H) \vee (\Box_Y T))
-$$
-
-
-]
+Find a path from Vienna to Munich using A*.
 
 ---
 
-class: middle, center
+# Question 
 
-# Dynamic Epistemic Logic
-
----
-
-class: medium
-
-# Dynamic Epistemic Logic
-
-  * Now that we have a representation for static beliefs, we just need to figure out how to change them 
-  
-  * We need some sort of action language 
-  
-  * Idea: Treat actions similar to states 
-  
-  * There is an "actual action", and a set of "possible actions" for each agent (the *appearance* of an action to an agent) 
-  
-  * For example: If I draw a card from a deck, the actual action is "draw the ace of spades", but each other agent (that does not see the card) believes it's possible that I have drawn any card remaining in the deck
-  
----
-
-class: ssmall
-
-# Action Language
-
-  * The basic action we have is `flip`, which changes the truth value of some atomic proposition 
-  
-  * By default, actions are not visible to any agent, and only change the actual world 
-  
-  * The action token `\((a)^x\)` means that agent `x` believes that action `a` happens (but it does not actually happen)
-  
-  * The action token `\((a)^{\star{}x}\)` means action `a` happens, agent `x` believes that action `a` happens, they believe that they believe that `a` happens, etc.
-  
-  * We can combine two actions sequentially: `\( a \cdot b \)`
-  
-  * We can combine two actions as alternatives: `\( a + b \)`
-  
-  * Actions can have *preconditions* of the form `\(?p \)`
-  
----
-
-# For Example 
-  
-$$
-\text{flip}\: p \cdot (\text{flip} \: q + \text{flip} \: q)^x 
-$$
-
-<center>
-<img src="/PF-3341/assets/img/delaction.png" width="60%"/>
-</center>
+You and an opponent choose bits until two zeroes or two ones have been chosen in a row, or 5 digits have been chosen in total. If the resulting number is prime, you get that many points, 
+otherwise you lose that many points. Draw the complete game tree for this game. What is your best first move? Example: You pick a 1, then you opponent picks a 0, then you pick a 0, and 
+the game ends because 2 zeroes have been chosen in a row. The resulting number is 100b = 4, which is not prime, and you lose 4 points.
 
 ---
 
-class: medium
+# Question 
 
-# So how does this actually work?
+You and an opponent choose bits until two zeroes or two ones have been chosen in a row, or 5 digits have been chosen in total. If the resulting number is prime, you get that many points, 
+otherwise you lose that many points. Draw the complete game tree for this game. What is your best first move? Example: You pick a 1, then you opponent picks a 0, then you pick a 0, and 
+the game ends because 2 zeroes have been chosen in a row. The resulting number is 100b = 4, which is not prime, and you lose 4 points.
 
-  * An *Epistemic State* consists of worlds that each agent considers possible 
-  
-  * An *Epistemic Action* consists of actions that each agent considers possible 
-  
-  * If an action appears as multiple possibilities to an agent, they will end up with *more* worlds they consider possible (one for each possible action)
-  
-  * However, if some of these appearances have preconditions, they can only be applied to worlds in which these preconditions hold, and other worlds will be eliminated
-  
 ---
 
-class: medium
+# Question
 
-# An Example
+Which four steps make up Monte Carlo Tree Search?
+
+Briefly explain each of the four steps
+
+---
+
+# Question
+
+In Monte Carlo Tree Search, during Action Selection, we discussed several methods how to choose actions. Name and briefly explain two of them.
+
+---
+
+# Question 
+
+You are playing a game of Rummikub: Tiles are shuffled on the table face down, you can play tiles in a sequence or as sets, and draw new, random tiles.
+
+You want to build an agent for this game that uses MCTS. How do you account for the randomization of the tiles?
  
-  * I draw a card (the ace of spades) from the deck 
-  
-  * You don't know which card I drew, so now you have 52 possible worlds (one for each possible card)
-  
-  * I then show you the ace of spades: This action has the precondition that I actually have the ace of spades
-  
-  * Since you know that I show you the ace of spades, you can try to apply that action in every world you consider possible, but it will not be applicable in worlds in which you consider it possible that I have a different card, and these worlds will be eliminated
-  
 ---
 
-# A Joke
- 
-  * Three logicians walk into a bar
-  
-  * The barkeeper asks: "Three beers?"
-  
-  * The first logician says: "I don't know"
-  
-  * The second logician says: "I don't know"
-  
-  * The third logician says: "Yes!"
-  
----
+class: center, middle 
 
-class: small
-
-# Explaining the Joke 
-
-* Every logician knows if they themself want a beer or not
-
-* Imagine if the first logician did not want a beer 
-
-  - She would know about it 
-  
-  - Therefore, she would know that the order is not "three beers"
-  
-  - Therefore, she would have said "No"
-  
-* The second logician knows that the first logician knows if she wants a beer or not
-
-* So, when the first logician says "I don't know", the second logician can conclude that she wants one (otherwise she'd say "No")
+# Review: Logic
 
 ---
 
-class: medium
+# Question
 
-# An Epistemic View 
-
-* There are 8 possible worlds: Each logician may want a beer, or they may not
-
-* The answer of a logician follows three rules:
-
-   - If they know that all three logicians want a beer, they say "yes"
-   
-   - If they know that at least one logician does not want a beer, they say "no"
-   
-   - Otherwise, they say "I don't know"
-
-* How do we write that in Dynamic Epistemic Logic?
-
----
-
-# A Logician in Logic 
-
-- If they know that all three logicians want a beer, they say "yes"
+Given the interpretation
 
 $$
-?(\Box_l \forall x\:\: \mathit{wb}(x)) \cdot \text{flip}\: \mathit{say}(l, \text{yes})
+W = \\{b, d, e\\}
 $$
-   
-- If they know that at least one logician does not want a beer, they say "no"
+
+For each of the following formulas determine if W is a model for that formula:
 
 $$
-?(\Box_l \exists x\:\: \neg \mathit{wb}(x)) \cdot \text{flip}\: \mathit{say}(l, \text{no})
-$$
-   
-- Otherwise, they say "I don't know"
-   
-$$
-?((\neg \Box_l \forall x\:\: \mathit{wb}(x)) \wedge (\neg \Box_l \exists x\:\: \neg \mathit{wb}(x)))\cdot \\\\
-\text{flip}\: \mathit{say}(l, \text{idk})
+a \rightarrow b \\\\
+(a \vee d) \rightarrow (c \wedge e)\\\\
+(a \rightarrow \neg a) \rightarrow (\neg a \rightarrow a) \\\\
+d \rightarrow ((b \wedge (e \rightarrow a)) \rightarrow ((b \wedge d) \rightarrow a))
 $$
 
 ---
 
-# What about the other two?
+# Question
 
-Let `\(\mathit{all}, \mathit{one}, \mathit{else}\)` be the three sentences from the previous slide:
-
-The action the logician l performs is:
-$$
-\mathit{all} + \mathit{one} + \mathit{else}
-$$
-
-But the other two can observe this:
+Define an interpretation W that is a model for all of these formulas:
 
 $$
-(\mathit{all})^{\star{}L} + (\mathit{one})^{\star{}L} + (\mathit{else})^{\star{}L}
+\neg a \rightarrow \neg b\\\\
+c \rightarrow a\\\\
+((c \vee \neg c) \rightarrow c)\\\\
+a \rightarrow ((b \vee d) \wedge e)\\\\
+b \rightarrow \neg c
 $$
 
 ---
 
-# Homework
+# Question
 
-* [Homework 10](/PF-3335/assets/pdf/homework10.pdf) has been posted on the class website
-  
-* There are 5 problems 
+Given the interpretation
 
-* *All* problems are "bonus problems", but they are of regular difficulty
+$$
+W = \\{\mathit{nat}(c), \mathit{real}(c), \mathit{complex}(c), 
+       \mathit{nat}(a), \mathit{nat}(b), \mathit{real}(b),\\\\
+      \mathit{sum}(a,a,a), \mathit{sum}(a,b,b), \mathit{sum}(a,c,c), 
+      \mathit{sum}(b,b,b), \mathit{sum}(b,c,c)\\}
+$$
 
-* Basically, if you need to catch up on points, this will give you extra points
-  
+For each of the following formulas determine if W is a model for that formula over the domain `\(D = \{a,b,c\}\)`
+
+$$
+\forall x: \mathit{sum}(x,x,x)\\\\
+\forall x: \mathit{nat}(x)\\\\
+\forall x: \mathit{complex}(x) \rightarrow \forall y: \mathit{sum}(y,x,x)\\\\
+\forall x: \mathit{complex}(x) \rightarrow (\mathit{real}(x) \wedge \mathit{nat}(x))\\\\
+\exists x: \neg \mathit{nat}(x) \rightarrow (\mathit{real}(x) \vee \mathit{complex}(x))\\\\
+\exists x: \mathit{sum}(x,x,x) \rightarrow (\exists y: \mathit{sum}(x,y,y) \rightarrow \mathit{real}(y))
+$$
+
 ---
 
-# References
+# Question 
 
-* [101 Philosophy Problems](http://dl.lilibook.ir/2016/11/101-Philosophy-Problems.pdf)
+Define an interpretation W over the domain `\(D= \{a,b,c,d,e\}\)` <br/>
+that is a model for all of these formulas:
 
-* [Intentional Agents for Doxastic Games](https://repository.lib.ncsu.edu/handle/1840.20/35747)
-  
-* [A Logic For Suspicious Players](https://www.vub.ac.be/CLWF/SS/BER.pdf)
-
-* [Dynamic Epistemic Logic](http://www.iep.utm.edu/wp-content/media/DynamicEpistemicLogic.pdf)
+$$
+\mathit{zero}(a)\\\\
+\mathit{nat}(a)\\\\
+\mathit{last}(e)\\\\
+\forall x: \mathit{last}(x) \vee \exists y: \mathit{succ}(x,y) \wedge \mathit{nat}(y)\\\\
+\neg \exists x: \mathit{succ}(x,a)\\\\
+(P(a) \wedge (\forall x: \forall y: (P(x) \wedge \mathit{succ}(x,y)) \rightarrow P(y))) \rightarrow \forall x: P(x)\\\\
+P(a)
+$$
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
