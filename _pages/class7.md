@@ -22,11 +22,12 @@ held as two separate 1-1.5 hour lectures, including the exercises. The videos wi
 
 ## Propositional Logic and Interpretations
 
-Follow the lecture on propositional logic given by the instructor before you continue.
+Watch this video:
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3AhT62-Wn_g" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+You are given an interpretation $W = \\{ a, b, c \\}$. For each of the following formulas determine if $W$ is a model for that formula.
 
-You are given an interpretation $W = \{ a, b, c \}$. For each of the following formulas determine if $W$ is a model for that formula.
 $$
 \text{1. } (a \wedge b)\\
 \text{2. } (b \rightarrow d)\\
@@ -35,6 +36,7 @@ $$
 \text{5. } e \vee (c \wedge \neg d)\\
 \text{6. } \neg d \rightarrow \neg e
 $$
+
 <div style="margin:20px; margin-top:5px; margin-right:15px; border: 1px solid #3bbfe7;" class="codebox">
 <dt style="height:40px; text-align: center;"><strong>Answer:</strong>
 <input type="button" value="Show" style="width:78px; font-size:14px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
@@ -89,7 +91,10 @@ $$
 
 ## Predicate Logic 
 
-Follow the lecture on predicate logic given by the instructor before you continue.
+Continue with this video:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1iWOqcjOYxo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 You are given an interpretation
 
@@ -101,6 +106,7 @@ W = \{ \mathit{Lannister}(\mathit{Tywin}), \mathit{Lannister}(\mathit{Tyrion}), 
        \mathit{paidDebt}(\mathit{Tyrion}, \mathit{Bronn}), \\
        \mathit{paidDebt}(\mathit{Jaime}, \mathit{Brienne}) \}
 $$
+
 Over the domain
 
 $$
@@ -117,6 +123,7 @@ $$
 \text{4. } \forall y \exists x: \mathit{owes}(y,x) \vee \mathit{owes}(x,y)\\
 \text{5. } \forall x: \mathit{owes}(x, \mathit{Catelyn}) \rightarrow \neg \mathit{Lannister}(x)
 $$
+
 <div style="margin:20px; margin-top:5px; margin-right:15px; border: 1px solid #3bbfe7;" class="codebox">
 <dt style="height:40px; text-align: center;"><strong>Answer:</strong>
 <input type="button" value="Show" style="width:78px; font-size:14px; margin:0px; padding:0px;" onclick="var spoiler = $(this).parents('.codebox').find('.content').toggle('slow');
@@ -178,13 +185,18 @@ Note that your solution may look very different. Maybe you have three characters
 
 ## Data Structures
 
-Follow the lecture on data structures for propositional and predicate logic given by the instructor.
+Continue with this video:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZDhfBWxYIcY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 This concludes part 1.
 
 ## Inference
 
-Follow the lecture on inference given by the instructor before you continue.
+Continue with this video:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BDtRg89VRHg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 You have a robot with a knowledge base 
 
@@ -223,11 +235,9 @@ first applying the first rule and then applying the second rule.
 
 ## Actions
 
-Follow the lecture on logical actions given by the instructor before you continue.
+Continue with this video:
 
-## Transition Systems
-
-Follow the lecture on transition systems given by the instructor before you continue.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tIoX0PO661U" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Below you are given the state $s_0$ and the effects $e_1$, $e_2$, $e_3$ of three actions. 
 Apply $e_1$ to $s_0$ and determine the resulting state $s_1$. Apply $e_2$ to $s_1$ and determine 
