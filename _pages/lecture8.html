@@ -310,6 +310,32 @@ $$
 P(a)
 $$
 
+---
+
+# Question
+
+Given the interpretation/state
+
+$$
+s_0 = \\{ \mathit{at}(a,m), \mathit{at}(b,m), \mathit{at}(c,n) \\}
+$$
+Apply the effect `\(e_1\)` to this state to obtain `\(s_1\)`, then apply the effect `\(e_2\)` to get `\(s_2\)`, and then apply the effect `\(e_1\)` **again** to get `\(s_3\)`
+
+$$
+e_1 = \forall x: \forall y: \text{when}\quad(\exists z: (\mathit{at}(x,z) \wedge \mathit{at}(y,z)))\quad \mathit{seen}(x,y)\\\\
+e_2 = (\forall x: \text{when}\quad \mathit{at}(a,x)\quad \neg \mathit{at}(a,x)) \wedge \mathit{at}(a,n)
+$$
+
+Answer the following queries in `\(s_3\)`: 
+
+Has b seen c? `\(\mathit{seen}(b,c)\)`
+
+Has b seen b? `\(\mathit{seen}(b,b)\)`
+
+Has a seen everyone? `\(\forall x: \mathit{seen}(a,x)\)`
+
+
+
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
     </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
