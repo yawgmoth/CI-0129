@@ -1,11 +1,10 @@
 ---
 permalink: /slides/lecture10.html
 ---
-
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lecture 10: The Planning Problem</title>
+    <title>Lecture 10: PDDL</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -34,7 +33,7 @@ permalink: /slides/lecture10.html
       
       .left-column {
         color: #777;
-        width: 25%;
+        width: 40%;
         height: 92%;
         float: left;
       }
@@ -42,7 +41,7 @@ permalink: /slides/lecture10.html
           color: #000;
         }
       .right-column {
-        width: 70%;
+        width: 60%;
         float: right;
         padding-top: 1em;
         font-size: 1em;
@@ -54,19 +53,19 @@ permalink: /slides/lecture10.html
 
 class: center, middle
 
-# Artificial Intelligence: Planning
+# Artificial Intelligence
 
-### The Planning Problem
+### PDDL
 
 ---
 
 class: center, middle
 
-# The Planning Problem
+# Planning
 
 ---
 
-# The Planning Problem
+# Reminder: The Planning Problem 
 
 A planning problem consists of three parts:
 
@@ -78,515 +77,621 @@ A planning problem consists of three parts:
   
 All of these definitions are done in "some" formal language.
 
---
-
-Logic is a good choice for a formal language!
-
----
-
-# An Example Planning Problem: Blocks World
-
-  * We have three blocks, A, B, and C
-  
-  * Blocks A and B are on the table, block C is on top of block B
-  
-  * Blocks can be stacked
-  
-  * At the moment, all blocks are on the table next to each other
-  
-  * We want the blocks to be stacked, with C on top of B, and B on top of A
-  
----
-
-# An Example Planning Problem: Blocks World
-
-<img src="/PF-3341/assets/img/problemstatement.png" width="100%"/>
-  
----
-
-# Formalizing the Problem
-
-Current state:
-$$
-\text{on}(A, \mathit{table}) \wedge\\\\
-\text{on}(B, \mathit{table}) \wedge \\\\
-\text{on}(C, B)\\\\
-$$
-
-Goal:
-$$
-\text{on}(A, \mathit{table}) \wedge \\\\
-\text{on}(B, A) \wedge\\\\
-\text{on}(C, B)\\\\
-$$
-  
----
-
-# Actions?
-
-What can the agent do?
-
-  * Let's say our agent is a simple robot
-  
-  * It has a gripper
-  
-  * It can pick up a block, and also put it down (on the table, or on top of another block)
-  
----
-
-# Formalizing Actions?
-
-  * First, we need to represent that the robot is holding some block X somehow: `\(\text{holds}(X)\)`
-  
-  * Picking up a block then has a **precondition** and an **effect**
-  
-  * The precondition defines *if* an action can even be taken
-  
-  * The effect defines what the action *changes* in the world
-  
----
-
-# Picking Up a Block X
-
-Precondition:
-$$
-\forall Y \in \mathit{blocks}: \neg \text{holds}(Y) \wedge \\\\
-\forall Y \in \mathit{blocks}: \neg \text{on}(Y, X)
-$$
-
-Effect:
-$$
-\forall Y \in \mathit{blocks}: \neg \text{on}(X, Y) \wedge \\\\
-\neg \text{on}(X, \mathit{table}) \wedge \\\\
-\text{holds}(X)
-$$
-
----
-
-# Putting a Block X on Top of a Block Y
-
-Precondition:
-$$
-\text{holds}(X) \wedge \\\\
-\forall Z \in \mathit{blocks}: \neg \text{on}(Z, Y)
-$$
-
-Effect:
-$$
-\text{on}(X, Y) \wedge \\\\
-\neg \text{holds}(X)
-$$
-
----
-
-class: small
-
-# The Planning Problem 
-
-Given:
-* An initial state `\(s_0\)`
-* Action definitions `\(a = (p,e)\)` consisting of a precondition and an effect 
-* A goal formula `\(g\)`
-
-Find a sequence of actions `\(a_0, a_1, \ldots, a_n\)`, such that:
-
-* `\(s_i \models p_i\)`
-* `\(s_{i+1} =\:\text{apply}\:\:e_i\:\:\text{to}\:\:s_i\)`
-* `\(s_{n+1} \models g\)`
-
-Each action can be applied in the state preceding it, and generates a new state using its effect. In the final state the goal condition holds.
-
----
-
-# Planners 
-
-- A *planner* is an algorithm that solves the planning problem 
-
-- Two important properties for a planner are:
-
-  + **Soundness**: Any plan the planner produces is valid, i.e. satisfies the three conditions 
-  + **Completeness**: For any planning problem that has a solution, the planner will (eventually) produce one
-
-- We will actually see cases in which we don't require these properties
-
 ---
 
 class: medium
 
-# Complexity?
+# The Planning Domain Definition Language (PDDL)
 
-  * Logic is nice, but this seems like a pretty complex problem to solve?
+  * In The Olden Days every planner used their own input format
   
-  * Whenever we want to execute an action we have to check against all blocks to see if the agent is already holding something, or if there's already something on
-  the target block
+  * The formats not only differed in syntax, but also in capabilities
   
-  * We can use an encoding trick to simplify the problem: Have predicates for negative conditions, too
+  * In 1998 Drew McDermott and colleagues developed a standardized language for planning problems: PDDL
   
-  * For example: There is a predicate `holds` and a predicate `free` for the gripper, and a predicate `on` and a predicate `clear` for the blocks
+  * This made comparisons between different planners easier and lead to the creating of the International Planning Competition
   
 ---
 
-# Picking Up a Block X
+class: medium
 
-Precondition:
-$$
-\text{free}() \wedge \\\\
-\text{clear}(X)
-$$
+# PDDL Influences
 
-Effect:
-$$
-\neg \text{clear}(X) \wedge \\\\
-\neg \text{free}() \wedge
-\text{holds}(X)
-$$
+  * STRIPS, represented operators as preconditions, additions and deletions
+  
+  * Other languages, such as ADL, supported a wider variety of formulas as preconditions and effects
+
+  * The idea of actions having "preconditions", that describe when they are applicable, and "effects" that describe what is changed, was common to many of them
+  
+  * The "core" of PDDL is therefore the definition of actions
+  
+---
+
+class: medium
+
+# PDDL Layout
+
+  * PDDL separates a planning problem into two files
+  
+     - The domain, which defines how the actions operate
+     - The problem, which defines the initial state and the goal
+  
+  * The idea is that the domain can be reused for many different problems
+  
+  * Since historically many planners were written in LISP, PDDL uses the same basic syntax: S-Expressions
+  
+---
+
+# S-Expressions
+
+ * Simply put, an S-Expression consists of parenthesized list, where each element can be either a literal string or another S-Expression
+ 
+ * (Classically S-Expressions are defined as having two elements, which are concatenated with a period `.`, but this is not commonly explicitly used anymore)
+ 
+ * For example, these are all valid S-Expression:
+
+```
+()
+(and (or (not a) b (and (not x) c d e) e))
+(defun fib (n) (if (lt n 2) 1 (+ (fib (- n 1)) (fib (- n 2)))))
+```
 
 ---
 
-# Putting a Block X on Top of a Block Y
+# S-Expressions
 
-Precondition:
-$$
-\text{holds}(X) \wedge \\\\
-\text{clear}(Y)
-$$
-
-Effect:
-$$
-\text{on}(X, Y) \wedge \\\\
-\neg \text{clear}(Y) \wedge \\\\
-\neg \text{holds}(X) \\\\
-\text{clear}(X) \wedge \text{free}()
-$$
+  * Why are S-Expressions useful?
+  
+  * They are very simple to parse, and we can use them to represent syntax trees
+  
+  * Remember when we discussed how one would implement logic? We can basically take S-Expressions and directly use them with these data structures
 
 ---
 
-# STRIPS
-
+# Structure of a PDDL Domain File
 
 .left-column[
-  <img src="/PF-3341/assets/img/Shakey.png" width="100%"/>
+<img src="/PF-3335/assets/img/domain.png" width="100%"/>
 ]
 
 .right-column[
 
-* Shakey the Robot could solve problems given by a goal state
+* Now we have our PDDL domain file as a parse-tree
 
-* Various sensors let it build a model of the current world state
+* Let's extract the individual parts
 
-* The Stanford Research Institute Problem Solver was the planner responsible for finding a solution
- 
+* For each part we have to do some processing
+
+* After all processing, we have our domain
+
 ]
 
 ---
 
-class: small
+# Structure of a PDDL Domain File
 
-# STRIPS planning
+.left-column[
+<img src="/PF-3335/assets/img/domain.png" width="100%"/>
+]
 
-  * A state (and the goal!) is defined as a set of atomic propositions of what is true in the world
-  
-  * The goal is reached when it is a **subset** of a state
-  
-  * Each action consists of four sets of atomic propositions:
-      * Two sets of preconditions: positive and negative
-      * An add list: What the action makes true
-      * A delete list: What the action makes false
-      
-  * To check if an action can be executed in a state, the planner checks if all positive preconditions are in the state and all negative ones are not
-  
-  * To execute the action, a new state is produced as the union of the old state with the add list, and then the delete list is removed
-  
+.right-column[
+
+* Now we have our PDDL domain file as a parse-tree
+
+* Let's extract the individual parts
+
+* For each part we have to do some processing
+
+* After all processing, we have our domain
+
+]
+
 ---
 
-# Picking Up a Block X in STRIPS
+# Structure of a PDDL Domain File
 
-Positive Preconditions:
-$$
-\\{\text{free}(), \text{clear}(X)\\}
-$$
-Negative Preconditions: None
+.left-column[
+<img src="/PF-3335/assets/img/domainrequirements.png" width="100%"/>
+]
 
-Add List:
-$$
-\\{\text{holds}(X)\\}
-$$
+.right-column[
 
-Delete List:
-$$
-\\{\text{free}(), \text{clear}(X)\\}
-$$
+* **Requirements** 
+
+* Types/Objects
+
+* Predicates
+
+* Actions
+
+]
+
+---
+
+# Structure of a PDDL Domain File
+
+.left-column[
+<img src="/PF-3335/assets/img/domaintypes.png" width="100%"/>
+]
+
+.right-column[
+
+* Requirements
+
+* **Types/Objects**
+
+* Predicates
+
+* Actions
+
+]
+
+---
+
+# Structure of a PDDL Domain File
+
+.left-column[
+<img src="/PF-3335/assets/img/domainpredicates.png" width="100%"/>
+]
+
+.right-column[
+
+* Requirements
+
+* Types/Objects
+
+* **Predicates**
+
+* Actions
+
+]
+
+---
+
+# Structure of a PDDL Domain File
+
+.left-column[
+<img src="/PF-3335/assets/img/domainactions.png" width="100%"/>
+]
+
+.right-column[
+
+* Requirements 
+
+* Types/Objects
+
+* Predicates
+
+* **Actions**
+
+]
 
 ---
 
 class: medium
 
-# Actions vs. Action Schemata
+# Extensions: "Requirements"
 
-  * Technically "Picking up a block X" (`pickup(X)`) is not an action, because there is no "Block X" in our domain
-  
-  * We used "X" as a free variable to refer to "any block"
-  
-  * An actual (classical) STRIPS planning problem needs ground actions, without any free variables
-  
-  * `pickup(X)` is an action schema, called **operator**, that will need to be turned into ground actions (without free variables) `pickup(A)`, `pickup(B)`, and `pickup(C)`
-  
----
+* PDDL is a standard, but it allows for several extensions
 
-# The Actual Planning Process
+* The planner you use in lab 3 supports
 
-  * Forward-Chaining: The planner starts with the start state, and applies actions to get a new state until it reaches a state that satisfies the goal. It may do so
-  by dividing the goal into subgoals that have to be reached.
-  
-  * Backward-Chaining: The planner examines the goal and determines which actions have an effect that contributes to that goal and which preconditions these actions
-  have, until it reaches the start state
+   - `:strips`
+   - `:typing`
+   - `:adl`, which is an abbreviation for `:disjunctive-preconditions`, `:equality`, `:existential-preconditions`, `:universal-preconditions`, and
+     `:conditional-effects`
+
+* There are many other extensions, related to numbers, temporal planning, probabilistic effects, etc.
 
 ---
 
-# The Sussman Anomaly
+# Types
 
-Let's look at a slightly different problem:
+* Objects and variables in PDDL can have types
 
-<img src="/PF-3341/assets/img/sussman.png" width="100%"/>
+* Types form a hierarchy, with a root type containing *all* objects
+
+* We need to store these types so we can expand variables in e.g. forall expressions
 
 ---
 
-class: small
+# Types
 
-# The Sussman Anomaly
+* Types are written *after* objects
 
-There are two goals: `on(A,B)` and `on(B,C)`. If the planner divides the goal into subgoals:
+* A type can be applied to multiple objects at the same time
+
+```
+p3 p6 - going_up
+p5 p3 p6 p2 p9 p1 - attendant
+p7 - never_alone
+p2 p7 - conflict_A
+p0 p9 p3 p6 p1 p8 p5 p4 - conflict_B
+f0 f1 f2 f3 f4 f5 f6 f7 f8 f9
+f10 f11 f12 f13 f14 f15 f16 f17 f18 f19 - floor
+```
+
+---
+
+# Type Hierarchy
+
+* Similar to giving types to objects, types can also be "applied" to other types
+
+* This is used to create a type hierarchy, by saying "everything that has type X or Y also has type Z" by writing `X Y - Z`
+
+```
+passenger - object
+going_up going_down vip
+going_nonstop attendant never_alone
+conflict_A conflict_B - passenger
+floor - object
+
+```
+
+---
+
+# Actions
+
+* "Actions" in PDDL are actually *operators*
+
+* That means they contain free variables (often with types)
+
+* Each operator may represent multiple actions
+
+* Additionally, each operator contains a precondition and an effect
+
+---
+
+# Action Example
+
+```
+(:action up
+  :parameters (?f1 - floor
+               ?f2 - floor)
+  :precondition (and (lift-at ?f1)
+                     (above ?f1 ?f2))
+  :effect (and (lift-at ?f2)
+               (not (lift-at ?f1)))
+)
+```
  
-- If it tries to reach a state with A on top of B first, it will put C aside, then put A on B, and then can not fulfill the other goal without undoing the first (by removing A).
+---
 
-- If it tries to reach a state with B on top of C first, it will just put B on top of the pile, and then can't satisfy the other goal.
-    
-A "proper" solution has to interleave solving these two goals: First remove C, then put B on C, then put A on B. This requirement for interleaving is called "the Sussman Anomaly", discovered in the 1970s. Modern Planners do not run into this problem anymore.
+# Structure of a PDDL Problem File
+
+.left-column[
+
+<img src="/PF-3335/assets/img/pddlproblem.png" width="100%"/>
+
+]
+
+.right-column[
+
+* The *domain* defines the available operators of the world
+
+* The *problem* defines the initial state and the goal condition
+
+* Objects may be spread out over both files
+
+]
+
+---
+
+# Structure of a PDDL Problem File
+
+.left-column[
+
+<img src="/PF-3335/assets/img/pddlproblemdomain.png" width="100%"/>
+
+]
+
+.right-column[
+
+* **Domain Reference**
+
+* Additional Objects
+
+* Initial State
+
+* Goal Condition
+
+]
+
+---
+
+# Structure of a PDDL Problem File
+
+.left-column[
+
+<img src="/PF-3335/assets/img/pddlproblemobjects.png" width="100%"/>
+
+]
+
+.right-column[
+
+* Domain Reference
+
+* **Additional Objects**
+
+* Initial State
+
+* Goal Condition
+
+]
+
+---
+
+# Structure of a PDDL Problem File
+
+.left-column[
+
+<img src="/PF-3335/assets/img/pddlprobleminit.png" width="100%"/>
+
+]
+
+.right-column[
+
+* Domain Reference
+
+* Additional Objects
+
+* **Initial State**
+
+* Goal Condition
+
+]
+
+---
+
+# Structure of a PDDL Problem File
+
+.left-column[
+
+<img src="/PF-3335/assets/img/pddlproblemgoal.png" width="100%"/>
+
+]
+
+.right-column[
+
+* Domain Reference
+
+* Additional Objects
+
+* Initial State
+
+* **Goal Condition**
+
+]
+
+
 
 ---
 
 class: center, middle
 
-# Planning is PSPACE-complete
+# PDDL Example: Elevator
 
 ---
 
-# Planning Complexity
-  
-  * You probably know the problem of P vs. NP?
-  
-  * PSPACE is (probably) even worse than NP
-  
-$$
-P \subseteq \mathit{NP} \subseteq \mathit{PSPACE} \subseteq \mathit{EXP}
-$$
+# Domain: Types and Predicates 
 
-(Any of these subsets may or may not be proper, but at least one of them is)
+```
+(:types 
+    passenger - object
+    floor - object
+)
+
+(:predicates 
+
+ (origin ?person - passenger ?floor - floor)
+
+ (destin ?person - passenger ?floor - floor)
+
+ (above ?floor1 - floor  ?floor2 - floor)
+
+ (boarded ?person - passenger)
+
+ (served ?person - passenger)
+
+ (lift-at ?floor - floor)
+
+)
+```
 
 ---
 
-# Why is Planning Hard?
+# Domain: Drive Up and Down
 
-  * We just said that planning is pathfinding on a graph consisting of the states
+```
+;;drive up
+
+(:action up
+  :parameters (?f1 - floor ?f2 - floor)
+
+  :precondition (and (lift-at ?f1) (above ?f1 ?f2))
+
+  :effect (and (lift-at ?f2) (not (lift-at ?f1)))
+)
+
+
+;;drive down
+
+(:action down
+  :parameters (?f1 - floor ?f2 - floor)
+
+  :precondition (and (lift-at ?f1) (above ?f2 ?f1))
+
+  :effect (and (lift-at ?f2) (not (lift-at ?f1)))
+)
+
+```
+
+---
+
+# Domain: Stop at Floor
+
+```
+(:action stop
+
+  :parameters (?f - floor)
   
-  * Pathfinding is solvable in polynomial time
+  :precondition (lift-at ?f)
   
-  * Planning is not? Why?
+  :effect (and 
+               (forall (?p - passenger) 
+                  (when (and (boarded ?p) 
+                             (destin ?p ?f))
+                        (and (not (boarded ?p)) 
+                             (served  ?p))))
+                             
+               (forall (?p - passenger)                
+                   (when (and (origin ?p ?f) (not (served ?p)))
+                              (boarded ?p)))
+          )
+)
+```
+
+---
+
+# Problem
+
+```
+(:objects p0 - passenger
+          f0 f1 - floor)
+
+
+(:init
+(above f0 f1)
+(origin p0 f1)
+(destin p0 f0)
+(lift-at f0)
+)
+
+
+(:goal (forall (?p - passenger) (served ?p)))
+```
+
+---
+
+class: center, middle 
+
+# Planners 
+
+---
+
+class: small
+
+# Running a Planner
+
+* Most planners will provide you with some executable that expects two parameters: a domain file, and a problem file
+
+* Some will then perform some preprocessing step and translate the problem into some internal representation, and you may have to run a second executable on that
+
+* Then you wait ...
 
 --
 
-  * For a pathfinding problem, the input is the graph. For a planning problem the input is the initial state, the goal condition and the actions. The graph is
-  **implicit** (and potentially exponentially large)
-  
----
+* And wait ...
 
-class: mmedium
+--
 
-# Complexity Theory
+* And wait ...
 
-  * A problem is called *in* a complexity class C, if there is an algorithm/Turing Machine that can solve it within the constraints of C
-  
-  * A problem is called *hard* for a complexity class C ("C-hard"), if given an algorithm for that problem *any* problem in C could be solved with less than polynomial overhead 
-  
-  * A problem is called *complete* for a complexity class C, if it is both *in* C and C-*hard*
-  
-Planning (more precisely: PLANSAT) is PSPACE-complete: It is in PSPACE because the maximum length of a plan is exponential, we can represent exponentially many different states in polynomial space, and we don't need to store intermediate states.
-  
----
+--
 
-class: small
-
-# So how hard is planning?
-
-* Imagine you have a (any!) Turing machine that needs at most polynomial space for some computation (i.e. it is in PSPACE)
-
-* If we could solve the *same* computation with a planner, **and** the conversion only takes polynomial time, we know that planning is PSPACE-hard
-
-* So how could we encode a Turing machine in a planner?
-
-* How is a Turing machine defined?
+* And then you get a solution (or not)!
 
 ---
 
-# Turing Machine
+# Some Planners
 
-A Turing Machine consists of three parts:
+* [FastForward](https://fai.cs.uni-saarland.de/hoffmann/ff.html)
 
-  - A tape (in our case **polynomial** in size) filled with symbols from a finite alphabet `\(\Sigma\)`, e.g. `\(x\)`
-  
-  - A read/write head position `\(i\)`
-  
-  - A state `\(q \in Q\)`
-  
-The computation a Turing Machine computes is defined by a state transition function: `\(Q \times \Sigma \mapsto Q \times \Sigma \times \{L,R\}\)`
+* [FastDownward](http://www.fast-downward.org/)
 
-The Turing Machine applies this state transition function until it reaches a *terminal state*
+* [Glaive](http://nil.cs.uno.edu/projects/glaive/)
+
+---
+
+# Plans
+
+* So you run your planner and it finishes
+
+* The output will be a "plan"
+
+* However, unlike for the input, there is no real standard for the output
+
+* Some/most planners will print the required actions in a PDDL/LISP-like syntax
+
+---
+
+# planning.domains
+
+* Since planning is a very active field of research, there are many planning domains out there
+
+* [planning.domains](http://planning.domains) actually contains a collection of known domains, drawing from planning competitions and other sources
+
+* All of the files in that repository are PDDL files
+
+* However, they may require various extensions
+
+---
+
+class: center, middle 
+
+# Lab 3
+
+---
+
+# Lab 3
+
+* In Lab 3 you will get a simple (educational) planner written in python
+
+* It parses a domain and a problem file and then performs A* to find a plan
+
+* The heuristic is uses is a very simple one, based on FastDownward 
+
+* Don't expect it to win any performance awards
+
+---
+
+class: medium
+
+# Lab 3
+
+* The planner comes with the elevator domain (you can look at other domains from [planning.domains](http://planning.domains) if you want)
+
+* The task is to modify the domain to include **two or more** elevators
+
+* You will need an additional type ("elevators"), and additional constants
+
+* Then you have to change the actions so that they include an elevator parameter 
+
+* When you set up a problem, you may observe that the planner only uses one of the elevators
 
 ---
 
 class: medium
 
-# Turing Machine
+# Lab 3
 
-Say:
+For the final part of the lab, add restrictions to your elevators:
 
-* We have a predicate `\(\mathit{in}(i,x)\)` to define which symbol is in a tape cell
-
-* We have a predicate `\(\mathit{at}(i,q)\)` to define the read/write head is at position `\(i\)` and we are in state `\(q\)`
-
-* We have a predicate `\(\mathit{accept}\)` to define that we are in a terminal state
-
-Let's additionally define a predicate `\(\mathit{do}(i,q,x)\)` to mean "we are processing the transition from state `\(q\)`, with current symbol `\(x\)`, and the read/write head is at position `\(i\)`"
-
+  - One elevator can only stop at even floors (0 is even for our purposes)
+  
+  - One elevator can only stop at odd floors 
+  
+  - One elevator can only stop at floors divisible by 3
+  
+Come up with another problem, with at least 8 floors and 4 customers that uses every elevator!
+  
 ---
 
 class: small
-
-# Turing Machine
-
-Take a transition from the Turing Machine, e.g. `\((q_0,x) \mapsto (q_1,y,L)\)`. We can then define planning operators:
-
-Delete old state
-* Positive Preconditions: `\(\{\mathit{in}(i,x), \mathit{at}(i,q)\}\)`
-* Add List: `\(\{\mathit{do}(i,q,x)\}\)`, Delete List: `\(\{\mathit{at}(i,q)\}\)`
-
-Write new symbol
-* Positive Preconditions: `\(\{\mathit{in}(i,x), \mathit{do}(i,q,x)\}\)`
-* Add List: `\(\{\mathit{in}(i,y)\}\)`, Delete List: `\(\{\mathit{in}(i,x)\}\)`
-
-Move and change state
-* Positive Preconditions: `\(\{\mathit{do}(i,q,x), \mathit{in}(i,y)\}\)`
-* Add List: `\(\{\mathit{at}(i-1,q_1)\}\)`, Delete List: `\(\{\mathit{do}(i,q,x)\}\)`
-
----
-
-class: small
-
-# Turing Machine
-
-Are we polynomial in size?
-
-* We need at most polynomially many `\(\mathit{in}\)` atoms 
-
-* For every state transition we generate actions equal to the number of possible symbols times the number of states (part of the definition) times the number of `\(\mathit{in}\)` atoms (squared)
-
-* Overall, we will generate polynomially many actions (and we need a few extras that set `\(\mathit{accept}\)` to true)
-
-If planning was not PSPACE-hard, we could therefore solve any problem in PSPACE more efficiently. Since we can not, that means that planning must be PSPACE-hard.
-
----
-
-# It gets worse ...
-
-Recall our operators:
-
-Delete old state
-* Positive Preconditions: `\(\{\mathit{in}(i,x), \mathit{at}(i,q)\}\)`
-* Add List: `\(\{\mathit{do}(i,q,x)\}\)`, Delete List: `\(\{\mathit{at}(i,q)\}\)`
-
-Write new symbol
-* Positive Preconditions: `\(\{\mathit{in}(i,x), \mathit{do}(i,q,x)\}\)`
-* Add List: `\(\{\mathit{in}(i,y)\}\)`, Delete List: `\(\{\mathit{in}(i,x)\}\)`
-
-Move and change state
-* Positive Preconditions: `\(\{\mathit{do}(i,q,x), \mathit{in}(i,y)\}\)`
-* Add List: `\(\{\mathit{at}(i-1,q_1)\}\)`, Delete List: `\(\{\mathit{do}(i,q,x)\}\)`
-
----
-
-# It gets worse ...
-
-* None of our operators used negative preconditions 
-
-* And they only used **two** positive preconditions 
-
-* And **two** effects 
-
-* This means that planning is PSPACE-hard even if we limit the operators to two positive preconditions and two effects
-
-* Oh, and remember: This result is just for determining if there even *exists* any plan
-
----
-
-# Complexity Zoo
-
-<img src="/PF-3335/assets/img/plancomplexity.png" width="80%"/>
-  
----
-
-class: medium
-
-# The Good News
-
-  * [All PSPACE-complete planning problems are equal, but some are more equal than others](https://www.aaai.org/ocs/index.php/SOCS/SOCS11/paper/view/4009/4353)
-  
-  * Many interesting planning problems, i.e. the ones that show up in practice, are tractable, even if their generalizations are theoretically hard to solve.
-  
-  * Another way to think about it: Since the solutions we usually *want* are not going to be exponential in length, we shouldn't have to generate a graph of
-  exponential size.
-  
-  * Also nice: Adding more convenience features doesn't actually make planning harder
-
----
-
-class: mmedium
-
-# Summary
-
-* A planning problem consists of a start state, actions, and a goal condition
-
-* In STRIPS planning the start state consists of a set of atoms, each action has positive and negative preconditions (sets of atoms), and effects (an add list and a delete list of atoms), and the goal is also a set of atoms
-
-* Actions are usually defined as operators, which contain free variables, and have to be ground for the actual planning process
-
-* Next week we will look at a standard file format for planning problems, and some extensions that go beyond STRIPS
-
----
-
-# Homework
-
-* [Homework 3](/PF-3335/assets/pdf/homework3.pdf) has been posted on the class website
-  
-* There are 5 problems involving different aspects of STRIPS
-
-* There is also a bonus problem involving a proof
-
-* The bonus problem may be a bit harder than the last two. Good luck :)
-  
----
 
 # Resources
 
-  * [Shakey the Robot](https://www.youtube.com/watch?v=qXdn6ynwpiI)
-  
-  * [STRIPS: A New Approach to the Application of Theorem Proving to Problem Solving](http://ai.stanford.edu/users/nilsson/OnlinePubs-Nils/PublishedPapers/strips.pdf)
-  
-  * [The Computational Complexity of Propositional Strips Planning](https://ai.dmi.unibas.ch/research/reading_group/bylander-aij1994.pdf)
-  
-  * [All PSPACE-complete planning problems are equal, but some are more equal than others](https://www.aaai.org/ocs/index.php/SOCS/SOCS11/paper/view/4009/4353)
-  
-  * [Introduction to STRIPS Planning and Applications in Video-games](https://www.dis.uniroma1.it/~degiacom/didattica/dottorato-stavros-vassos/)
-
+  * [International Planning Competition](http://icaps-conference.org/index.php/Main/Competitions)
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">

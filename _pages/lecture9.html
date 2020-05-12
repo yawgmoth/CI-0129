@@ -1,0 +1,404 @@
+---
+permalink: /slides/lecture9.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 9: Planning</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .medium li {  font-size: 1.1em; }
+      
+      .mmedium li {  font-size: 1.05em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      .left-column {
+        color: #777;
+        width: 25%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 70%;
+        float: right;
+        padding-top: 1em;
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Artificial Intelligence
+
+### Planning
+
+---
+
+class: center, middle
+
+# The Planning Problem
+
+---
+
+# The Planning Problem
+
+A planning problem consists of three parts:
+
+  * A definition of the current state of the world
+  
+  * A definition of a desired state of the world
+  
+  * A definition of the actions the agent can take
+  
+All of these definitions are done in "some" formal language.
+
+--
+
+Logic is a good choice for a formal language!
+
+---
+
+# An Example Planning Problem: Blocks World
+
+  * We have three blocks, A, B, and C
+  
+  * Blocks A and B are on the table, block C is on top of block B
+  
+  * Blocks can be stacked
+  
+  * At the moment, all blocks are on the table next to each other
+  
+  * We want the blocks to be stacked, with C on top of B, and B on top of A
+  
+---
+
+# An Example Planning Problem: Blocks World
+
+<img src="/PF-3341/assets/img/problemstatement.png" width="100%"/>
+  
+---
+
+# Formalizing the Problem
+
+Current state:
+$$
+\text{on}(A, \mathit{table}) \wedge\\\\
+\text{on}(B, \mathit{table}) \wedge \\\\
+\text{on}(C, B)\\\\
+$$
+
+Goal:
+$$
+\text{on}(A, \mathit{table}) \wedge \\\\
+\text{on}(B, A) \wedge\\\\
+\text{on}(C, B)\\\\
+$$
+  
+---
+
+# Actions?
+
+What can the agent do?
+
+  * Let's say our agent is a simple robot
+  
+  * It has a gripper
+  
+  * It can pick up a block, and also put it down (on the table, or on top of another block)
+  
+---
+
+# Formalizing Actions?
+
+  * First, we need to represent that the robot is holding some block X somehow: `\(\text{holds}(X)\)`
+  
+  * Picking up a block then has a **precondition** and an **effect**
+  
+  * The precondition defines *if* an action can even be taken
+  
+  * The effect defines what the action *changes* in the world
+  
+---
+
+# Picking Up a Block X
+
+Precondition:
+$$
+\forall Y \in \mathit{blocks}: \neg \text{holds}(Y) \wedge \\\\
+\forall Y \in \mathit{blocks}: \neg \text{on}(Y, X)
+$$
+
+Effect:
+$$
+\forall Y \in \mathit{blocks}: \neg \text{on}(X, Y) \wedge \\\\
+\neg \text{on}(X, \mathit{table}) \wedge \\\\
+\text{holds}(X)
+$$
+
+---
+
+# Putting a Block X on Top of a Block Y
+
+Precondition:
+$$
+\text{holds}(X) \wedge \\\\
+\forall Z \in \mathit{blocks}: \neg \text{on}(Z, Y)
+$$
+
+Effect:
+$$
+\text{on}(X, Y) \wedge \\\\
+\neg \text{holds}(X)
+$$
+
+---
+
+class: small
+
+# The Planning Problem 
+
+Given:
+* An initial state `\(s_0\)`
+* Action definitions `\(a = (p,e)\)` consisting of a precondition and an effect 
+* A goal formula `\(g\)`
+
+Find a sequence of actions `\(a_0, a_1, \ldots, a_n\)`, such that:
+
+* `\(s_i \models p_i\)`
+* `\(s_{i+1} =\:\text{apply}\:\:e_i\:\:\text{to}\:\:s_i\)`
+* `\(s_{n+1} \models g\)`
+
+Each action can be applied in the state preceding it, and generates a new state using its effect. In the final state the goal condition holds.
+
+---
+
+# Planners 
+
+- A *planner* is an algorithm that solves the planning problem 
+
+- Two important properties for a planner are:
+
+  + **Soundness**: Any plan the planner produces is valid, i.e. satisfies the three conditions 
+  + **Completeness**: For any planning problem that has a solution, the planner will (eventually) produce one
+
+- These properties are "nice to have", but not always necessary!
+
+---
+
+class: medium
+
+# Actions vs. Action Schemata
+
+  * Technically "Picking up a block X" (`pickup(X)`) is not an action, because there is no "Block X" in our domain
+  
+  * We used "X" as a free variable to refer to "any block"
+  
+  * `pickup(X)` is an action schema, called **operator**, that will need to be turned into ground actions (without free variables) `pickup(A)`, `pickup(B)`, and `pickup(C)`
+  
+---
+
+# The Sussman Anomaly
+
+Let's look at a slightly different problem:
+
+<img src="/PF-3341/assets/img/sussman.png" width="100%"/>
+
+---
+
+class: small
+
+# The Sussman Anomaly
+
+There are two goals: `on(A,B)` and `on(B,C)`. If the planner divides the goal into subgoals:
+ 
+- If it tries to reach a state with A on top of B first, it will put C aside, then put A on B, and then can not fulfill the other goal without undoing the first (by removing A).
+
+- If it tries to reach a state with B on top of C first, it will just put B on top of the pile, and then can't satisfy the other goal.
+    
+A "proper" solution has to interleave solving these two goals: First remove C, then put B on C, then put A on B. This requirement for interleaving is called "the Sussman Anomaly", discovered in the 1970s. Modern Planners do not run into this problem anymore.
+
+---
+
+class: center, middle 
+
+# Planning as Pathfinding
+
+---
+
+# Planning As Pathfinding
+
+To use a pathfinding algorithm for planning, we need to formulate the planning problem as a graph. Let's start with the "obvious" choice:
+
+* Each state is a logical state
+
+* Each edge corresponds to an action
+
+* In any state, we can take any action whose preconditions are satisfied to generate a new state
+
+---
+
+# The State-Space
+
+- When we start at the node corresponding to the start state and start expanding actions, we generate the so-called *State-Space*
+
+- We can then use a standard A* algorithm to do pathfinding
+
+- In fact, many planners do exactly that, with different heuristics
+
+---
+
+# State Space Example 
+
+<img src="/PF-3341/assets/img/planspace.png" width="100%"/>
+
+---
+
+# Planning Problem in State Space 
+
+<img src="/PF-3341/assets/img/problem.png" width="100%"/>
+
+---
+
+class: mmedium
+
+# Planning Heuristics
+
+- In planning, our nodes are (logical) states, and our edges are actions
+
+- When we expand a state by applying all actions, we compute a heuristic value for each of the successor states
+
+- This heuristic value should estimate how long a plan from that state to a goal state is (at most)
+
+- In other words, we want to estimate how "difficult" it is to satisfy the goal from each state in our search frontier
+
+- Many planners solve a reduced ("relaxed") version of the planning problem to calculate a heuristic value
+
+---
+
+# (Some) Planning Heuristics 
+
+- HSP: Ignore negative literals in effects
+
+- FastForward: Do a "Breadth-First Search" with merging of states 
+
+- FastDownward: Convert Logic into a different representation, eliminate mutual exclusive states, and calculate possible state changes
+
+---
+
+class: center, middle
+
+# Planning is PSPACE-complete
+
+---
+
+# Planning Complexity
+  
+  * You probably know the problem of P vs. NP?
+  
+  * PSPACE is (probably) even worse than NP
+  
+$$
+P \subseteq \mathit{NP} \subseteq \mathit{PSPACE} \subseteq \mathit{EXP}
+$$
+
+(Any of these subsets may or may not be proper, but at least one of them is)
+
+---
+
+# Why is Planning Hard?
+
+  * We just said that planning is pathfinding on a graph consisting of the states
+  
+  * Pathfinding is solvable in polynomial time
+  
+  * Planning is not? Why?
+
+--
+
+  * For a pathfinding problem, the input is the graph. For a planning problem the input is the initial state, the goal condition and the actions. The graph is
+  **implicit** (and potentially exponentially large)
+
+---
+
+# It gets worse ...
+
+<img src="/PF-3335/assets/img/plancomplexity.png" width="80%"/>
+  
+---
+
+class: medium
+
+# The Good News
+
+  * [All PSPACE-complete planning problems are equal, but some are more equal than others](https://www.aaai.org/ocs/index.php/SOCS/SOCS11/paper/view/4009/4353)
+  
+  * Many interesting planning problems, i.e. the ones that show up in practice, are tractable, even if their generalizations are theoretically hard to solve
+  
+  * Another way to think about it: Since the solutions we usually *want* are not going to be exponential in length, we shouldn't have to generate a graph of
+  exponential size
+  
+  * Also nice: Adding more convenience features doesn't actually make planning harder
+  
+---
+
+class: medium
+
+# Resources
+
+  * [Shakey the Robot](https://www.youtube.com/watch?v=qXdn6ynwpiI)
+  
+  * [STRIPS: A New Approach to the Application of Theorem Proving to Problem Solving](http://ai.stanford.edu/users/nilsson/OnlinePubs-Nils/PublishedPapers/strips.pdf)
+  
+  * [Planning as Heuristic Search](https://www.sciencedirect.com/science/article/pii/S0004370201001084)
+  
+  * [The Computational Complexity of Propositional Strips Planning](https://ai.dmi.unibas.ch/research/reading_group/bylander-aij1994.pdf)
+  
+  * [All PSPACE-complete planning problems are equal, but some are more equal than others](https://www.aaai.org/ocs/index.php/SOCS/SOCS11/paper/view/4009/4353)
+  
+  * [Introduction to STRIPS Planning and Applications in Video-games](https://www.dis.uniroma1.it/~degiacom/didattica/dottorato-stavros-vassos/)
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script>
+      var slideshow = remark.create({"highlightStyle": "dark"});
+      
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>
