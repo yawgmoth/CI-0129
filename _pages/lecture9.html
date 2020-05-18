@@ -367,6 +367,114 @@ class: medium
   
 ---
 
+class: center, middle
+
+# Applications 
+
+---
+
+# Some Applications
+
+- Logistics (RoboCup Logistics League)
+
+- Ride sharing
+
+- Video Games
+
+- Narrative Generation
+
+---
+
+# Goal-Oriented Action Planning
+
+* F.E.A.R. (and several other games) used a variant of planning for its enemy AI 
+
+* Instead of arbitrary goals and states, it greatly restricts what can be represented 
+
+* This restriction allowed it to be used in a real-time environment
+
+* The developers stated that using planning allowed them to easily add new action types
+
+---
+
+# Story Generation
+
+- We have an initial state of the world
+
+- We have actions the different characters can perform
+
+- The author defines a goal for the story
+
+- For example: In a detective story the goal is that there is a murder and that the detective identifies the murderer
+
+---
+
+# Story Example
+
+* Sherlock Holmes goes to Irene Adler's house
+
+* Sherlock Holmes stabs Irene Adler
+
+* Sherlock Holmes identifies himself as the killer
+
+* The End.
+
+---
+
+# Story Generation as Planning
+
+- Planners are usually good at finding efficient solutions
+
+- Stories are not efficient!
+
+- However, each *character* should act rationally, i.e. efficiently
+
+- We could use one planner per character ...
+
+---
+
+# Intentional Planning
+
+- With one planner per character we may never find a path to the story goal
+
+- Instead, we use a "trick": We tell the planner what each character wants to achieve
+
+- The planner may then only use actions for a character that helps them achieve their goal
+
+- But the overall plan still has to solve the story goal!
+
+- Implementations: IPOCL, CPOCL
+
+---
+
+# Discourse Planning
+
+- Once we have a story (plot), we want to tell it 
+
+- There are several different media, such as film, text, comics, or combinations thereof
+
+- As we discussed during our lecture on Hierarchical Planning, we can use planning to generate this discourse
+
+---
+
+# Camera Planning 
+
+- Suppose we want to make a movie 
+
+- Each scene is supposed to convey some particular aspect of the story 
+
+- There are different camera shots, angles, lenses, etc. that we can use 
+
+- We can frame this as a planning problem by defining the different shots as operators
+
+---
+
+# The Battle for the Rune
+
+[Link](https://drive.google.com/open?id=1VweROPFFeFyPv4M1rf_FPnZR9NDIuD23)
+  
+---
+
 class: medium
 
 # Resources
@@ -382,6 +490,20 @@ class: medium
   * [All PSPACE-complete planning problems are equal, but some are more equal than others](https://www.aaai.org/ocs/index.php/SOCS/SOCS11/paper/view/4009/4353)
   
   * [Introduction to STRIPS Planning and Applications in Video-games](https://www.dis.uniroma1.it/~degiacom/didattica/dottorato-stavros-vassos/)
+  
+---
+
+class: medium
+
+# Resources
+
+  * [ICAPS 2019 Proceedings](https://aaai.org/ojs/index.php/ICAPS)
+
+  * [Goal-Oriented Action Planning](http://alumni.media.mit.edu/~jorkin/goap.html)
+  
+  * [Narrative Planning: Compilations to Classical Planning](https://arxiv.org/abs/1401.5856)
+  
+  * [Bardic: Generating Multimedia Narrative Reports for Game Logs](https://www.semanticscholar.org/paper/Bardic-%3A-Generating-Multimedia-Narrative-Reports-Barot-Branon/3087daa75239c7990bfc993a5919d14e69373b42)
 
 
     </textarea>

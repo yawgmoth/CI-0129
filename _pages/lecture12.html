@@ -5,7 +5,7 @@ permalink: /slides/lecture12.html
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lecture 12: Neural Networks</title>
+    <title>Lecture 12: Machine Learning</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -18,7 +18,7 @@ permalink: /slides/lecture12.html
         font-weight: normal;
       }
       .MathJax {
-         font-size: 0.7em !important;
+         font-size: 0.8em !important;
       }
       p { font-size: 1.25em; }
       div { font-size: 1.25em; }
@@ -41,22 +41,6 @@ permalink: /slides/lecture12.html
       .mmedium li {  font-size: 0.95em; }
       
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
-      
-      .left-column {
-        color: #777;
-        width: 50%;
-        height: 92%;
-        float: left;
-      }
-        .left-column h2:last-of-type, .left-column h3:last-child {
-          color: #000;
-        }
-      .right-column {
-        width: 45%;
-        float: right;
-        padding-top: 1em;
-        font-size: 1em;
-      }
     </style>
   </head>
   <body>
@@ -64,278 +48,326 @@ permalink: /slides/lecture12.html
 
 class: center, middle
 
-# Machine Learning
+# Artificial Intelligence
 
-## Neural Networks
-
-### III-Verano 2019
+### Reinforcement Learning
 
 ---
 
-# Artificial Neural Networks
+class: medium
 
+# The Problem 
 
-<p style="margin-top: 5cm; text-align: center; font-size: 2em">
-What is an (Artificial) Neural Network?
-</p>
-
-
----
-
-# Neural Networks
-
-What is a Neural Network?
-
- - A parameterized, non-linear function
- 
- - ... that has a gradient
- 
-What is a Neural Network **not**?
-
- - How the brain works 
- 
- - A black box that no one understands
- 
----
-
-# Braaaaaains
-
-<blockquote class="twitter-tweet" data-conversation="none" data-lang="es"><p lang="en" dir="ltr">4yo child is one thing but we need to explain how Megaphragma mymaripenne can fly and navigate with a brain of only 7400 neurons. Each neuron must be doing much more (1000x) than our Perceptron model explains. <a href="https://t.co/xNPq0RAgPj">pic.twitter.com/xNPq0RAgPj</a></p>&mdash; Mark Sugrue (@marksugruek) <a href="https://twitter.com/marksugruek/status/1206130412260646912?ref_src=twsrc%5Etfw">15 de diciembre de 2019</a></blockquote>
+  * We want an agent that "figures out" how to "perform well"
+  
+  * Given an environment in which the agent perform actions, we tell the agent which reward they get 
+  
+  * We generally assume that our states are discrete, and actions transition between them
+  
+  * The goal of the agent is to learn which actions are "good" to perform in which state 
+  
+  * Rewards may be negative, representing "punishment"
 
 ---
 
-# A Linear Model
+# The Problem 
 
-$$
-y = \vec{w} \cdot \vec{x} + b
-$$
-
-Alternatively:
-
-$$
-y = \vec{w}' \cdot \vec{x}'
-$$
-
-Where we add b to the end of w and 1 to the end of x
+<img src="/PF-3341/assets/img/rl.png" width="100%"/>
 
 ---
 
-# Activation Functions 
+# Reinforcement Learning
 
-* Often we want to limit our output between 0 and 1 (or -1 and 1)
-
-* We do this by sending the result of the linear combination through an activation function 
-
-<img src="/CI-2600/assets/img/activationfunctions.png" width="100%"/>
-
+  * The idea is that the agent performs several trial runs in the environment to determine a good policy
+  
+  * Compare to how a human player might learn how to play a game: Try some actions, observe the result 
+  
+  * Games are a natural fit for this kind of learning, but there are other applications as well!
+  
 ---
 
-# An Example: Boolean Operators
+# An Example 
 
-* Let's use an even simpler activation function: If the result of the linear combination is greater than 0, the output is 1, otherwise it is 0 (step function)
-
-<img src="/CI-2600/assets/img/stepfunction.png" width="35%"/>
-
-* How could we model a logical "or"? "and"? "nand"?
-
-* How about an "xor"?
-
----
-
-# Limitation
-
-* Our simple model can not model XOR (technical reason: It is not linearly separable)
-
-* What could we do?
-
-* Maybe adding more Neurons helps?
-
----
-
-# Artificial Neural Networks 
-
-.left-column[
-<img src="/CI-2600/assets/img/ANN.svg" width="100%"/>
-]
-
-.right-column[
-We introduced a "hidden layer", which will hold intermediate values h
-
-$$
-\vec{h} = f_1(W_1 \cdot \vec{x})\\\\
-y = f_2(\vec{w_2} \cdot \vec{h})\\\\
-y = f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x}))
-$$
-]
+<center>
+<img src="/PF-3341/assets/img/qprob.png" width="80%"/>
+</center>
 
 ---
 
 # An Example 
 
-<img src="/CI-2600/assets/img/xorann.png" width="60%"/>
+<center>
+<img src="/PF-3341/assets/img/qreward.png" width="80%"/>
+</center>
+  
+---
 
-What is the weight matrix for the hidden layer?
+class: medium
 
-What is the weight vector for the output?
+# Reinforcement Learning: Notation
 
-What happens for different inputs, e.g. 1 and 0?
+  * `s` is a state 
+  
+  * `a` is an action
+  
+  * `T(s,a)` is the *state transition function*, it tells us which state we reach when we use action `a` in state `s`
+  
+  * `R(s)` is the (immediate) *reward* for a particular state 
+  
+  * `V(s)` is the (utility) value of a state
 
 ---
 
-# Weights
+# Policies
 
-* How did we get these weights?
+  * `\(\pi(s)\)` is a *policy*
+  
+  * A policy tells the agent which action it should take in each state 
+  
+  * The goal of learning is to learn a "good" policy 
+  
+  * The *optimal policy* is usually written as `\(\pi^*(s)\)`
+  
+---
 
-* What if the output is wrong? How do we update the weights?
+# A Policy 
 
-* We need a measure of error
+<center>
+<img src="/PF-3341/assets/img/qpolicy.png" width="80%"/>
+</center>
 
 ---
 
-# Gradient Descent on Neural Networks 
+# The Bellman Equation
 
-* Take the (Sum/Mean) Squared Error!
-
-Remember:
+  * `V(s)` is the (utility) value of a state
+  
+  * This utility value depends on the reward of the state, as well as all future rewards the agent will receive 
+  
+  * However, the future rewards depend on what the agent will do, i.e. what the policy says
+  
 $$
-y = f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x}))
-$$
-
-Error:
-
-$$
-(y - \hat{y})^2 = (f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) - \hat{y})^2 = \text{minimal}
+V^\pi(s) = R(s) + \gamma V(T(s, \pi(s)))
 $$
 
-So we want:
+For the optimal policy:
 
 $$
-\nabla (y - \hat{y})^2 = \vec{0}
-$$
-
----
-
-# The Gradient
-
-$$
-\nabla (y - \hat{y})^2 = \vec{0} = \nabla (f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) - \hat{y})^2
-$$
-
-This means we need to calculate the gradient, with respect to the weights (i.e. what we want to change!)
-
-$$
-\frac{\text{d}}{\text{d} w_2} (y - \hat{y})^2 = \frac{\text{d}}{\text{d} w_2} (f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) - \hat{y})^2\\\\
-\frac{\text{d}}{\text{d} W_1} (y - \hat{y})^2 = \frac{\text{d}}{\text{d} W_1} (f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) - \hat{y})^2
-$$
-
----
-
-# The Chain Rule
-
-Remember:
-
-$$
-f(g(x))' = f'(g(x)) \cdot g'(x)\\\\
-\frac{\text{d}}{\text{d} x} f(g(x)) = \frac{\text{d}}{\text{d} g(x)} f(g(x)) \cdot \frac{\text{d}}{\text{d} x} g(x) = \frac{\text{d}f(g(x))}{\text{d} g(x)}  \cdot \frac{\text{d}g(x)}{\text{d} x} 
-$$
-
-For our model that was:
-
-$$
-\frac{\text{d}}{\text{d} w} L(M(x)) = \frac{\text{d}}{\text{d} M(x)} L(M(x)) \cdot \frac{\text{d}}{\text{d} w} M(x)
-$$
-
-Our **only** requirements are the derivatives of M and L!
-
----
-
-# For our neural network
-
-To get the gradient for the weights of the second layer:
-
-$$
-\frac{\text{d}}{\text{d} w_2} (f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) - \hat{y})^2 = \\\\
-2\cdot(f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) - \hat{y})\cdot \frac{\text{d}}{\text{d} w_2} f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) \cdot f_1(W_1 \cdot \vec{x}) =\\\\
-2\cdot(y - \hat{y})\cdot \frac{\text{d}}{\text{d} w_2} f_2(\vec{w_2} \cdot \vec{h}) \cdot \vec{h}
+V(s) = R(s) + \max_a \gamma V(T(s, a))
 $$
 
 ---
 
-# Takeaways
+# (Partial) Value Function
 
-* For the weight matrix we can proceed the same way, with more chain rule applications
-
-* If we have more layers, that means more chain rule applications
-
-* Good news: PyTorch does all of that automatically (remember `requires_grad=True`?)
-
-* So now we "have" the gradient
-
----
-
-# Learning!
-
-* Give the network an input sample 
-
-* Record the output 
-
-* Calculate the error **and the gradient**
-
-* Change the weights "a little" in the opposite direction of the gradient
+<center>
+<img src="/PF-3341/assets/img/qvalue.png" width="50%"/><img src="/PF-3341/assets/img/qpolicy.png" width="50%"/>
+</center>
 
 ---
 
 # Learning 
 
-$$
-y = f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x}))\\\\
-\Delta w_2 = 2\cdot(y - \hat{y})\cdot \frac{\text{d}}{\text{d} w_2} f_2(\vec{w_2} \cdot \vec{h}) \cdot \vec{h} \\\\
-w_2 = w_2 - \alpha\cdot \Delta w_2
-$$
-
-* How do we start?
-
-* How often do we do update?
-
-* What is `\(\alpha\)`?
-
-* Any problems with this approach?
-
----
-
-# Gradient Descent: Problems
-
-<img src="/CI-2600/assets/img/localoptimum.png" width="60%"/>
-
----
-
-# Gradient Descent: More Problems
-
-<img src="/CI-2600/assets/img/learningproblems.png" width="100%"/>
-
----
-
-# Gradient Descent 
-
-* Gradient Descent is the basis for learning in neural networks
-
-* We will see some ways to work around these problems 
-
-* So far we have also only seen Neural Networks with a single numerical output (Regression)
-
-* Next week: Neural Networks for classification
-
----
+  * The problem is: We don't generally know `V`, because we don't know `T(s,a)` (or `R(s)`) a priori
   
+  * What can we do?
+  
+  * In our learning runs (episodes), we record the rewards we get, and use them to find an estimate of `V`
+  
+  * But we would also need to learn which state each action takes us to, in order to determine which action we should take 
+
+---
+
+# The Q function
+
+  * Instead of learning `V` directly, we define a new function `Q(s,a)`, that satisfies `\(V(s) = \max_a Q(s,a)\)`
+
+$$
+Q(s,a) = R(s) + \max_{a'} \gamma Q(T(s,a),a')
+$$
+
+  * Now we learn the value of `Q` for "each" pair of state and action
+  
+  * The agent's policy is then `\(\pi(s) = \text{argmax}_a Q(s,a)\)`
+  
+  * How do we learn `Q`?
+  
+---
+
+# Q-Learning 
+
+  * We store Q as a table, with one row per state and one column per action
+  
+  * We then initialize the table "somehow"
+  
+  * During each training episode, we update the table when we are in a state s and perform the action a:
+  
+<span style="font-size: 0.7em;">
+$$
+Q(s,a) \leftarrow Q(s,a) + \alpha (R(s) + \gamma \max_{a'} Q(T(s,a), a') - Q(s,a))
+$$
+</span>
+
+---
+
+# Q-Learning: Training
+
+  * How do we train this agent?
+  
+  * We could just pick the action with the highest Q-value in our table 
+  
+  * But then the initial values of the table would guide the exploration
+  
+  * Instead, we use an exploration policy
+  
+  * This could be random, or `\(\varepsilon\)`-greedy
+  
+---
+
+# Q-Table 
+
+<img src="/PF-3341/assets/img/qtable.png" width="45%"/>
+
+---
+
+class: mmedium
+
+# Markov Decision Processes 
+
+  * So far, we have assumed actions will take us from one state to another deterministically
+  
+  * However, in many environments, transitions are non-deterministic 
+  
+  * Fortunately, we don't have to change much: Instead of a transition function `T(s,a)` we have transition probabilities `\(P(s' | s, a)\)`
+  
+  * Wherever we used `T(s,a)` we now use the expected value over all possible successor states
+  
+  * Note that with Q-Learning we did not have to learn `T(s,a)`, and we also do **not** have to learn `\(P(s' | s, a)\)` (model-free algorithm)
+  
+---
+
+class: center, middle
+
+# Some Applications
+
+---
+
+class: medium
+
+# Applications 
+
+  * Games are a natural fit for Reinforcement Learning 
+  
+  * Arguably the first ever AI agent was a "Reinforcement Learning" agent for checkers in 1959
+  
+  * The Backgammon agent TD-Gammon was another early success able to beat top players in 1992
+  
+  * Another popular application is robot control, such as for an inverted pendulum, autonomous cars, helicopters, etc. 
+
+---
+
+# Games
+
+  * Games, particularly classic arcade/Atari/NES games, have a become a standard testing-environment for Reinforcement Learning
+  
+  * Often, the state is given to the agent in terms of the raw pixels of the screen
+  
+  * Reinforcement Learning agents have become *very* good at playing these games 
+  
+  * Sometimes they find exploits!
+  
+---
+
+# Exploiting Coast Runners 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tlOIHko8ySg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+---
+
+# Inverted Pendulum 
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="600" height="400" viewBox="-150 70 300 330">
+<title>Cart pendulum</title>
+<defs>
+	<marker id="EndArrow" viewBox="0 0 10 10" refX="10" refY="5"
+		markerUnits="strokeWidth" orient="auto"
+		markerWidth="10" markerHeight="10">
+		<polyline points="10,5 0,10 4,5 0,0 10,5" fill="black" />
+	</marker>
+	<marker id="StartArrow" viewBox="0 0 10 10" refX="0" refY="5"
+		markerUnits="strokeWidth" orient="auto"
+		markerWidth="10" markerHeight="10">
+		<polyline points="0,5 10,0 6,5 10,10 0,5" fill="black" />
+	</marker>
+</defs>
+<circle cx="0" cy="80" r="20" fill="black" transform="rotate(-30,0,300)" />
+<g style="stroke:black;stroke-width:1;fill:none">
+	<line x1="-150" x2="150" y1="390" y2="390" />
+	<line x1="0" x2="0" y1="300" y2="70" stroke-width=".3" />
+	<g marker-end="url(#EndArrow)" >
+		<line x1="-140" x2="-140" y1="280" y2="230" />
+		<line x1="-140" x2="-90" y1="280" y2="280" />
+		<line x1="80" x2="150" y1="327.5" y2="327.5" />
+		<path d="M0,150 A150,150 0 0,0 -75,170" marker-start="url(#StartArrow)" />
+	</g>
+</g>
+<g id="set2">
+<g id="set1" style="stroke:black;stroke-width:1;">
+	<line id="hash" x1="-145" x2="-150" y1="390" y2="400" />
+	<use xlink:href="#hash" transform="translate(10)" />
+	<use xlink:href="#hash" transform="translate(20)" />
+	<use xlink:href="#hash" transform="translate(30)" />
+	<use xlink:href="#hash" transform="translate(40)" />
+	<use xlink:href="#hash" transform="translate(50)" />
+</g>
+<use xlink:href="#set1" transform="translate(60)" />
+</g>
+<use xlink:href="#set2" transform="translate(120)" />
+<use xlink:href="#set1" transform="translate(240)" />
+<g style="stroke:black;stroke-width:1;fill:rgb(170,170,170)">
+	<circle id="wheel" cx="-50" cy="370" r="20" />
+	<use xlink:href="#wheel" x="100" />
+	<rect x="-80" y="305" width="160" height="45" />
+	<path d="M-10,304 A11,19 0 0,1 10,304" />
+	<rect x="-2.5" y="100" width="5" height="200" transform="rotate(-30,0,300)" />
+</g>
+<text font-size="15" font-style="italic" fill="black">
+	<tspan x="-130" y="235">y</tspan>
+	<tspan x="-95" y="295">x</tspan>
+	<tspan x="-100" y="330">M</tspan>
+	<tspan x="110" y="325">F</tspan><tspan x="110" dy="-10">&#x0279d;</tspan>
+	<tspan x="-45" y="150">&#x03b8;</tspan>
+	<tspan x="-70" y="225">l</tspan>
+	<tspan x="-85" y="100">m</tspan>
+</text>
+</svg>
+
+  
+---
+
+# Stanford Autonomous Helicopter 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VCdxqn0fcnE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+---
+
+# Circuit Design 
+
+<img src="/PF-3341/assets/img/circuit.png" width="60%"/>
+
+---
+
 # References
+
+  * Chapter 21 of *AI: A Modern Approach*, by Russel and Norvig
+
+  * [A Painless Q-Learning Tutorial](http://mnemstudio.org/path-finding-q-learning-tutorial.htm)
+
+  * [Faulty Reward Functions in the Wild](https://openai.com/blog/faulty-reward-functions/)
   
-  * [Machine Learning 4 All: Guides](https://ml4a.github.io/guides/)
-  
-  * [PyTorch](https://pytorch.org/)
-  
-  * [DeepLearning with PyTorch](https://pytorch.org/deep-learning-with-pytorch)
-  
-  * [Introduction to Neural Networks](http://mt-class.org/jhu/slides/lecture-nn-intro.pdf)
+  * [Exploiting Q*Bert](https://www.theverge.com/tldr/2018/2/28/17062338/ai-agent-atari-q-bert-cracked-bug-cheat)  
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-0.14.0.min.js">
