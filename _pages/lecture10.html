@@ -130,7 +130,7 @@ class: medium
  
  * For example, these are all valid S-Expression:
 
-```
+```Lisp
 ()
 (and (or (not a) b (and (not x) c d e) e))
 (defun fib (n) (if (lt n 2) 1 (+ (fib (- n 1)) (fib (- n 2)))))
@@ -145,26 +145,6 @@ class: medium
   * They are very simple to parse, and we can use them to represent syntax trees
   
   * Remember when we discussed how one would implement logic? We can basically take S-Expressions and directly use them with these data structures
-
----
-
-# Structure of a PDDL Domain File
-
-.left-column[
-<img src="/PF-3335/assets/img/domain.png" width="100%"/>
-]
-
-.right-column[
-
-* Now we have our PDDL domain file as a parse-tree
-
-* Let's extract the individual parts
-
-* For each part we have to do some processing
-
-* After all processing, we have our domain
-
-]
 
 ---
 
@@ -334,7 +314,7 @@ floor - object
 
 * "Actions" in PDDL are actually *operators*
 
-* That means they contain free variables (often with types)
+* That means they contain free variables, or **parameters** (often with types)
 
 * Each operator may represent multiple actions
 
@@ -344,7 +324,7 @@ floor - object
 
 # Action Example
 
-```
+```Lisp
 (:action up
   :parameters (?f1 - floor
                ?f2 - floor)
@@ -463,8 +443,6 @@ floor - object
 
 ]
 
-
-
 ---
 
 class: center, middle
@@ -475,7 +453,7 @@ class: center, middle
 
 # Domain: Types and Predicates 
 
-```
+```Lisp
 (:types 
     passenger - object
     floor - object
@@ -502,7 +480,7 @@ class: center, middle
 
 # Domain: Drive Up and Down
 
-```
+```Lisp
 ;;drive up
 
 (:action up
@@ -530,7 +508,7 @@ class: center, middle
 
 # Domain: Stop at Floor
 
-```
+```Lisp
 (:action stop
 
   :parameters (?f - floor)
@@ -555,7 +533,7 @@ class: center, middle
 
 # Problem
 
-```
+```Lisp
 (:objects p0 - passenger
           f0 f1 - floor)
 
@@ -615,7 +593,7 @@ class: small
 
 # Plans
 
-* So you run your planner and it finishes
+* So you run a planner and it finishes
 
 * The output will be a "plan"
 
@@ -629,7 +607,7 @@ class: small
 
 * Since planning is a very active field of research, there are many planning domains out there
 
-* [planning.domains](http://planning.domains) actually contains a collection of known domains, drawing from planning competitions and other sources
+* [planning.domains](http://planning.domains) contains a collection of known domains, drawing from planning competitions and other sources
 
 * All of the files in that repository are PDDL files
 
@@ -649,7 +627,7 @@ class: center, middle
 
 * It parses a domain and a problem file and then performs A* to find a plan
 
-* The heuristic is uses is a very simple one, based on FastDownward 
+* The heuristic it uses is a very simple one, vaguely based on FastForward
 
 * Don't expect it to win any performance awards
 
@@ -659,7 +637,7 @@ class: medium
 
 # Lab 3
 
-* The planner comes with the elevator domain (you can look at other domains from [planning.domains](http://planning.domains) if you want)
+* The planner comes with the elevator domain (and some others, you can also look at other domains from [planning.domains](http://planning.domains) if you want)
 
 * The task is to modify the domain to include **two or more** elevators
 
@@ -683,7 +661,7 @@ For the final part of the lab, add restrictions to your elevators:
   
   - One elevator can only stop at floors divisible by 3
   
-Come up with another problem, with at least 8 floors and 4 customers that uses every elevator!
+Come up with at least one more problem, with at least 8 floors and 5 customers
   
 ---
 
@@ -692,6 +670,8 @@ class: small
 # Resources
 
   * [International Planning Competition](http://icaps-conference.org/index.php/Main/Competitions)
+  
+  * [Planning Domain Repository](https://github.com/AI-Planning/classical-domains)
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">

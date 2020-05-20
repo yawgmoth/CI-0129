@@ -10,3 +10,4 @@ categories: [frontpage]
 
 [Lab 1: Mar 23-May 1, 2020](lab1.html)<br/>
 [Lab 2: May 4-May 22, 2020](lab2.html)<br/>
+[Lab 3: May 25-Jun 5, 2020](lab3.html)<br/>

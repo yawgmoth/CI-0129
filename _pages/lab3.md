@@ -20,23 +20,26 @@ for the planner. You will then further extend the domain to include restrictions
 
 ## The Planner
 
-You can download the planner [here](). It is written in python 3, for educational purposes, so do not expect competitive performance. Instead, take some time to look at the structure and implementation of the planner:
+You can download the planner [here](/CI-0129/assets/planner.zip). It is written in python 3, and for educational purposes, so do not expect competitive performance. Instead, take some time to look at the structure 
+and implementation of the planner:
 
   - `pddl.py` contains a parser for PDDL files. It tokenizes the input and then constructs the syntax tree
   - `expressions.py` contains the implementation of the logical reasoning necessary for the planner, in particular a representation for predicate logic formulas and interpretations/states/worlds. You can see that each operator type has its own subclass, that implementes `isModeledBy` and `substitute`.
   - `graph.py` contains the graph representation that you already know from lab 1
   - `pathfinding.py` contains an implementation of A\*, which should be similar to your implementation from lab 1
-  - `planner.py`, finally, is the main program, it takes two parameters: a PDDL domain file and a PDDL problem file. It will then parse both of these files using `pddl.py`, and construct a pathfinding problem: The initial state becomes a `Node` (here represented by the class `PlanningNode` which is a subclass of `Node` and of `World`), and each node has a neighbor for each (ground) action that can be applied to that node. The planner then runs A\* on this graph, with the goal of finding a node which is a model for the goal condition.
+  - `planner.py`, is the main program, it takes two parameters: a PDDL domain file and a PDDL problem file. It will then parse both of these files using `pddl.py`, and construct a pathfinding problem: The initial state becomes a `Node` (here represented by the class `PlanningNode` which is a subclass of `Node` and of `World`), and each node has a neighbor for each (ground) action that can be applied to that node. The planner then runs A\* on this graph, with the goal of finding a node which is a model for the goal condition.
+  - `test_planner.py` will run a larger test suite, consisting of several domains and problems you can find in the `test/` directory. You don't have to use this, but taking a look at these additional domains may lead to a better understanding of PDDL.
 
-You can run the planner with `python planner.py elevator-domain.pddl elevator-problem.pddl`, and it will produce a "path", or plan, that solves this particular problem. For the lab, you will **not** have to modify the planner code in any way. Instead, you will only be creating new pddl files to use as input for the planner!  
+You can run the planner with `python planner.py elevator-domain.pddl elevator-problem.pddl`, and it will produce a "path", or plan, that solves this particular problem. For the lab, you will **not** have to modify 
+the planner code in any way. Instead, you will only be creating new pddl files to use as input for the planner!  
 
 ## The Elevator Domain
 
-Open `elevator-domain.pddl` in a text editor and look at its contents. First, each domain has a name, in this case "miconic", and which PDDL features it requires (here adl and typing). The typing feature lets us define types 
-for our constants, which is what is done next. The following predicate definitions also include the types of all parameters. The main part of the domain file is the definition of actions. Each action has a name and a list of
-parameters, which means it is technically just an action *template*, that will be expanded to a **ground action** when values for these parameters are chosen. Each action then has a **precondition** and an **effect**. The 
-precondition can be an arbitrary formula that defines in which states an action can be applied, namely only in states that are models for the precondition. The effect, on the other hand, can only be an effect formula 
-(a conjunction of positive and negative literals, foralls and when-expressions), and defines what an action changes in the world. 
+Open `elevator-domain.pddl` in a text editor and look at its contents. First, each domain has a name, in this case "<a href="https://elevation.fandom.com/wiki/Schindler_Miconic_10">miconic</a>", and which PDDL features 
+it requires (here adl and typing). The typing feature lets us define types for our constants, which is what is done next. The following predicate definitions also include the types of all parameters. The main part of 
+the domain file is the definition of actions. Each action has a name and a list of parameters, which means it is technically just an action *template*, that will be expanded to a **ground action** when values for 
+these parameters are chosen. Each action then has a **precondition** and an **effect**. The precondition can be an arbitrary formula that defines in which states an action can be applied, namely only in states that 
+are models for the precondition. The effect, on the other hand, can only be an effect formula (a conjunction of positive and negative literals, foralls and when-expressions), and defines what an action changes in the world. 
 
 Take the `up` action, for example. It has two parameters: the floor the elevator is departing from (`?f1`) and the floor the elevator is going to (`?f2`). Note that names, including parameters, variables, but also constants,
 can contain basically any character except for spaces and parenthesis. It is customary, but not mandatory, to begin variable names with a question mark. The action has a precondition, which limits when it can be applied:
@@ -81,10 +84,10 @@ and the second elevator to move them to floor 1.
 You will have to change several things in the domain for this to work:
 
  - You need a new predicate to represent the restriction of which elevator can stop on which floor
+ - The problem file needs to use the new predicate to properly restrict the three elevators. You can do this by manually writing out which floors each elevator can reach.
  - Passengers need to be able to leave the elevator on floors that are not their destination. One way to do this is to give passengers a position, and when they leave the elevator at a floor, their position changes 
  to that floor. Only **when** they leave on their destination floor will they "disappear" and be marked as served.
- - The problem file needs to use the new predicate to properly restrict the three elevators. Do this by manually writing out which floors each elevator can reach.
- 
+
 For both tasks, report the plans found by the planner in your report. Do not just use the output from the planner, but describe it in words. Also mention any inefficient or otherwise strange behavior that you may notice.
 
 ## Submission
