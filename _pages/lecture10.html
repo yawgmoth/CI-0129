@@ -16,6 +16,11 @@ permalink: /slides/lecture10.html
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
       }
+      
+      .MathJax {
+         font-size: 0.6em !important;
+      }
+      
       p { font-size: 1.25em; }
       div { font-size: 1.25em; }
       li { font-size: 1.25em; }
@@ -134,6 +139,33 @@ class: medium
 ()
 (and (or (not a) b (and (not x) c d e) e))
 (defun fib (n) (if (lt n 2) 1 (+ (fib (- n 1)) (fib (- n 2)))))
+```
+
+---
+
+# S-Expressions and Logic
+
+Logic:
+$$
+\mathit{lift-at}(\mathit{f0}) \wedge \mathit{origin}(\mathit{p0}, \mathit{f0})\\\\
+\forall p \in \mathit{Ps}: \left(\mathit{served}(p) \vee \neg \mathit{boarded}(p)\right)\\\\
+\forall p \in \mathit{Ps}: \forall f \in \mathit{Fs}: \left(\text{when}\:(\mathit{liftat}(f)\wedge\mathit{origin}(p,f))\quad \mathit{boarded}(p)\right)
+$$
+
+```Lisp
+(and (lift-at f0) (origin p0 f0))
+
+(forall (p - Ps) (or (served p) (not (boarded p))))
+
+(forall (p - Ps) (forall (f - Fs) 
+                         (when (and 
+                                   (liftat f) 
+                                   (origin p f)
+                               ) 
+                               (boarded p)
+                         )
+                 )
+)
 ```
 
 ---
