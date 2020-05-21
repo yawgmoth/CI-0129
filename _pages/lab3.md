@@ -20,7 +20,7 @@ for the planner. You will then further extend the domain to include restrictions
 
 ## The Planner
 
-You can download the planner [here](/CI-0129/assets/planner.zip). It is written in python 3, and for educational purposes, so do not expect competitive performance. Instead, take some time to look at the structure 
+You can download the planner [here](/CI-0129/assets/lab3.zip). It is written in python 3, and for educational purposes, so do not expect competitive performance. Instead, take some time to look at the structure 
 and implementation of the planner:
 
   - `pddl.py` contains a parser for PDDL files. It tokenizes the input and then constructs the syntax tree
