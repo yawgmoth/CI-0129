@@ -92,6 +92,6 @@ For both tasks, report the plans found by the planner in your report. Do not jus
 
 ## Submission
 
-Send the finished code (all python files you have!), and your report pdf in a zip file by email to me and Christian ([markus.eger.ucr@gmail.com](mailto:markus.eger.ucr@gmail.com), 
+Send the finished code (all pddl files you have!), and your report pdf in a zip file by email to me and Christian ([markus.eger.ucr@gmail.com](mailto:markus.eger.ucr@gmail.com), 
 [aiexistencialrisk@gmail.com](mailto:aiexistencialrisk@gmail.com)). Use `[CI-0129]Lab 3, carné 1 carné 2` as the subject line. Do not forget to put the names and 
 carn&eacute;'s of both team members in the report as well!
