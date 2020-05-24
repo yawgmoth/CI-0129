@@ -76,13 +76,11 @@ What is Machine Learning?
 
 # Machine Learning
 
-- Supervised Learning: Learn a mapping from examples 
+- Supervised Learning: Learn a mapping from examples (next week)
 
-- Unsupervised Learning: Learn an interesting thing about data
+- Unsupervised Learning: Learn an interesting thing about data (today)
 
-- Reinforcement Learning: Learn what to do in an environment, given feedback information
-
-We will cover some algorithms from each of these areas in this course!
+- Reinforcement Learning: Learn what to do in an environment, given feedback information (thursday)
 
 ---
 
@@ -90,7 +88,7 @@ We will cover some algorithms from each of these areas in this course!
 
 Say there is a function `\(f(\vec{x}) = y\)`
 
-- Supervised Learning: We know x and y, and are trying to find f (more accurately: a probability distribution `\(P(x|y)\)`)
+- Supervised Learning: We know x and y, and are trying to find f (more accurately: a probability distribution `\(P(y|x)\)`)
 
 - Unsupervised Learning: We know x and are trying to find "interesting" f and y
 
@@ -181,6 +179,22 @@ class: center, middle
   * How many classes are there?
   
   * We call the classes *clusters*
+  
+---
+
+class: small
+
+# Clustering
+
+<img src="/CI-0129/assets/img/merge3clusters.jpg" width="100%"/>
+
+---
+
+class: small
+
+# Clustering
+
+<img src="/CI-0129/assets/img/fuzzycluster.png" width="100%"/>
 
 ---
 
@@ -433,21 +447,19 @@ class: mmedium
 
   * With this notion it is possible to model dataset as a mixture of several Gaussian Distributions. 
 
-  * This is the core idea of GMM.
+  * This is the core idea of Gaussian Mixture Models
 
 ---
 
 class: mmedium
 
-# GMM
+# Gaussian Mixture Models
 
-  * A GMM has a series of parameter that can be ilustrated here:
+  * A Gaussian (normal) distribution in our model has several parameters:
  
- 1- A mean μ that defines its centre.
+ 1- A mean μ that defines its centre
  
- 2- A covariance Σ that defines its width.
- 
- 3- A mixing probability π that defines how big or small the Gaussian function will be.
+ 2- A covariance Σ that defines its width (in each dimension!)
 
 <img src="/CI-2600/assets/img/gmm.png" width="60%"/>
 
@@ -15641,6 +15653,8 @@ class: medium
   * [Machine Learning 4 All: Guides](https://ml4a.github.io/guides/)
   
   * *Pattern Recognition and Machine Learning* (Chapter 9), by Christopher Bishop
+  
+  * [So You Have Some Clusters, Now What?](https://medium.com/@fan_zhang/so-you-have-some-clusters-now-what-4cc39a531e9b)
   
 
     </textarea>

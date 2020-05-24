@@ -18,7 +18,7 @@ permalink: /slides/lecture12.html
         font-weight: normal;
       }
       .MathJax {
-         font-size: 0.8em !important;
+         font-size: 0.7em !important;
       }
       p { font-size: 1.25em; }
       div { font-size: 1.25em; }
@@ -201,12 +201,14 @@ $$
   * We then initialize the table "somehow"
   
   * During each training episode, we update the table when we are in a state s and perform the action a:
-  
-<span style="font-size: 0.7em;">
+
 $$
 Q(s,a) \leftarrow Q(s,a) + \alpha (R(s) + \gamma \max_{a'} Q(T(s,a), a') - Q(s,a))
 $$
-</span>
+
+$$
+Q(s,a) \leftarrow (1 - \alpha ) \cdot Q(s,a) + \alpha \cdot (R(s) + \gamma \max_{a'} Q(T(s,a), a'))
+$$
 
 ---
 
@@ -278,9 +280,9 @@ class: medium
   
 ---
 
-# Exploiting Coast Runners 
+# Exploiting Pong
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/tlOIHko8ySg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/naSpIBWqOjk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ---
 

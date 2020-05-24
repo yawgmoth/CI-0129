@@ -1,11 +1,11 @@
 ---
-permalink: /slides/lecture13.html
+permalink: /slides/lecture14.html
 ---
 
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lecture 13: Neural Networks 4</title>
+    <title>Lecture 14: Neural Networks in PyTorch</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -20,6 +20,10 @@ permalink: /slides/lecture13.html
       .MathJax {
          font-size: 0.7em !important;
       }
+      .small .MathJax {
+         font-size: 0.5em !important;
+      }
+      
       p { font-size: 1.25em; }
       div { font-size: 1.25em; }
       li { font-size: 1.25em; }
@@ -66,48 +70,120 @@ permalink: /slides/lecture13.html
 
 class: center, middle
 
-# Machine Learning
+# Artificial Intelligence
 
-## Neural Networks 4
-
-### III-Verano 2019
+### Neural Networks in PyTorch
 
 ---
 
-# Artificial Neural Networks
+class: medium
 
+# Vector and Matrices and Tensors, oh my!
 
-<p style="margin-top: 5cm; text-align: center; font-size: 2em">
-What is an (Artificial) Neural Network?
-</p>
+* Vector: An ordered list of numbers 
+
+* Matrix: A grid of numbers 
+
+* We could store a matrix in a vector, if we remember the dimensions!
+
+* **Tensor**: What if we "need" more dimension?
+
+* For example: We have 10000 images of 28x28 pixels. We store them in a 10000x28x28 tensor
+
+* In memory the pixels will still be stored sequentially, the tensor is really just a different "view" on the data
 
 ---
 
-# Artificial Neural Networks 
+# PyTorch 
 
-.left-column[
-<img src="/CI-2600/assets/img/ANN.svg" width="100%"/>
-]
+* PyTorch is a python library for Machine Learning
 
-.right-column[
-We introduced one or more "hidden layers", which will hold intermediate values h
+* At every major Machine Learning conference last year, the majority of papers used PyTorch
 
-$$
-\vec{h} = f_1(W_1 \cdot \vec{x})\\\\
-y = f_2(\vec{w_2} \cdot \vec{h})\\\\
-y = f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x}))
-$$
-]
+* The other "big one" is Tensorflow, which is a bit older and has therefore more adoption in industry
+
+* PyTorch is easier to get started with, and once you know the core concepts you can easily pick up Tensorflow, too
+
+---
+
+# PyTorch vs. Tensorflow 
+
+<img src="/CI-2600/assets/img/pytorch_vs_tensorflow.png" width="100%"/>
+
+---
+
+# Book
+
+<img src="/CI-2600/assets/img/textbook.png" width="45%"/>
+
+(<a href="https://pytorch.org/deep-learning-with-pytorch">Free PDF available</a>)
+
+---
+
+class: medium 
+
+# Installing PyTorch 
+
+* You need Python 3, **64 bits**
+
+* The PyTorch website has a [Get Started](https://pytorch.org/get-started/locally/) section, which tells you how to install in various environments
+
+* On Windows (will automatically install dependencies):
+
+```
+pip install torch===1.5.0 torchvision===0.6.0 -f https://download.pytorch.org/whl/torch_stable.html
+```
+
+Also install `PIL` with `pip install PIL`!
+
+---
+
+# Testing the Installation
+
+```Python
+import numpy
+import PIL
+import torch
+import torchvision
+
+import struct
+if struct.calcsize("P") * 8 != 64:
+    raise Exception("Not a 64 bit interpreter")
+
+print("OK")
+```
+
+---
+
+class: medium
+
+# PyTorch 
+
+* (Almost) everything is a `pytorch.Tensor`!
+
+* These tensors really are just views into a sequential array of numbers 
+
+* Each tensor can also "remember" where it came from (e.g. if it is the result of an addition)
+
+* This means, you can also view a tensor as a "tree" of computation, with the result at the top, and the inputs as the leaves
+
+* You can also tell your tensors that the operations should be performed on the GPU
+
+---
+
+# PyTorch: Computation Graphs 
+
+<img src="/CI-0129/assets/img/autograd.png" width="80%"/>
 
 ---
 
 class: center, middle 
 
-# Squeeze, Unsqueeze, View 
+# Tensors: Squeeze, Unsqueeze, View 
 
 ---
 
-# Review: Tensors in PyTorch
+# Tensors in PyTorch
 
 * A Tensor consists of an array of memory and a way to look at that memory 
 
@@ -119,7 +195,7 @@ class: center, middle
 
 ---
 
-# Review: Tensors in PyTorch
+# Tensors in PyTorch
 
 Let `x` be a tensor with shape `[12,2]`
 
@@ -195,222 +271,329 @@ class: medium
 
 ---
 
-# Why?
+class: center, middle 
 
-* PyTorch Neural Networks **always** need a matrix as input and **always** produce a matrix as output (efficiency)
-
-* For MSELoss, the tensors have to have the same shape
-
-* If we only have one feature as input, or only one output (regression), we need to reshape the tensors!
-
-* Always check your tensor shapes!
+# Neural Networks in PyTorch
 
 ---
 
-class: center, middle
+# Artificial Neural Networks
 
-# Recurrent Neural Networks 
+.left-column[
+<img src="/CI-2600/assets/img/ANN.svg" width="100%"/>
+]
+
+.right-column[
+We introduced one or more "hidden layers", which will hold intermediate values
+
+$$
+\vec{h} = f_1(W_1 \cdot \vec{x})\\\\
+y = f_2(\vec{w_2} \cdot \vec{h})\\\\
+y = f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x}))
+$$
+]
 
 ---
 
-# Recurrent Neural Networks 
+# Defining a Neural Network
 
-* So far we have looked at Neural Networks with a static number of inputs 
+* Our Neural Network consists of Layers 
 
-* However, often we have variable length input, for example if we collect time series data (like cards played in Hearthstone)
+* Each layer consists of a linear part, and an activation function
 
-* One approach to this is to feed the network one time step at the time and give it "memory"
+* The output from one layer is passed as the input to the next layer 
 
-* We can conceptualize this memory as a "hidden variable", or **hidden state**
+* In PyTorch, we can define such a network as a "sequence"
+
+---
+
+# Defining a Neural Network 
+
+```Python
+model = torch.nn.Sequential(
+  # number of inputs: 128*128*3 -> number of outputs: 100 
+  torch.nn.Linear(128*128*3, 100),
+  
+  # Activation function
+  torch.nn.Sigmoid(),
+
+  # number of inputs: 100 -> number of outputs: 1
+  torch.nn.Linear(100,1)  
+)
+
+y_hat = model(x)
+```
+
+---
+
+# Defining a Neural Network: Alternative 
+
+```Python
+class TwoLayerNet(torch.nn.Module):
+    def __init__(self, D_in, H, D_out):
+        super(TwoLayerNet, self).__init__()
+        self.linear1 = torch.nn.Linear(D_in, H)
+        self.sig1 = torch.nn.Sigmoid()
+        
+        self.linear2 = torch.nn.Linear(H, D_out)
+
+    def forward(self, x):
+        h = self.linear1(x)
+        h = self.sig1(h)
+        return self.linear2(h)
+
+model = TwoLayerNet(128*128*3, 100, 1)
+y_hat = model(x)
+
+```
+
+---
+
+# Learning 
+
+* Once we have a neural network, we need to train it 
+
+* Training works by "showing" the network a training example, and comparing the network's output to the desired output 
+
+* Then we change the parameters/weights of the network 
+
+* Of course, PyTorch can do all of this (mostly) automatically for us!
+
+---
+
+# Learning: Loss Function
+
+* Last time we talked about the "Mean Squared Error"
+
+* PyTorch provides you with the class `torch.nn.MSELoss`
+
+* You can use it to compute the loss as a 1x1 tensor 
+
+* You can then call the method `backward()` on this tensor to calculate the gradient of the loss!
+
+---
+
+# Learning: Optimizers 
+
+* An **Optimizer** is an algorithm that changes the network parameters depending on the loss/gradient 
+
+* PyTorch provides several optimizers, I recommend `Adam` for most tasks 
+
+* `Adam` needs you to calculate the error/loss, and call `backward()` 
+
+* Then you call the `step()` method
+
+---
+
+# Training a Neural Network 
+
+```Python
+loss_fn = torch.nn.MSELoss()
+# lr = Learning Rate: How fast the parameters change 
+# Adam will change the learning rate over time!
+optimizer = torch.optim.Adam(model.parameters(), lr=0.1)
+
+for t in range(n):
+  y_pred = model(x)
+  loss = loss_fn(y_pred, y)
+  
+  # IMPORTANT: Reset the gradient to zero!
+  optimizer.zero_grad()
+  
+  # Calculate the gradient 
+  loss.backward()
+  
+  # Change the network parameters
+  optimizer.step()
+```
+
+---
+
+# Classification Using Neural Networks
+
+* So far, we have looked at predicting numbers as outputs 
+
+* What if we just want to distinguish classes, like "cat" and "not cat"?
+
+* Idea: Let's set a "threshold". If the output number is higher it means "cat", otherwise it means "not cat"
+
+* Second idea: Let's limit our output to be between 0 and 1 by using a Sigmoid
+
+---
+
+# Training
+
+* Now we train our neural network. We have images of cats and non-cats 
+
+* As the desired output we set 1 for all cats, and 0 for all non-cats 
+
+* Then we calculate the loss: MSE is not great for such a limited range, so we use something else 
+
+* `torch.nn.BCELoss` ("Binary Cross Entropy Loss")
+
+---
+
+# Defining the Classifier
+
+```Python
+model = torch.nn.Sequential(
+  # number of inputs: 128*128*3 -> number of outputs: 100 
+  torch.nn.Linear(128*128*3, 100),
+  torch.nn.Sigmoid(),
+
+  # number of inputs: 100 -> number of outputs: 1
+  torch.nn.Linear(100,1),
+  # make sure the output is between 0 and 1
+  torch.nn.Sigmoid()
+)
+```
+
+---
+
+# Code 
+
+```Python
+# Binary Cross Entropy Loss
+loss_fn = torch.nn.BCELoss()
+
+optimizer = torch.optim.Adam(model.parameters(), lr=0.1)
+
+for t in range(n):
+  # IMPORTANT: Reset the gradient to zero!
+  optimizer.zero_grad()
+
+  # Calling "backward()" twice *accumulates* the 
+  # gradient of the two classes
+  y_pred = model(cats)
+  loss = loss_fn(y_pred, torch.ones(y_pred.shape))
+  loss.backward()
+  
+  y_pred = model(noncats)
+  loss = loss_fn(y_pred, torch.zeros(y_pred.shape))
+  loss.backward()
+  
+  optimizer.step()
+```
+
+---
+
+# Classification Metrics 
+
+* In our regression task we just measured the numerical distance to determine how "well" we did 
+
+* In classification there can be different types of mistakes, and it may make sense to distinguish between them
+
+* If we have an image of a cat and classify it as a "non-cat" (false negative) that is a different error than if we have an image of a non-cat and we classify it as a "cat" (false positive)
 
 ---
 
 class: medium
 
-# Recurrent Neural Networks 
+# Classification Metrics 
 
-.left-column[
-<img src="/CI-2600/assets/img/rnn.svg" width="800pt"/>
-]
+* Using the true positives (TP), false positives (FP), true negatives (TN) and false negatives (FN) we can defined several metrics 
 
-.right-column[
+* **Accuracy**: percentage of correctly classified samples: (TP + TN)/(TP + TN + FP + FN)
 
-* The hidden state is initialized to some values (zeros)
+* **Precision**: percentage of true positives among all positives: TP/(TP + FP)
 
-* Then the first input element/step is passed to the network, and it produces output **and** a new hidden state 
+* **Recall**: percentage of positives that were correctly identified: TP/(TP + FN)
 
-* This new hidden state is passed to the network with the next input element/step
-]
+* **F1 score**: Harmonic mean of precision and recall
 
 ---
 
-# Recurrent Neural Networks: Unfolding
+class: small
 
-<img src="/CI-2600/assets/img/rnnunfold.svg" width="100%"/>
+# Metrics
+<!-- /CI-2600/assets/img/ -->
+<img src="/CI-2600/assets/img/confusion_matrix.png" width="70%"/>
 
----
+$$ \text{accuracy} = \frac{\mathit{TP} + \mathit{TN}}{\mathit{TP} + \mathit{FP} + \mathit{TN} + \mathit{FN}} = \frac{90 + 940}{90 + 940 + 60 + 10} = 0.94$$
 
-# Recurrent Neural Networks: Modes
+$$ \text{precision} = \frac{\mathit{TP}}{\mathit{TP} + \mathit{FP}} = \frac{90}{90+ 60} = 0.6 $$
 
-<img src="/CI-2600/assets/img/rnnmodes.png" width="100%"/>
+$$ \text{recall} = \frac{\mathit{TP}}{\mathit{TP} + \mathit{FN}} = \frac{90}{90 + 10} = 0.9$$
+
+$$ \text{F1} = \frac{2\cdot\text{precision}\cdot\text{recall}}{\text{precision} + \text{recall}} = \frac{2\cdot 0.6\cdot 0.9}{0.6+0.9} = 0.72$$
 
 ---
 
 class: center, middle 
 
-# Generative, Adversarial Networks 
+# Lab 4
 
 ---
 
-# Generative, Adversarial Networks 
+# Lab 4
 
-* So far we have used Neural Networks to classify images, or predict some value 
+* In Lab 4 you will work with pictures of handwritten digits 
 
-* Could we **generate** things with a Neural Network?
+* First, we will train a neural network to identify a certain digit (e.g. 2)
 
-* Crazy idea: We pass the Neural Network some random numbers and it produces a new Picasso-like painting
+* Then, we will train a second neural network to **generate** new pictures from random noise 
 
---
-
-* That's exactly what we'll do!
+* This technique is called "Generative Adversarial Networks", and we will talk more about it next week 
 
 ---
 
-# First: Classification
+# Lab 4: MNIST 
 
-* To produce a Picasso-like painting, we first need to know which paintings *are* Picasso-like 
-
-* We could train a Neural Network that detects "real" Picassos
-
-* Input: An image 
-
-* Output: "True" Picasso, or "fake"
-
-* So we'll need some real and fake Picassos to start with ...
+<img src="/PF-3115/assets/img/mnist.png" width="100%"/>
 
 ---
 
-# Art Connoisseur Network
+class: mmedium
 
-* After some training, our network will be able to distinguish real and fake picassos
+# Lab 4: Task 1
 
-* This means we can give this network a new painting, and it will tell us if it is real or not 
+* Construct a neural network (based on the code above) to classify images into "2" and "not 2" (you can pick any digit you like)
 
-* Now we can define the task for our generator more clearly: Fool the detector network, i.e. generate paintings that the detector recognizes as "real" Picassos 
+* Train the neural network using data read with the provided code 
 
----
+* Note how many images your network classifies correctly and incorrectly, and calculate the percentage of correctly classified images (accuracy)
 
-class: medium
+* You should be able to classify more than 85% of images correctly (ideally around 95%)
 
-# The Generator Network 
-
-* The Generator Network takes, as we wanted, a vector of random numbers as input, and produces a picture as output
-
-* The **loss function** for this network then consists of passing the produced image through the detector and determining if it believes the painting to be real or not 
-
-* We can then use backpropagation and gradient descent, as usual, to update the weights in our generator 
-
-* Over time, our generator will learn to fool the detector!
+* Also generate some random images (`torch.rand((nrows,ncols))`) to train your network with and measure how it performs on them
 
 ---
 
-# Not quite enough ...
+class: mmedium
 
-* If our detector was "perfect", this would already be enough 
+# Lab 4: Pitfalls
 
-* However, to start, we needed some "fake" Picassos, which we just generated randomly 
+* PyTorch Neural Networks **always** need a matrix as input and **always** produce a matrix as output (efficiency)
 
-* Once the Generator produces some images, we actually have "better fakes"!
+* This means, you have to make sure that your data is in the right shape 
 
-* So we can improve the Detector with that
+* Your images have to have 28x28 = 784 **columns** and as many rows as you have pictures 
 
-* And then we need to improve the Generator again, etc.
+* The output will be a **matrix** with 1 column, and as many rows as you put pictures into your network 
 
----
+* For BCELoss, the tensors have to have the same shape, so your labels also have to be in a matrix 
 
-# Generative, Adversarial Networks 
-
-* Generative: We **generate** images 
-* Adversarial: The Generator and the Detector play a "game" against each other
-
-<center>
-<img src="/CI-2600/assets/img/GAN.jpeg" width="80%"/>
-</center>
+* Always check your tensor shapes (attribute `.shape`)
 
 ---
 
-class: center, middle
+# Lab 4: Pitfalls
 
-# Exam Preparation
+* Your images should *always* be scaled to use numbers between 0 and 1
 
----
+* The provided code performs this normalization (division by 255)
 
-# Question 
+* When you want to show one of the images, make sure to tell `show_image` to re-scale it properly
 
-## What is Regression?
-
-## What is Classification?
-
----
-
-# Question 
-
-## You are given a set of images, with 100x100 pixels, some of which are spoons, and some are forks
-
-## What Neural Network architecture would you propose for this task (layers, neurons, activation functions)?
-
-## What if there are spoons, forks, and knives?
-
----
-
-# Question
-
-## Your model has the weights `w`, and you just calculated the loss and the gradient. Assume a learning rate of `0.1`, and calculate the new values for `w`
-
-$$
-w = \begin{pmatrix}1.2\\\\ 2.1\end{pmatrix}\\\\
-\nabla w = \begin{pmatrix}7\\\\11\end{pmatrix}
-$$
-
-
----
-
-# Question
-
-## Your binary model constructed for the task of discriminating between dogs and non-dogs has resulted in the following confusion matrix
-      
-<img src="/CI-2600/assets/img/binary_dog_conf_mat.png" width="80%"/>
-
-Calculate the precision and recall and F1
-      
----
-class: medium      
-      
-# Question
-
-## OK, now that you are warmed up with metrics, Your multiclass model constructed for the task of discriminating between dogs, cats and hens has resulted in the following confusion matrix
-      
-<img src="/CI-2600/assets/img/multiclassd_animal_matrix.png" width="65%"/>
-
-Calculate the precision and recall for each class. Also the F1 for each class and the macro F1, macro recall and macro precision.
-
----
-
-# Question
-
-## Exploratory Data Analysis is an important part of any machine learning project. EDA is the first step of any ML project.
-## Explain briefly why EDA is important, what can we discover and what potential pitfalls or problems can we avoid if we explore and get to know our data before constructing the model?
-
-      
 ---
 
 # References 
 
   * [Torch Tensor Operations Overview](https://jhui.github.io/2018/02/09/PyTorch-Basic-operations/)
   
-  * [RNN Introduction](https://medium.com/explore-artificial-intelligence/an-introduction-to-recurrent-neural-networks-72c97bf0912)
+  * [DeepLearning With PyTorch](https://pytorch.org/deep-learning-with-pytorch)
   
-  * [GAN Introduction](https://machinelearningmastery.com/how-to-develop-a-generative-adversarial-network-for-an-mnist-handwritten-digits-from-scratch-in-keras/)
+  * [Adam: A Method for Stochastic Optimization](https://arxiv.org/pdf/1412.6980.pdf)
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-0.14.0.min.js">

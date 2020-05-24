@@ -72,31 +72,126 @@ class: center, middle
 
 class: center, middle 
 
-# Some Linear Algebra
-
----
-
-class: small
-
-# Functions 
-
-Remember our function `\(f(\vec{x}) = y\)`
-
-- This function takes a vector of real numbers and produces one real number
-
-- Unlike vectors you may have seen before, this vector is really just "an ordered collection of numbers"
-
-- For example: We want to predict the price of google stock given the day of the year, the temperature, the position of Mars in its orbit, and the number of Marvel movies released so far
-
-- We construct a four-dimensional vector with one entry for each of these numbers 
-
-- Our (supervised) learning algorithm then has to figure out how to turn these four values into a stock price (not all values may be relevant)
+# Supervised Learning 
 
 ---
 
 class: medium
 
-# Vectors 
+# Supervised Learning 
+
+* In Supervised Learning, we are given some x and y, and want to learn a function `f(x) = y`
+
+* The goal is to be able to apply this function to unknown values of x 
+
+* For example: We are given the stats of several houses (x) in Cartago and their prices (y), and want to be able to predict the prices of other houses
+
+* Another example: We are given pictures of animals (x), and labels of cat or dog (y), and want to recognize cats and dogs in other pictures
+
+---
+
+# Supervised Learning 
+
+There are two main tasks:
+
+* Regression: We predict a (continuous) number (price, duration, score) as our output 
+
+* Classification: We predict one of several limited (discrete) categories/"classes" (cat vs. dog, spam vs. not spam, movie genre), as our output
+
+There are many methods for each of these two tasks. We will mostly focus on Neural Networks in this class, which can be applied to both problems 
+
+---
+
+# Linear Regression 
+
+* We have some points `\((x_i, y_i)\)` in the plane 
+
+* We want to find a line that "best" represents these points 
+
+* What's a line? `\(\hat{y}_i = w \cdot x_i + b\)`
+
+* What is the "best" representation? We want `\(\hat{y}_i\)` and `\(y_i\)` to be "the same"
+
+* We minimize the mean squared error (MSE) `\(\frac{1}{n} \sum (\hat{y}_i - y_i)^2\)` by changing `w` and `b`
+
+---
+
+# Finding a Line: Example
+
+$$
+y_i = w\cdot x_i + b
+$$
+
+<div style="margin-left: -40px">
+<table width="105%" border="0pt">
+<tr><th>Data</th><th>MSE</th></tr>
+<tr><td width="50%">
+ <div id="myDiv" style="width: 400px; height: 300px"><!-- Plotly chart will be drawn inside this DIV --></div>
+ </td>
+ <td width="50%">
+ <div id="myDiv1" style="width: 400px; height: 300px"><!-- Plotly chart will be drawn inside this DIV --></div>
+</td></tr>
+</table>
+</div>
+
+w: <input id="kvalue" size="15" value="0"/> b: <input id="bvalue" size="15" value="0" disabled="disabled"/> <button type="button" onclick="updatek()">Submit</button> <br/>
+MSE: <input id="msevalue" size="15" value="0" type="text" disabled="disabled"/>
+
+---
+
+# Gradient Descent 
+
+* The process we just did is called "gradient descent"
+
+* We took our error or **loss function** `\(\frac{1}{n} \sum (\hat{y}_i - y_i)^2\)`
+
+* Then we calculated in which direction this loss decreases when we change `w`
+
+* Then we changed `w` "a little bit" and continued 
+
+* We could do the same for `b`!
+
+---
+
+# Nonlinear models 
+
+* 2D Lines only get us so far 
+
+* We can extend this process to more dimensions:
+
+$$
+\hat{y} = w_1\cdot x_1 + w_2 \cdot x_2+ w_3 \cdot x_3 + b 
+$$
+
+* Gradient descent will also work for this case, but our prediction model is still linear
+
+* What if our data is nonlinear?
+
+---
+
+# Nonlinear regression
+
+<img src="/CI-0129/assets/img/nonlin.png" width="80%"/>
+
+---
+
+class: medium
+
+# Nonlinear functions 
+
+* Now we have `\(\hat{y}_i = f(x_i)\)`, where `f` can be "anything"
+
+* We can still use the same idea as before, though!
+
+* Minimize the mean squared error (MSE) `\(\frac{1}{n} \sum (\hat{y}_i - y_i)^2\)` by changing `f`
+
+* For that, we need to be able to change `f` in some way: It should have **parameters** that we can change 
+
+* Earlier, we looked at the gradient to see in which direction the loss decreases. For that, `f` needs to be **differentiable** with respect to these parameters
+
+---
+
+# Some Notation
 
 * Vectors are neat because we have mathematical operations defined on them: Addition, substraction, multiplication with a scalar, etc.
 
@@ -106,235 +201,276 @@ $$
 \vec{v} \cdot \vec{w} = \begin{pmatrix}v_1\\\\v_2\\\\\vdots\\\\v_n\end{pmatrix}\cdot\begin{pmatrix}w_1\\\\w_2\\\\\vdots\\\\w_n\end{pmatrix} =  v_1 \cdot w_1 + v_2 \cdot w_2 + \ldots + v_n \cdot w_n
 $$
 
-* We will use this to concisely define learning systems and algorithms!
+---
+
+# Dot Product 
+
+$$
+\vec{w} \cdot \vec{x}' = \begin{pmatrix}w\\\\b\end{pmatrix} \cdot \begin{pmatrix}x \\\\ 1\end{pmatrix} = wx + b
+$$
+
+This lets us write the linear model more concisely:
+
+$$
+y = w x + b = \vec{w} \cdot \vec{x}'
+$$
+
+We will use the notation `\(\vec{x}'\)` to mean "adding a 1 to the end of the vector x"
+
+Now let us build a non-linear function!
+
+---
+
+# Something non-linear 
+
+Linear model:
+
+$$
+M_w = y = \vec{w} \cdot \vec{x}'
+$$
+
+Non-linear model:
+
+$$
+M_w = y = h(\vec{w} \cdot \vec{x}')
+$$
+
+with "some" non-linear function `h`.
+
+---
+
+# Differentiability
+
+To calculate the gradient wrt to the parameters:
+
+$$
+M_w = y = h(\vec{w} \cdot \vec{x}')\\\\
+\frac{\partial }{\partial w} M_w = \frac{\partial }{\partial \vec{w} \cdot \vec{x}'} h(\vec{w} \cdot \vec{x}') \cdot \frac{\partial}{\partial w} \vec{w} \cdot \vec{x}'
+$$
+
+Or, in words: We will need to calculate the derivative of `h` wrt its input.
+
+--
+
+Another take: We **only** need to be able to calculate the derivative of `h` wrt its input.
+
+---
+
+# Functions
+
+Summary: What do we want from h?
+
+- Non-linear 
+
+- Differentiable 
+
+- "Interesting"
+
+For example:
+
+$$
+h(z) = \frac{1}{1 + e^{-z}}
+$$
+
+---
+
+# Sigmoid Function 
+
+<center>
+<img src="/PF-3115/assets/img/sigmoid.png" width="60%"/>
+</center>
+
+Non-linear, differentiable and "interesting"!
+
+--
+
+Any problems?
+
+---
+
+# Output values 
+
+* Our sigmoid function only produces values between 0 and 1 
+
+* Often/usually we have a different range we want to predict something for?
+
+* We could "scale" (and shift) the output!
+
+$$
+y = w_1 \cdot h(\vec{w}\cdot \vec{x}') + b_1
+$$
+
+This looks like a linear model that uses the result of h as its input!
 
 ---
 
 class: medium
 
-# Vector and Matrices and Tensors, oh my!
+# Recursion 
 
-* Vector: An ordered list of numbers 
+* Let us call the operation `\(h(\vec{w}\cdot \vec{x}')\)` a "Neuron"
 
-* Matrix: A grid of numbers 
+* This "neuron" takes some inputs `x'`, performs a linear transformation, and applies a function `h` to produce a result
 
-* We could store a matrix in a vector, if we remember the dimensions!
+* We can then pass this result to another neuron, which may use the same or a different `h` 
 
-* **Tensor**: What if we "need" more dimension?
-
-* For example: We have 10000 images of 28x28 pixels. We store them in a 10000x28x28 tensor
-
-* In memory the pixels will still be stored sequentially, the tensor is really just a different "view" on the data
+* Implementation detail: Remember that we added a 1 to `x` to produce `x'`, so we can write the linear model as a simple dot product. We do the same with the result of h!
 
 ---
 
-# PyTorch 
+# Two Neurons 
 
-* PyTorch is a python library for Machine Learning
+Now we have a compact representation:
 
-* At every major Machine Learning conference last year, the majority of papers used PyTorch
+$$
+y = h_1(\vec{w}_1 \cdot h(\vec{w} \cdot \vec{x}')')
+$$
 
-* The other "big one" is Tensorflow, which is a bit older and has therefore more adoption in industry
+`\(h_1\)` can just be the identity function, then we have exactly the same thing we had earlier:
 
-* PyTorch is easier to get started with, and once you know the core concepts you can easily pick up Tensorflow, too
+$$
+y = w_1 \cdot h(\vec{w}\cdot \vec{x}') + b_1
+$$
+
+Fun fact: As long as the additional layers are also differentiable, the entire function will be differentiable (you can try this at home).
 
 ---
 
-# PyTorch vs. Tensorflow 
+# Why?
 
-<img src="/CI-2600/assets/img/pytorch_vs_tensorflow.png" width="100%"/>
+<img src="/PF-3115/assets/img/nonlin.png" width="100%"/>
 
 ---
 
-class: medium
+# More Nonlinearity!
 
-# PyTorch 
+Recall:
 
-* (Almost) everything is a `pytorch.Tensor`!
+$$
+\vec{w} \cdot \vec{x}' = \begin{pmatrix}w\\\\b\end{pmatrix} \cdot \begin{pmatrix}x \\\\ 1\end{pmatrix} = wx + b
+$$
 
-* These tensors really are just views into a sequential array of numbers 
+The same thing works with more values in the vectors!
 
-* Each tensor can also "remember" where it came from (e.g. if it is the result of an addition)
+$$
+\vec{w} \cdot \vec{x}' = \begin{pmatrix}w_1 \\\\ w_2 \\\\b\end{pmatrix} \cdot \begin{pmatrix}x_1 \\\\ x_2 \\\\ 1\end{pmatrix} = w_1 x_1 + w_2 x_2 + b
+$$
 
-* This means, you can also view a tensor as a "tree" of computation, with the result at the top, and the inputs as the leaves
-
-* You can also tell your tensors that the operations should be performed on the GPU
+This means each of our neurons could take more than just one input!
 
 ---
 
 class: center, middle 
 
-# Neural Networks
+# Artificial Neural Networks
 
 ---
 
 # Artificial Neural Networks
-
-
-<p style="margin-top: 5cm; text-align: center; font-size: 2em">
-What is an (Artificial) Neural Network?
-</p>
-
-
----
-
-# Neural Networks
-
-What is a Neural Network?
-
- - A parameterized, non-linear function
- 
- - ... that has a gradient (derivative)
- 
-What is a Neural Network **not**?
-
- - How the brain works 
- 
- - A black box that no one understands
- 
----
-
-# Braaaaaains
-
-<blockquote class="twitter-tweet" data-conversation="none" data-lang="es"><p lang="en" dir="ltr">4yo child is one thing but we need to explain how Megaphragma mymaripenne can fly and navigate with a brain of only 7400 neurons. Each neuron must be doing much more (1000x) than our Perceptron model explains. <a href="https://t.co/xNPq0RAgPj">pic.twitter.com/xNPq0RAgPj</a></p>&mdash; Mark Sugrue (@marksugruek) <a href="https://twitter.com/marksugruek/status/1206130412260646912?ref_src=twsrc%5Etfw">15 de diciembre de 2019</a></blockquote>
-
----
-
-# A Linear Model
-
-$$
-y = \vec{w} \cdot \vec{x} + b
-$$
-
-Alternatively:
-
-$$
-y = \vec{w}' \cdot \vec{x}'
-$$
-
-Where we add b to the end of w and 1 to the end of x
-
----
-
-# Activation Functions 
-
-* Often we want to limit our output between 0 and 1 (or -1 and 1)
-
-* We do this by sending the result of the linear combination through an activation function 
-
-<img src="/CI-2600/assets/img/activationfunctions.png" width="100%"/>
-
----
-
-# An Example: Boolean Operators
-
-* Let's use an even simpler activation function: If the result of the linear combination is greater than 0, the output is 1, otherwise it is 0 (step function)
-
-<img src="/CI-2600/assets/img/stepfunction.png" width="35%"/>
-
-* How could we model a logical "or"? "and"? "nand"?
-
-* How about an "xor"?
-
----
-
-# Limitation
-
-* Our simple model can not model XOR (technical reason: It is not linearly separable)
-
-* What could we do?
-
-* Maybe adding more Neurons helps?
-
----
-
-# Artificial Neural Networks 
 
 .left-column[
 <img src="/CI-2600/assets/img/ANN.svg" width="100%"/>
 ]
 
 .right-column[
-We introduced a "hidden layer", which will hold intermediate values h
+With two layers:
 
 $$
-\vec{h} = f_1(W_1 \cdot \vec{x})\\\\
-y = f_2(\vec{w_2} \cdot \vec{h})\\\\
-y = f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x}))
+\vec{a} = h_1(W_1 \cdot \vec{x}')\\\\
+y = h_2(\vec{w_2} \cdot \vec{a}')\\\\
+y = h_2(\vec{w_2} \cdot h_1(W_1 \cdot \vec{x}'))
 $$
 ]
 
 ---
 
-# An Example 
+# Terminology
 
-<img src="/CI-2600/assets/img/xorann.png" width="60%"/>
+* Input Layer: Our data 
 
-What is the weight matrix for the hidden layer?
+* Hidden Layers: The intermediate neurons 
 
-What is the weight vector for the output?
+* Output Layer: The neurons that actually produce the outputs 
 
-What happens for different inputs, e.g. 1 and 0?
-
----
-
-# Weights
-
-* How did we get these weights?
-
-* What if the output is wrong? How do we update the weights?
-
-* We need a measure of error
+* The Hidden Layer and the Output Layer Neurons have activation functions. While not theoretically necessary, we normally use the same activation function for all neurons in a layer.
 
 ---
 
-# Gradient Descent on Neural Networks 
+# Some Activation Functions
 
-* Take the (Sum/Mean) Squared Error!
-
-Remember:
-$$
-y = f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x}))
-$$
-
-Error:
-
-$$
-(y - \hat{y})^2 = (f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) - \hat{y})^2 = \text{minimal}
-$$
-
-So we want:
-
-$$
-\nabla (y - \hat{y})^2 = \vec{0}
-$$
+<img src="/PF-3115/assets/img/activation.png" width="100%"/>
 
 ---
 
-# The Gradient
+# Gradient Calculation
+
+To get the gradient for the weights of the second layer:
 
 $$
-\nabla (y - \hat{y})^2 = \vec{0} = \nabla (f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) - \hat{y})^2
+\frac{\partial}{\partial w_2} (h_2(\vec{w_2} \cdot h_1(W_1 \cdot \vec{x}')) - \hat{y})^2 = \\\\
+2\cdot(h_2(\vec{w_2} \cdot h_1(W_1 \cdot \vec{x})) - \hat{y})\cdot \frac{\partial}{\partial w_2} h_2(\vec{w_2} \cdot h_1(W_1 \cdot \vec{x})) \cdot h_1(W_1 \cdot \vec{x}) =\\\\
+2\cdot(y - \hat{y})\cdot \frac{\partial}{\partial w_2} h_2(\vec{w_2} \cdot \vec{a}) \cdot \vec{a}
 $$
 
-This means we need to calculate the gradient, with respect to the weights (i.e. what we want to change!)
-
-$$
-\frac{\text{d}}{\text{d} w_2} (y - \hat{y})^2 = \frac{\text{d}}{\text{d} w_2} (f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) - \hat{y})^2\\\\
-\frac{\text{d}}{\text{d} W_1} (y - \hat{y})^2 = \frac{\text{d}}{\text{d} W_1} (f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x})) - \hat{y})^2
-$$
+As mentioned before, we can use the chain rule a couple times more to also get the gradient wrt the weights of the first layer.
 
 ---
 
-# Takeaways
+# What does this do?
 
-* For the weight matrix we can proceed the same way, by applying the chain rule
+* We can take "any" number of inputs, send them through a couple of layers of transformations, and obtain a result 
 
-* If we have more layers, that means more chain rule applications
+* We call this structure **Feed-Forward** Neural Networks
 
-* Good news: PyTorch does all of that automatically (remember `requires_grad=True`?)
+* Gradient descent will change the weights to minimize the distance of the output from our training data
 
-* So now we "have" the gradient
+* Does this work?
+
+---
+
+# Universal Approximation Theorem
+
+A Feed-Forward Neural Network with a single hidden layer, and a linear output layer can approximate continuous functions on compact subsets of `\(\mathrm{R}^n\)` to arbitrary precision given enough neurons.
+
+* Which activation function? Sigmoid works (Cybenko, 1989), but anything that's not a simple polynomial will do (Leshno et al. 1993)
+
+* How many neurons do we need? Potentially exponentially many (in the dimensionality of the input) :(
+
+* Can we learn the weights? Who knows ...
+
+---
+
+# In Practice
+
+* For many applications neural networks produce useful approximations to functions 
+
+* The number of neurons is usually determined by educated guesses and tweaking
+
+* Adding more layers helps with some tasks 
+
+* Rule of thumb: You don't want to use too many neurons (overfitting!)
+
+---
+
+class: medium
+
+# Myths
+
+* Myth: "Neural Networks are how the brain works"
+
+* Truth: **At most** the original development drew some inspiration from our understanding of the brain 
+
+* Myth: "Neural Networks are a black box that no one understands"
+
+* Truth: Neural Networks are nothing magical, they're "just" giant non-linear functions. We have a very good understanding of how they work. Interpreting their operation can be challenging, though.
+
+* Myth: Neural Networks are "human-like intelligence"
+
+---
+
+# Braaaaaains
+
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="es"><p lang="en" dir="ltr">4yo child is one thing but we need to explain how Megaphragma mymaripenne can fly and navigate with a brain of only 7400 neurons. Each neuron must be doing much more (1000x) than our Perceptron model explains. <a href="https://t.co/xNPq0RAgPj">pic.twitter.com/xNPq0RAgPj</a></p>&mdash; Mark Sugrue (@marksugruek) <a href="https://twitter.com/marksugruek/status/1206130412260646912?ref_src=twsrc%5Etfw">15 de diciembre de 2019</a></blockquote>
 
 ---
 
@@ -353,8 +489,8 @@ $$
 # Learning 
 
 $$
-y = f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x}))\\\\
-\Delta w_2 = 2\cdot(y - \hat{y})\cdot \frac{\text{d}}{\text{d} w_2} f_2(\vec{w_2} \cdot \vec{h}) \cdot \vec{h} \\\\
+\hat{y} = h_2(\vec{w_2} \cdot h_1(W_1 \cdot \vec{x}'))\\\\
+\Delta w_2 = 2\cdot(y - \hat{y})\cdot \frac{\text{d}}{\text{d} w_2} h_2(\vec{w_2} \cdot h_1(W_1 \cdot \vec{x}')) \\\\
 w_2 = w_2 - \alpha\cdot \Delta w_2
 $$
 
@@ -380,15 +516,27 @@ $$
 
 ---
 
-# Gradient Descent 
+# Generalizability
 
-* Gradient Descent is the basis for learning in neural networks
+* Another problem with Neural Network is overfitting 
 
-* We will see some ways to work around these problems 
+* If you train your Neural Network on data, it might just start to "memorize" that data 
 
-* So far we have also only seen Neural Networks with a single numerical output (Regression)
+* The actual application, however, is to predict values for **other** data 
 
-* Next time: Neural Networks for classification
+* We would therefore like to **test** our network 
+
+---
+
+# Training and Test Set
+
+* Neural Networks are typically trained on only parts (typically around 80%) of the available data 
+
+* We can then use the rest of the data to test how well the network generalizes 
+
+* These sets are called the training set and the test set 
+
+* The (relevant) performance of the network is its error on the test set 
 
 ---
   
@@ -406,6 +554,7 @@ $$
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-0.14.0.min.js">
     </script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
     <script>
@@ -419,6 +568,92 @@ $$
       });
 
       MathJax.Hub.Configured();
+      
+      var myPlot = document.getElementById('myDiv1');
+      var kval = document.getElementById('kvalue');
+      var bval = document.getElementById('bvalue');
+      var mseval = document.getElementById('msevalue');
+      d3 = Plotly.d3;
+      N = 16;
+      x = d3.range(N);
+      y = d3.range(N).map(b => Math.pow(b,1.2) + (b+5)*Math.random()  );
+      xi = x.map(b => b - 8)
+      xmean = d3.mean(x);
+      ymean = d3.mean(y);
+      bval.value = Math.round(ymean*100)/100;
+      k = 0;
+      yp = d3.range(N).map(b => ymean + (b - xmean)*k);
+      
+      data = [ { x:xi, y:y, type:'scatter',
+              mode:'markers', marker:{size:8}, name: "Data" },
+               { x: [0], y: [ymean], type: 'scatter', mode: 'markers', marker: {size: 12}, name: "Mean" },
+               { x: xi, y: yp, type: 'lines', mode: 'lines', name: "Prediction"} ],
+      layout = {
+          hovermode:'none',
+          showlegend: false,
+          margin: {'r': 25, 'l': 25, 't': 10, 'b': 60},
+          xaxis: {
+              nticks: 16,
+              domain: [0, 15],
+              title: "x",
+              fixedrange: true
+            },
+          yaxis: { fixedrange: true }
+      };
+      
+      layout1 = {
+          hovermode:'none',
+          showlegend: false,
+          margin: {'r': 25, 'l': 25, 't': 10, 'b': 60},
+          xaxis: {
+              nticks: 12,
+              range: [-1, 5],
+              title: "w",
+              fixedrange: true
+            },
+            yaxis: {
+              nticks: 10,
+              range: [0, 200],
+              fixedrange: true
+            },
+      };
+      
+      function mse(testk) {
+          yerr = d3.range(N).map(b => Math.pow(((ymean + (b - xmean)*testk) - y[b]), 2) );
+          return d3.mean(yerr);
+      }
+      mseval.value = Math.round(mse(k)*100)/100;
+      DELTA = 0.1
+      data1 = [ { x: [k], y: [mse(k)], mode: 'markers', name: "MSE"},
+                { x: [k-DELTA, k, k+DELTA], y: [mse(k-DELTA), mse(k), mse(k+DELTA)], mode: 'lines', name: "Gradient", line: { color: 'rgb(245, 120, 66)'}} ]
+      
+    Number.prototype.between = function(min, max) {
+      return this >= min && this <= max;
+    };
+    Plotly.newPlot('myDiv', data, layout, {showSendToCloud: false, displayModeBar: false});
+    Plotly.newPlot('myDiv1', data1, layout1, {showSendToCloud: false, displayModeBar: false});
+    function updatek()
+    {
+        newk = parseFloat(kval.value);
+        ynew = d3.range(N).map(b => ymean + (b - xmean)*newk)
+        Plotly.animate('myDiv', {
+            data: [{y: ynew}],
+            traces: [2],
+            layout: {}
+              }, {
+                transition: {
+                  duration: 500,
+                  easing: 'cubic-in-out'
+                },
+                frame: {
+                  duration: 500
+                }
+              })
+        Plotly.extendTraces(myPlot, {x: [ [newk] ], y: [ [mse(newk)] ]}, [0]);
+        Plotly.addTraces(myPlot, [{x: [newk - DELTA, newk, newk + DELTA], y: [mse(newk - DELTA), mse(newk), mse(newk + DELTA)], mode: 'lines', name: "gradient", line: { color: 'rgb(245, 120, 66)'}}]);
+        mseval.value = Math.round(mse(newk)*100)/100;
+    }
+      
     </script>
   </body>
 </html>
