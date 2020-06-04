@@ -1,0 +1,322 @@
+---
+permalink: /slides/lecture15.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 15: Generative Adversarial Networks</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.7em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      
+      .tiny li {  font-size: 0.8em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .tiny { font-size: 0.8em; }
+      
+      .small li {  font-size: 0.8em; }
+      
+      .medium li {  font-size: 1.1em; }
+      
+      .mediumt {  font-size: 0.24em; }
+      .mmedium li {  font-size: 0.95em; }
+      
+      .mmmedium li {  font-size: 0.9em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      .left-column {
+        color: #777;
+        width: 30%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 65%;
+        float: right;
+        padding-top: 1em;
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle
+
+# Computational and statistical techniques of Machine Learning
+
+## Advanced Neural Networks
+
+---
+
+# Artificial Neural Networks 
+
+.left-column[
+<img src="/CI-2600/assets/img/ANN.svg" width="100%"/>
+]
+
+.right-column[
+We introduced one or more "hidden layers", which will hold intermediate values h
+
+$$
+\vec{h} = f_1(W_1 \cdot \vec{x})\\\\
+y = f_2(\vec{w_2} \cdot \vec{h})\\\\
+y = f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x}))
+$$
+]
+
+---
+
+# Adversarial Training 
+
+* Say someone has a neural network that can distinguish between cats and non-cats
+
+* We want to "smuggle" a cat past the network 
+
+* This means: We want an image of a cat that the network identifies as a non-cat 
+
+* Why? To improve the network, of course! (There are more sinister applications, too)
+
+---
+
+# Adversarial Training 
+
+* Take an existing image of a cat
+
+* Change it "a little bit"
+
+* Check if it is now classified as a non-cat 
+
+* Repeat 
+
+---
+
+# Adversarial Training 
+
+* Pass your existing image through the network 
+
+* Note which pixels have the greatest impact on the result (weights)
+
+* Change (only) those pixels 
+
+---
+
+# Adversarial Example
+
+<center>
+<img src="/CI-2600/assets/img/badcat.jpg" width="80%"/>
+</center>
+--
+This is a bird!
+
+---
+
+# Generative, Adversarial Networks 
+
+* So far we have used Neural Networks to classify images, or predict some value 
+
+* Could we **generate** things with a Neural Network?
+
+* Crazy idea: We pass the Neural Network some random numbers and it produces a new Picasso-like painting
+
+--
+
+* That's exactly what we'll do!
+
+---
+
+# First: Classification
+
+* To produce a Picasso-like painting, we first need to know which paintings *are* Picasso-like 
+
+* We could train a Neural Network that detects "real" Picassos (the "Discriminator")
+
+* Input: An image 
+
+* Output: "True" Picasso, or "fake"
+
+* So we'll need some real and fake Picassos to start with ...
+
+---
+
+# Art Connoisseur Network
+
+* After some training, our network will be able to distinguish real and fake picassos
+
+* This means we can give this network a new painting, and it will tell us if it is real or not 
+
+* Now we can define the task for our generator more clearly: Fool the discriminator network, i.e. generate paintings that the discriminator recognizes as "real" Picassos 
+
+---
+
+class: medium
+
+# The Generator Network 
+
+* The Generator Network takes, as we wanted, a vector of random numbers as input, and produces a picture as output
+
+* The **loss function** for this network then consists of passing the produced image through the discriminator and determining if it believes the painting to be real or not 
+
+* We can then use backpropagation and gradient descent, as usual, to update the weights in our generator 
+
+* Over time, our generator will learn to fool the discriminator!
+
+---
+
+# Not quite enough ...
+
+* If our discriminator was "perfect", this would already be enough 
+
+* However, to start, we needed some "fake" Picassos, which we just generated randomly 
+
+* Once the Generator produces some images, we actually have "better fakes"!
+
+* So we can improve the Detector with that
+
+* And then we need to improve the Generator again, etc.
+
+---
+
+# Generative, Adversarial Networks 
+
+* Generative: We **generate** images 
+* Adversarial: The Generator and the Discriminator play a "game" against each other
+
+<center>
+<img src="/CI-2600/assets/img/GAN.jpeg" width="80%"/>
+</center>
+
+---
+
+class: center, middle 
+
+# Lab 4
+
+---
+
+# Lab 4
+
+* Let's build a GAN to generate more MNIST-like images
+
+* For now, focus on only one digit (pick one: your birthday, last digit of the carn&eacute;, your favorite number, ...)
+
+* As mentioned above, we need two neural networks: A discriminator and a generator 
+
+---
+
+class: mmedium
+
+# Lab 4: Discriminator 
+
+* We only need one output to distinguish between fake (0) or real (1)
+
+* Use `torch.nn.BCELoss` (Binary CrossEntropy Loss), which expects the output from the network and the expected output (0 or 1) **in the same shape**
+
+* Take the images from the MNIST data set for one digit as real data 
+
+* Generate completely random images as initial fake data 
+
+* Train the network to distinguish the two
+
+---
+
+class: mmedium
+
+# Lab 4: Generator 
+
+* For the Generator, we want a very different network 
+
+* It takes 100 inputs and produces 784 outputs (one for each pixel)
+
+* Sample these 100 inputs randomly from a normal distribution (`torch.randn`)
+
+* The loss function is a bit more complicated: First pass the output through the (trained) discriminator network, then pass the output from that to `BCELoss`, where we **want our outputs to be 1** (i.e. the generator 
+wants the discriminator to say that the images are real), then do a `backward` call, and optimizer step as normal 
+
+* Your generator optimizer will only have the generator parameters as its target and therefore will not change the discriminator!
+
+---
+
+# Lab 4: Training 
+
+* In a loop, alternate between training the generator and the discriminator
+
+* Keep an ``episode memory'' of fake images, to which you add newly generated fakes in every iteration
+
+* Train the generator and discriminator each for a couple of iterations 
+
+* Put both into a larger loop 
+
+* The lab description has a skeleton code for this training loop setup
+
+---
+
+class: medium
+
+# Lab 4: Summary
+
+* You need two Neural Networks, two optimizers, two training functions 
+
+* There is one overall loop that contains two sub-parts:
+    
+    - Train the discriminator
+    
+    - Train the generator 
+    
+* Store images produced by the generator as fake images to train the discriminator
+
+* Make sure to preserve some old images!
+
+---
+
+# References 
+
+  * [Torch Tensor Operations Overview](https://jhui.github.io/2018/02/09/PyTorch-Basic-operations/)
+  
+  * [GAN Introduction](https://machinelearningmastery.com/how-to-develop-a-generative-adversarial-network-for-an-mnist-handwritten-digits-from-scratch-in-keras/)
+  
+  * [GAN hacks](https://github.com/soumith/ganhacks)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-0.14.0.min.js">
+    </script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script>
+      var slideshow = remark.create();
+      
+       // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>

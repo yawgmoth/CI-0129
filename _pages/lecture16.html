@@ -1,0 +1,347 @@
+---
+permalink: /slides/lecture16.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 16: Advanced Neural Networks</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.7em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      
+      .tiny li {  font-size: 0.8em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .tiny { font-size: 0.8em; }
+      
+      .small li {  font-size: 0.8em; }
+      
+      .medium li {  font-size: 1.1em; }
+      
+      .mediumt {  font-size: 0.24em; }
+      .mmedium li {  font-size: 0.95em; }
+      
+      .mmmedium li {  font-size: 0.9em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      .left-column {
+        color: #777;
+        width: 30%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 65%;
+        float: right;
+        padding-top: 1em;
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle
+
+# Computational and statistical techniques of Machine Learning
+
+## Advanced Neural Networks
+
+---
+
+# Artificial Neural Networks 
+
+.left-column[
+<img src="/CI-2600/assets/img/ANN.svg" width="100%"/>
+]
+
+.right-column[
+We introduced one or more "hidden layers", which will hold intermediate values h
+
+$$
+\vec{h} = f_1(W_1 \cdot \vec{x})\\\\
+y = f_2(\vec{w_2} \cdot \vec{h})\\\\
+y = f_2(\vec{w_2} \cdot f_1(W_1 \cdot \vec{x}))
+$$
+]
+
+---
+
+class: medium
+
+# Deep Networks
+
+  * The Universal Approximation Theorem states that an ANN with *one* layer can approximate any function 
+  
+  * But we could also add more layers!
+  
+  * Why? Learning features!
+  
+  * Viewed another way: If the ANN has to produce output for an input of dimensionality `n`, but the data has to pass through a layer with `m` neurons, where `m` is much smaller than `n`, the ANN has to encode enough information about the input into these `m` numbers/features to produce the desired output 
+  
+---
+
+class: medium
+
+# Auto-Encoders
+
+  * One application of this approach are Auto-encoders 
+  
+  * They are neural networks with many layers, that become narrower and narrower, before they widen again 
+  
+  * The number of inputs is the same as the number of outputs, and the training examples use the *same* values for input and output 
+  
+  * The goal is to learn a smaller *representation* for the input data
+  
+  * In essence, the ANN has to reconstruct the input from fewer values
+  
+---
+
+class: medium
+
+# Auto-Encoders
+
+<img src="/PF-3341/assets/img/autoencoder.png" width="100%"/>
+
+---
+
+class: center, middle
+
+# Vector Models
+
+---
+
+# I Dreamed a Dream
+
+  * Let's say we want to work with words 
+  
+  * Imagine we could turn a word into a vector 
+  
+  * And then we can take vector differences to get the "relation" between words 
+  
+  * For example: (Vienna - Austria) + Costa Rica = San Jose
+  
+--
+
+  * Turns out, we can actually do that!
+  
+---
+
+# Vector Space Models 
+
+  * As before, we will have a smaller representation of our input
+  
+  * Our vector elements don't have any clear interpretation, they are just numbers representing a word
+  
+  * The vectors are *learned* from a corpus
+  
+  * We can then compare vectors using algebra, for example calculate the cosine (dot product!) between two vectors to get their similiarity
+  
+---
+
+# The Distributional Hypothesis
+
+  * The reason this vector trick works is the Distributional Hypothesis 
+  
+  * It says that words that are used in the same **context** are semantically similar, too 
+  
+  * However, the actual relation between this hypothesis and the vectors has been called "very hand-wavy" by some authors
+  
+---
+
+class: medium
+
+# Context
+
+  * For each word, we use `k` words before and after as the "context"
+  
+  * For example: "Machine Learning is a fascinating subject" with context 1 becomes:
+  
+      - [(machine, is), learning]
+      - [(learning, a), is]
+      - [(is, fascinating), a]
+      - [(a, subject), fascinating]
+      
+  * What do we do with these? Learn the word from the context!
+
+---
+
+class: medium
+
+# Word2Vec 
+
+  * We use a neural network to learn the relationship between words and their context 
+  
+  * Because this relationship has to be calculated by the neural network, the values of one of the hidden layers have to encode it 
+  
+  * We can use these values as a vector representation for a word!
+  
+  * Two approaches:
+      - Context is the input, word is the output (Continuous Bag-of-Words)
+      - Word is the input, context is the output (skip-gram)
+
+---
+
+class: medium
+
+# Word2Vec 
+
+<img src="/PF-3341/assets/img/word2vec_diagrams.png" width="100%"/>
+
+---
+
+# Word2Vec Results 
+
+<img src="/PF-3341/assets/img/countries_capitals.png" width="80%"/>
+
+---
+
+class: medium
+
+# Doc2Vec
+
+  * It may seem tricky to go from learning a representation for single words, to a representation for entire documents 
+  
+  * But it is actually not!
+  
+  * Here is the trick: For each word that we learn, we provide the document ID *in addition* to the context 
+  
+  * This means that the network will have to learn some vector representation for the document while training as well 
+  
+  * Note: The "documents" are sometimes also called "paragraphs" in the literature
+  
+---
+
+# Distributed Memory version of Paragraph Vector
+
+<img src="/PF-3341/assets/img/pvdm.png" width="100%"/>
+
+---
+
+# Distributed Bag of Words version of Paragraph Vector
+
+<img src="/PF-3341/assets/img/pvdbow.png" width="100%"/>
+
+---
+
+class: center, middle
+
+# More Neural Network Architectures
+
+---
+
+class: small
+
+# Convolutional Neural Networks
+
+  * In traditional ANNs, all neurons in a layer are connected to all neurons in the previous layer 
+  
+  * For very high dimensional data (e.g. images) this results in a very larger number of weights that need to be learned
+  
+  * In many practical applications, there is some sort of locality present in the data 
+  
+  * For example, in image recognition: Pixels that are close together are more likely to be correlated than pixels from opposite corners of the image 
+  
+  * Idea: Instead of connecting the network fully, define a "receptive field" for each neuron that defines how much of the previous layer it "perceives"
+  
+---
+
+# Convolutional Neural Networks 
+
+<img src="/CI-2600/assets/img/cnn.jpeg" width="100%"/>
+
+---
+
+# Recurrent Neural Networks 
+
+* So far we have looked at Neural Networks with a static number of inputs 
+
+* However, often we have variable length input, for example if we collect time series data (like cards played in Hearthstone)
+
+* One approach to this is to feed the network one time step at the time and give it "memory"
+
+* We can conceptualize this memory as a "hidden variable", or **hidden state**
+
+---
+
+class: medium
+
+# Recurrent Neural Networks 
+
+.left-column[
+<img src="/CI-2600/assets/img/rnn.svg" width="800pt"/>
+]
+
+.right-column[
+
+* The hidden state is initialized to some values (zeros)
+
+* Then the first input element/step is passed to the network, and it produces output **and** a new hidden state 
+
+* This new hidden state is passed to the network with the next input element/step
+]
+
+---
+
+# Recurrent Neural Networks: Unfolding
+
+<img src="/CI-2600/assets/img/rnnunfold.svg" width="100%"/>
+
+---
+
+# Recurrent Neural Networks: Modes
+
+<img src="/CI-2600/assets/img/rnnmodes.png" width="100%"/>
+
+---
+
+# References 
+
+  * [Torch Tensor Operations Overview](https://jhui.github.io/2018/02/09/PyTorch-Basic-operations/)
+  
+  * [RNN Introduction](https://medium.com/explore-artificial-intelligence/an-introduction-to-recurrent-neural-networks-72c97bf0912)
+  
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-0.14.0.min.js">
+    </script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script>
+      var slideshow = remark.create();
+      
+       // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>

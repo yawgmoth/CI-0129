@@ -1,0 +1,285 @@
+---
+permalink: /slides/lecture17.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 17: Deep Q Learning</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.7em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      
+      .tiny li {  font-size: 0.8em; }
+      
+      table { border-collapse: collapse; width: 100%; }
+      
+      table, th, td { border: 1px solid black; font: black; font-size: 0.9em; }
+      .tiny table {  font-size: 0.8em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .tiny { font-size: 0.8em; }
+      
+      .small li {  font-size: 0.8em; }
+      
+      .medium li {  font-size: 1.1em; }
+      
+      .mediumt {  font-size: 0.24em; }
+      .mmedium li {  font-size: 0.95em; }
+      
+      .mmmedium li {  font-size: 0.9em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      .left-column {
+        width: 45%;
+        height: 92%;
+        float: left;
+        font-size: 0.9em;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 45%;
+        float: right;
+        padding-top: 1em;
+        font-size: 0.95em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Machine Learning
+
+## Deep Q Learning
+
+### III-Verano 2019
+
+---
+
+class: center, middle 
+
+# Reinforcement Learning
+
+---
+
+# Reinforcement Learning
+
+<img src="/PF-3341/assets/img/rl.png" width="100%"/>
+
+
+---
+
+# The Q function
+
+Utility of a state:
+  
+$$
+V^\pi(s) = R(s) + \gamma V(T(s, \pi(s)))
+$$
+
+Q function:
+
+$$
+Q(s,a) = R(s) + \max_{a'} \gamma Q(T(s,a),a')
+$$
+
+---
+
+# Q Learning 
+
+ * Q Learning is based on trials 
+ 
+ * We store a Q table and continuously update it 
+ 
+ * Rewards our agent receives tell us what the values of the Q table "should be"
+ 
+ * Drawback: The Q table is huge
+ 
+---
+
+# Deep Q Learning
+
+   * `Q(s,a)` is a function 
+   
+   * We have heard of a way to approximate functions: Neural Networks!
+   
+   * Instead of storing all possible Q-values in a table we train a neural network
+   
+   * How?
+   
+---
+
+# Deep Q Learning 
+
+<img src="/CI-2600/assets/img/dqn.png" width="100%"/>
+
+---
+
+# Q Learning 
+
+Repeat:
+
+  * Observe state 
+  
+  * Choose action according to Q table 
+  
+  * Perform action, get reward and new state 
+  
+  * Update Q table
+  
+---
+
+# Deep Q Learning 
+
+Repeat:
+
+  * Observe state 
+  
+  * Choose action according to Q .red[network]
+  
+  * Perform action, get reward and new state 
+  
+  * Update Q .red[network]
+  
+--
+
+How do we update? Gradient descent!
+
+---
+
+# Deep Q Learning 
+
+<img src="/CI-2600/assets/img/DQNalgo.png" width="100%"/>
+
+---
+
+# Deep Q Learning: Challenge
+
+<img src="/CI-2600/assets/img/DQNproblem.png" width="100%"/>
+
+---
+
+# Deep Q Learning: Two Networks
+
+<img src="/CI-2600/assets/img/DQNtwonetworks.png" width="70%"/>
+
+---
+
+class: medium
+
+# Deep Q Learning: Process 
+
+Use two networks: Target and prediction
+
+ * Run agent for `n` iterations using the prediction network and an epsilon-greedy strategy to determine the used actions, collect all states, actions, next states and rewards `(s,a,s',r)`
+ 
+ * After collecting "some" data (like a "minibatch"), calculate the gradient with the difference between the **target** and the **prediction** (networks) as the loss to **update the prediction network**
+ 
+ * After C iterations, copy the prediction network and use it as the new target network
+ 
+---
+
+class: center, middle
+
+# Applications
+
+---
+
+# Applications 
+
+  * Reinforcement Learning/Q Learning often performs very well on problems where we can define a reward
+  
+  * Classical Q Learning has the problem of having to store the entire state space 
+  
+  * Deep Q Learning can be applied to larger problems, such as self-driving cars, video games, etc.
+  
+---
+
+# Applications
+
+<img src="/CI-2600/assets/img/DeepRLapplications.webp" width="80%"/>
+  
+---
+
+# Application: Minecraft
+
+<img src="/CI-2600/assets/img/minecraft.png" width="80%"/>
+
+---
+
+# Malm&ouml;
+
+"Project Malm&ouml;, named after a town between Cambridge, UK where it was developed and Stockholm, Sweden where Minecraft was created, is an Artificial Intelligence (AI) platform that allows researchers to create challenging and interesting tasks for evaluating agents, and Minecraft enthusiasts to engage in the Modding community and help advance AI."
+
+"MalmoEnv is an OpenAI "gym" Python Environment for Malmo/Minecraft"
+
+---
+
+class: medium
+
+# Malm&ouml; Task: Get Diamond
+
+A potential task is to actually play Minecraft (without enemies), and get diamond
+
+  * First, gather wood, to create a wood pickaxe
+  
+  * Then use the wood pickaxe to get stone and a stone pickaxe
+  
+  * Find and mine iron
+  
+  * Build a smelter to smelt iron and create an iron pickaxe
+  
+  * Find and mine diamond
+
+---
+
+# References 
+
+  * [A Hands-On Introduction to Deep Q-Learning using OpenAI Gym in Python](https://www.analyticsvidhya.com/blog/2019/04/introduction-deep-q-learning-python/)
+  
+  * [A Comprehensive Guide to Convolutional Neural Networks](https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53)
+  
+  * [Deep Reinforcement Learning for General Video Game AI](https://arxiv.org/pdf/1806.02448.pdf)
+  
+  * [Project Malmo](https://www.microsoft.com/en-us/research/project/project-malmo/)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-0.14.0.min.js">
+    </script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script>
+      var slideshow = remark.create();
+      
+       // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>

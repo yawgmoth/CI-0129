@@ -1,0 +1,495 @@
+---
+permalink: /slides/lecture14.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 14: Ethical Considerations</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.7em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      
+      .tiny li {  font-size: 0.8em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .tiny { font-size: 0.8em; }
+      
+      .small li {  font-size: 0.8em; }
+      
+      .medium li {  font-size: 1.1em; }
+      
+      .mediumt {  font-size: 0.24em; }
+      .mmedium li {  font-size: 0.95em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      .left-column {
+        color: #777;
+        width: 50%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 45%;
+        float: right;
+        padding-top: 1em;
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Machine Learning
+
+## Garbage in - Racism out: Ethical considerations for Machine Learning
+### III-Verano 2019
+
+---
+
+class: center, middle
+
+# Data Collection
+
+---
+
+# Data Collection
+
+* So you want to do Machine Learning 
+
+* You will need data 
+
+* Where do you get that data?
+
+* What is legal and moral to collect?
+
+---
+
+# Data Collection: GDPR
+
+* The European Union passed a regulation as part of EU law in 2018, called the "General Data Protection Regulation"
+
+* This regulation limits data collection to cases in which there is either explicit consent or a contractual, legal or official **need**
+
+* EU citizens can also request all data that is stored about them!
+
+---
+
+class: medium
+
+# California Consumer Privacy Act
+
+* Know what personal data is being collected about them.
+
+* Know whether their personal data is sold or disclosed and to whom.
+
+* Say no to the sale of personal data.
+
+* Access their personal data.
+
+* Request a business to delete any personal information about a consumer collected from that consumer.
+
+* Not be discriminated against for exercising their privacy rights.
+
+---
+
+# But we are in Costa Rica!
+
+* The GDPR only applies to the EU and EEA
+
+* The CCPA only applies to residents of California 
+
+* Where are we likely to collect data? The internet ...
+
+* If you collect data online, you have to ensure that these laws are either met, or the corresponding regions are excluded from collection 
+
+---
+
+class: mmedium
+
+# Informed Consent ("Consetimiento Informado")
+
+* Beyond general legal requirements, most institutions working with human subjects have strict guidelines and requirements for data collection 
+
+* Before collecting anything, we need to ask for consent
+
+* Exceptions usually apply to publicly available data, for example tweets that can be seen by anyone
+
+* But always ask yourself: What is the worst thing a malicious actor could do with my work?
+
+* In Costa Rica, any and all human related experiments (observational and interventional) require an informed consent, signed by participants
+
+---
+
+class: medium
+
+# Data in Costa Rica
+
+* A Presidential decree to create a Data Analysis Unit was repealed
+
+* This unit would have accessed and used confidential information from Costa Rican citizens for political purposes to benefit the populace
+
+* What that means remains unclear
+
+* Costa Rica needs to be more aware of the risks of mishandling private or confidential data
+
+* Being lax in regards to confidential data can have repercussions, like Ecuador
+
+---
+
+class: mmedium
+
+# The Potential Aftermath (Ecuadorean Provate Data Breach)
+
+* In 2019 Ecuador saw a similar situation were confidential data was collected by the government
+
+* This included information such as:
+
+		1- official government ID numbers
+
+		2- phone numbers
+
+		3- family records
+
+		4- marriage dates
+
+		5- education histories
+
+		6- work records
+
+---
+
+class: mmedium
+
+# The Effects of a Data Breach
+
+* It also included financial information and tax records
+
+* The total number of individuals was 17 million (almost all Ecuadoreans)
+
+* It was leaked from Novaestrat a Data Analytics and Marketing Company
+
+* To make it worse it was publibly accesible from ZDNet!
+
+* Such data can be used to find trends/patterns to set policies or to doctor the market
+
+---
+class: center, middle 
+
+# Data Storage 
+
+---
+
+# Data Storage 
+
+* So you set up your data collection, ask users for consent and only collect the data you are allowed to
+
+* Then you put it on some server
+
+* What's the worst that could happen?
+
+---
+
+class: medium
+
+# Data Storage 
+
+<img src="/CI-2600/assets/img/MGMleak.png" width="100%"/>
+
+* MGM hotel collected customer data 
+
+* Data includes full names, addresses, phone numbers, dates of birth 
+
+* Ideal for identity thiefs!
+
+---
+
+# Medical Data 
+
+<img src="/CI-2600/assets/img/MRIleak.png" width="100%"/>
+
+* Medical data stored on unsecured servers 
+
+* "It's not even hacking, It’s walking into an open door," said cybersecurity researcher Jackie Singh
+
+---
+
+# Security
+
+* Don't store data longer than necessary
+
+* The more sensitive the data, the less it should be connected to the internet
+
+* Hire a security expert/penetration tester 
+
+* Always install security updates for your storage server
+
+---
+
+# Right to be Forgotten
+
+* Another legal aspect is the right to be forgotten/right to erasure
+
+* Both the GDPR and the CCPA include provisions for people to request that their data should be deleted 
+
+* This means we need to include a way in our data storage of how to get rid of data
+
+* Including backups!
+
+---
+
+class: center, middle 
+
+# Data Usage
+
+---
+
+# Data Usage 
+
+* We have seen a variety of Machine Learning techniques 
+
+* If we have data (obtained with consent), we can produce predictions
+
+* What are we gonna find?
+
+* What do we want to find?
+
+* And just because we can: Should we?
+
+---
+
+# Best Possible Action?
+
+<img src="/CI-0129/assets/img/trolleyproblem.png" width="100%"/>
+
+---
+
+# The Moral Machine 
+
+<img src="/CI-0129/assets/img/moralmachine.png" width="80%"/>
+
+---
+
+# Automated Breast Cancer Screening!
+
+<img src="/CI-2600/assets/img/AIMammography.png" width="60%"/>
+
+---
+
+# Automated Breast Cancer Screening!
+
+<img src="/CI-2600/assets/img/AIMammographymetric.png" width="60%"/>
+
+What's the problem with this metric?
+
+--
+
+"There may be biopsies that AI would have encouraged that do not exist, and we don't know the results of tests that were not done." (Vinay Prasad on twitter)
+
+---
+
+# Another problem 
+
+* Just because we find "more cancer" does not mean we improved anything 
+
+* Cancer may be benign, we don't (necessarily) want/need to find more of those 
+
+* Cancer may be too advanced, finding more of those also does not help 
+
+* Distinguishing between benign and and harmful, but treatable cancer is the hard problem!
+
+---
+
+# Another problem 
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Oh look, it&#39;s an example of AI being used to solve the wrong problem! <a href="https://t.co/A6P92XPwjk">https://t.co/A6P92XPwjk</a> Study shows that AI can find more cancers on mammograms, but that&#39;s the wrong goal. We should aim to save lives, not turn more healthy women into cancer patients.</p>&mdash; Christie Aschwanden (@cragcrest) <a href="https://twitter.com/cragcrest/status/1212736228640120833?ref_src=twsrc%5Etfw">January 2, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
+---
+
+class: medium
+
+# Racism In - Garbage Out 
+
+* Say we catch a criminal
+
+* The judge has to decide if they are likely to re-offend or not 
+
+* That determines the bail, how long they will go for jail, and potentially other privileges
+
+* But there is (documented) racism in the justice system, and black criminals get harsher sentences on average
+
+* Idea: Let's train a Neural Network to recommend bail, sentences, "dangerousness" for criminals! The Neural Network can't be racist!
+
+---
+
+class: medium
+
+# Training a Neural Network
+
+* How do we train the Neural Network? 
+
+* We need data!
+
+* Fortunately, there is lots of data we can use: all court cases that have already happened 
+
+* What could possibly go wrong?
+
+---
+
+# Racist Neural Network 
+
+<img src="/CI-2600/assets/img/riskassessment.png" width="80%"/>
+
+---
+
+# Racist Neural Network 
+
+<img src="/CI-2600/assets/img/riskscores.png" width="65%"/>
+
+
+---
+
+# Something less harmful: Video games!
+
+* Say we have a video game 
+
+* We collect (with consent!) user's game actions and data 
+
+* Of course we do this to make more money: recommend purchases, show ads, etc.
+
+* What else could we do?
+
+---
+
+class: mediumt
+
+# Video Games 
+
+<img src="/CI-2600/assets/img/videogamepersonal.png" width="80%"/>
+
+Dr. Chris Hazard:
+*If you are undervaluing or overvaluing positive utility events—so what that means is that if there’s a positive outcome in a game, like "Oh I got this reward. I got this treasure. Oh, that's really awesome. I really value that. But oh, if I lose this thing or if I gain this one coin or whatever it's not that much."*
+
+*It turns out, according to the two-month study, that depressed people more accurately value positive utility events than non-depressed people. So, think about that for a second.*
+
+---
+
+# Something less harmful: Hiring 
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Vision: algorithms will make hiring better as they don’t discriminate<br><br>Reality: “One HR employee for a major technology company recommends slipping the words “Oxford” or “Cambridge” into a CV in invisible white text, to pass the automated screening.”<br> <a href="https://t.co/m8jYKLzDNq">https://t.co/m8jYKLzDNq</a></p>&mdash; James Ball (@jamesrbuk) <a href="https://twitter.com/jamesrbuk/status/970271658769571840?ref_src=twsrc%5Etfw">March 4, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
+---
+
+# Speed Limit
+
+<img src="/CI-2600/assets/img/35mph.png" width="50%"/>
+
+---
+
+# Speed Limit 
+
+* We can train Neural Networks to recognize numbers, objects, etc. 
+
+* But as we saw during the lab, determining what each neuron *does* is complicated 
+
+* And since we don't know what is happening, we don't know which "features" (pixels) are important to each decision 
+
+* Researchers come up with adversarial examples all the time!
+
+---
+
+# Adversarial Examples
+
+<center>
+<img src="/CI-2600/assets/img/badcat.jpg" width="80%"/>
+</center>
+--
+This is a bird!
+
+---
+
+# ML Challenges
+
+"We're kind of like the dog who caught the car," Aguera y Arcas said. Deep learning has rapidly knocked down some longstanding challenges in AI—but it doesn’t immediately seem well suited to many that remain. Problems that involve reasoning or social intelligence, such as weighing up a potential hire in the way a human would, are still out of reach, he said. "All of the models that we have learned how to train are about passing a test or winning a game with a score, [but] so many things that intelligences do aren’t covered by that rubric at all," he said.
+
+From: *A Sobering Message About the Future at AI's Biggest Party* on wired.com
+
+---
+
+# Summary
+
+<center>
+<img src="/CI-2600/assets/img/MLprogresssummary.png" width="100%"/>
+</center>
+
+---
+
+class: small
+
+# References
+  
+  * [Details of 10.6 million MGM hotel guests posted on a hacking forum](https://www.zdnet.com/article/exclusive-details-of-10-6-million-of-mgm-hotel-guests-posted-on-a-hacking-forum/)
+  
+  * [Millions of Americans’ Medical Images and Data Are Available on the Internet. Anyone Can Take a Peek.](https://www.propublica.org/article/millions-of-americans-medical-images-and-data-are-available-on-the-internet)
+  
+  * [A Sobering Message About the Future at AI's Biggest Party](https://www.wired.com/story/sobering-message-future-ai-party/)
+  
+  * [The Google AI mammogram paper is FLAWED](https://twitter.com/VPrasadMDMPH/status/1212840987363442689?s=20)
+  
+  * [Why is there so much AI snakeoil](https://www.cs.princeton.edu/~arvindn/talks/MIT-STS-AI-snakeoil.pdf)
+  
+  * [Machine Bias for Risk Assessment](https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing)
+  
+  * [How a Piece of Tape Tricked a Tesla Into Reading a 35MPH Sign as 85MPH](https://gizmodo.com/how-a-piece-of-tape-tricked-a-tesla-into-reading-a-35mp-1841791417)
+  
+  * [Artificial Intelligence can discover, exploit personal information via a video game – here's how](https://www.wraltechwire.com/2019/10/14/artificial-intelligence-can-discover-exploit-personal-information-via-a-video-game-heres-how/)
+
+  * [Data on almost every Ecuadorean citizen leaked](https://www.bbc.com/news/technology-49715478)
+
+  
+  
+  
+  
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-0.14.0.min.js">
+    </script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script>
+      var slideshow = remark.create();
+      
+       // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>
