@@ -11,6 +11,8 @@ categories: []
 * TOC
 {:toc}
 
+Lab 4: Neural Networks, deadline: Jul 3
+
 ## Introduction
 
 In this lab, we will use a neural network to classify images, and then *generate* more images of the same type. This lab is based on 
