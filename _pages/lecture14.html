@@ -76,24 +76,6 @@ class: center, middle
 
 ---
 
-class: medium
-
-# Vector and Matrices and Tensors, oh my!
-
-* Vector: An ordered list of numbers 
-
-* Matrix: A grid of numbers 
-
-* We could store a matrix in a vector, if we remember the dimensions!
-
-* **Tensor**: What if we "need" more dimension?
-
-* For example: We have 10000 images of 28x28 pixels. We store them in a 10000x28x28 tensor
-
-* In memory the pixels will still be stored sequentially, the tensor is really just a different "view" on the data
-
----
-
 # PyTorch 
 
 * PyTorch is a python library for Machine Learning
@@ -152,6 +134,24 @@ if struct.calcsize("P") * 8 != 64:
 
 print("OK")
 ```
+
+---
+
+class: medium
+
+# Vector and Matrices and Tensors, oh my!
+
+* Vector: An ordered list of numbers 
+
+* Matrix: A grid of numbers 
+
+* We could store a matrix in a vector, if we remember the dimensions!
+
+* **Tensor**: What if we "need" more dimension?
+
+* For example: We have 10000 images of 28x28 pixels. We store them in a 10000x28x28 tensor
+
+* In memory the pixels will still be stored sequentially, the tensor is really just a different "view" on the data
 
 ---
 
@@ -295,6 +295,12 @@ $$
 
 ---
 
+# Artificial Neural Networks 
+
+<img src="/CI-2600/assets/img/ann.png" width="100%"/>
+
+---
+
 # Defining a Neural Network
 
 * Our Neural Network consists of Layers 
@@ -382,6 +388,12 @@ y_hat = model(x)
 * `Adam` needs you to calculate the error/loss, and call `backward()` 
 
 * Then you call the `step()` method
+
+---
+
+# Learning 
+
+<img src="/CI-2600/assets/img/optimizer.png" width="80%"/>
 
 ---
 
