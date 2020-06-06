@@ -212,6 +212,94 @@ class: medium
 
 ---
 
+class: medium
+
+# The Generative Game 
+
+* Discriminator learns to detect fake images (optimization with gradient descent)
+
+* Generator learns to produce fake images that look real to the discriminator (optimization with gradient descent)
+
+* Discriminator learns to detect these new fake images 
+
+* Generator learns to fool the updated discriminator 
+
+* ...
+
+---
+
+# Mode Collapse 
+
+* The goal of the generator is to **minimize** the error (= how many images the discriminator recognizes as fake)
+
+* The input of the generator is random noise
+
+* Imagine there is a **perfect** fake image 
+
+* The generator could learn to ignore the input and produce only this image
+
+---
+
+# Mode Collapse 
+
+* Once the generator produces **only** the perfect image, the loss, and therefore the gradient for each image will be the same
+
+* In the next iteration, the generator will also only produce **one** image 
+
+* The generation process has "collapsed" to a single example 
+
+* Generally, we don't want that 
+
+---
+
+# Mode Collapse: Randomization
+
+* What can we do? When we get to that point, nothing :(
+
+* To prevent getting there: Introduce more randomness
+
+* Dropout layers: After the activation function, randomly set values to 0 (with a probability p)
+
+* Randomize labels: When training the generator, randomly set some of the labels to 0
+
+---
+
+# Mode Collapse: Diversify Generation 
+
+* Another option is to explicitly encourage generation of different images 
+
+* For each set of generated images, calculate the average per-pixel variance
+
+* Use this variance as an additional input for the discriminator 
+
+* If variance = 0 very often, the discriminator will learn to use that to identify fake images
+
+---
+
+# GAN Variants
+
+* Generating faces or photos from existing ones
+
+* Additionally providing a class to generate specific pictures 
+
+* Generate an image from a textual description 
+
+* Apply a style to an existing image ("Style transfer")
+
+---
+
+# Samples 
+
+<img src="/CI-0129/assets/img/gangenerated.png" width="100%"/>
+
+---
+
+# Cycle GAN 
+
+<img src="/CI-0129/assets/img/cyclegan.png" width="100%"/>
+
+---
+
 class: center, middle 
 
 # Lab 4
@@ -222,7 +310,7 @@ class: center, middle
 
 * Let's build a GAN to generate more MNIST-like images
 
-* For now, focus on only one digit (pick one: your birthday, last digit of the carn&eacute;, your favorite number, ...)
+* Focus on only one digit (pick one: your birthday, last digit of the carn&eacute;, your favorite number, ...)
 
 * As mentioned above, we need two neural networks: A discriminator and a generator 
 
@@ -265,7 +353,7 @@ wants the discriminator to say that the images are real), then do a `backward` c
 
 * In a loop, alternate between training the generator and the discriminator
 
-* Keep an ``episode memory'' of fake images, to which you add newly generated fakes in every iteration
+* Keep an "episode memory" of fake images, to which you add newly generated fakes in every iteration
 
 * Train the generator and discriminator each for a couple of iterations 
 
@@ -291,6 +379,8 @@ class: medium
 
 * Make sure to preserve some old images!
 
+* You don't have to address mode collapse, but you can
+
 ---
 
 # References 
@@ -300,6 +390,10 @@ class: medium
   * [GAN Introduction](https://machinelearningmastery.com/how-to-develop-a-generative-adversarial-network-for-an-mnist-handwritten-digits-from-scratch-in-keras/)
   
   * [GAN hacks](https://github.com/soumith/ganhacks)
+  
+  * [GAN Variations](https://developers.google.com/machine-learning/gan/applications)
+  
+  * [Large Scale GAN Training for High Fidelity Natural Image Synthesis](https://arxiv.org/abs/1809.11096)
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-0.14.0.min.js">
