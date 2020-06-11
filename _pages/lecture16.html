@@ -91,6 +91,36 @@ $$
 
 ---
 
+# The Curse of Dimensionality
+
+* Imagine we have 20 data points with a number of features
+
+* If we have only one feature, all our data points are on a single line
+
+* If we have two features (= dimensions), our data points are spread out on a grid
+
+* If we have three features, they are spread out in a cube
+
+* Etc.
+
+---
+
+# The Curse of Dimensionality 
+
+<img src="/CI-0129/assets/img/dimensionality.png" width="100%"/>
+
+---
+
+# The Curse of Dimensionality 
+
+* On one hand, this is "good", because our data may be easier to distinguish with more dimensions 
+
+* But on the other hand, if we have "too many" dimensions, we may not be able to learn what each one "means"
+
+* The more dimensions we have, the more data we need to learn something meaningful!
+
+---
+
 class: medium
 
 # Deep Networks
@@ -105,13 +135,81 @@ class: medium
   
 ---
 
+# Deep Networks 
+
+<img src="/CI-0129/assets/img/deepnetwork.png" width="100%"/>
+
+---
+
+# Deep Networks 
+
+* When we train a network we pass the input through the network, calculate the loss, and the gradient and change the weights 
+
+* The more neurons we have, the more weights we have 
+
+* Training only really works well, if we have "enough" data to train *all* weights 
+
+* In other words: More weights = we need more data
+
+---
+
+class: small
+
+# Convolutional Neural Networks
+
+  * In traditional ANNs, all neurons in a layer are connected to all neurons in the previous layer 
+  
+  * For very high dimensional data (e.g. images) this results in a very larger number of weights that need to be learned
+  
+  * In many practical applications, there is some sort of locality present in the data 
+  
+  * For example, in image recognition: Pixels that are close together are more likely to be correlated than pixels from opposite corners of the image 
+  
+  * Idea: Instead of connecting the network fully, define a "receptive field" for each neuron that defines how much of the previous layer it "perceives"
+  
+---
+
+# Convolutional Neural Networks 
+
+<img src="/CI-2600/assets/img/cnn.jpeg" width="100%"/>
+
+---
+
+class: center, middle 
+
+# Encoding Data
+
+---
+
+class: medium
+
+# Encodings 
+
+* Neural Networks are nonlinear functions
+
+* "Function" means that the output only depends on the input
+
+* Each layer is also a function!
+
+* This means, if we take the input of a particular layer, we know the output of the network!
+
+* The input of a layer is the output of the previous layer
+
+---
+
+# Encodings 
+
+<img src="/CI-0129/assets/img/deepnetwork.png" width="100%"/>
+
+---
+
 class: medium
 
 # Auto-Encoders
 
-  * One application of this approach are Auto-encoders 
+  * One application of this idea are Auto-encoders 
   
-  * They are neural networks with many layers, that become narrower and narrower, before they widen again 
+  * They are neural networks with several layers, that become narrower and narrower (fewer neurons), before they widen again 
   
   * The number of inputs is the same as the number of outputs, and the training examples use the *same* values for input and output 
   
@@ -125,7 +223,15 @@ class: medium
 
 # Auto-Encoders
 
-<img src="/PF-3341/assets/img/autoencoder.png" width="100%"/>
+<img src="/CI-0129/assets/img/autoencoder.png" width="100%"/>
+
+---
+
+class: medium
+
+# Auto-Encoders
+
+<img src="/CI-0129/assets/img/denoising.png" width="100%"/>
 
 ---
 
@@ -250,29 +356,7 @@ class: medium
 
 class: center, middle
 
-# More Neural Network Architectures
-
----
-
-class: small
-
-# Convolutional Neural Networks
-
-  * In traditional ANNs, all neurons in a layer are connected to all neurons in the previous layer 
-  
-  * For very high dimensional data (e.g. images) this results in a very larger number of weights that need to be learned
-  
-  * In many practical applications, there is some sort of locality present in the data 
-  
-  * For example, in image recognition: Pixels that are close together are more likely to be correlated than pixels from opposite corners of the image 
-  
-  * Idea: Instead of connecting the network fully, define a "receptive field" for each neuron that defines how much of the previous layer it "perceives"
-  
----
-
-# Convolutional Neural Networks 
-
-<img src="/CI-2600/assets/img/cnn.jpeg" width="100%"/>
+# Sequential Data
 
 ---
 
@@ -320,11 +404,19 @@ class: medium
 ---
 
 # References 
-
-  * [Torch Tensor Operations Overview](https://jhui.github.io/2018/02/09/PyTorch-Basic-operations/)
+  
+  * [Convolutional Neural Networks](https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53)
+  
+  * [Auto-Encoder: What Is It? And What Is It Used For?](https://towardsdatascience.com/auto-encoder-what-is-it-and-what-is-it-used-for-part-1-3e5c6f017726)
+  
+  * [Word Vector Models](https://towardsdatascience.com/introduction-to-word-embedding-and-word2vec-652d0c2060fa?gi=5fc95c310fbe)
+  
+  * [Document Vector Models](https://medium.com/wisio/a-gentle-introduction-to-doc2vec-db3e8c0cce5e)
   
   * [RNN Introduction](https://medium.com/explore-artificial-intelligence/an-introduction-to-recurrent-neural-networks-72c97bf0912)
   
+  
+
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-0.14.0.min.js">
