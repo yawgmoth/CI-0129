@@ -67,13 +67,12 @@ permalink: /slides/lecture17.html
   <body>
     <textarea id="source">
 
+
 class: center, middle
 
-# Machine Learning
+# Artificial Intelligence
 
 ## Deep Q Learning
-
-### III-Verano 2019
 
 ---
 
@@ -220,6 +219,82 @@ class: center, middle
 
 <img src="/CI-2600/assets/img/DeepRLapplications.webp" width="80%"/>
   
+
+ 
+---
+
+class: center, middle 
+
+# OpenAI Gym
+
+---
+
+# OpenAI Gym
+
+* OpenAI is a research center with a focus on AI and Machine Learning 
+
+* Their stated goal is to develop AI for "the benefit of all humans"
+
+* They provide many resources for free 
+
+* One of their offerings is the "Gym"
+
+---
+
+# OpenAI Gym 
+
+- The Gym is an API and implementation for many different Reinforcement Learning problems in Python
+
+- Each task, or *environment*, provides observations, rewards, and actions 
+
+- The environments typically also have a visualization so that researchers can see what is happening
+
+- There are also many third-party environments that use the same API
+
+---
+
+# API 
+
+```Python
+import gym
+env = gym.make('CartPole-v0')
+observation = env.reset()
+
+for _ in range(1000):
+    env.render()
+    # Select an action
+    action = choose(observation, env.action_space)
+    
+    # Perform action and get reward 
+    observation, reward, done, info = env.step(action)
+    
+    # Use reward to update policy here
+    
+    # If we reach the goal: reset
+    if done:
+        observation = env.reset()
+    
+env.close()
+```
+
+---
+
+# Environment: Inverted Pendulum
+
+<video loop="loop" poster="https://gym.openai.com/videos/2019-10-21--mqt8Qj1mwo/CartPole-v1/poster.jpg" style=""><source src="https://gym.openai.com/videos/2019-10-21--mqt8Qj1mwo/CartPole-v1/original.mp4" type="video/mp4"></video>
+
+---
+
+# Environment: Ant
+
+<video loop="loop" poster="https://gym.openai.com/videos/2019-10-21--mqt8Qj1mwo/Ant-v2/poster.jpg" style=""><source src="https://gym.openai.com/videos/2019-10-21--mqt8Qj1mwo/Ant-v2/original.mp4" type="video/mp4"></video>
+
+---
+
+# Environment: Breakout
+
+<video loop="loop" poster="https://gym.openai.com/videos/2019-10-21--mqt8Qj1mwo/Breakout-v0/poster.jpg" style=""><source src="https://gym.openai.com/videos/2019-10-21--mqt8Qj1mwo/Breakout-v0/original.mp4" type="video/mp4"></video>
+
 ---
 
 # Application: Minecraft
@@ -230,7 +305,8 @@ class: center, middle
 
 # Malm&ouml;
 
-"Project Malm&ouml;, named after a town between Cambridge, UK where it was developed and Stockholm, Sweden where Minecraft was created, is an Artificial Intelligence (AI) platform that allows researchers to create challenging and interesting tasks for evaluating agents, and Minecraft enthusiasts to engage in the Modding community and help advance AI."
+"Project Malm&ouml;, named after a town between Cambridge, UK where it was developed and Stockholm, Sweden where Minecraft was created, is an Artificial Intelligence (AI) platform that allows researchers to 
+create challenging and interesting tasks for evaluating agents, and Minecraft enthusiasts to engage in the Modding community and help advance AI."
 
 "MalmoEnv is an OpenAI "gym" Python Environment for Malmo/Minecraft"
 
@@ -251,8 +327,28 @@ A potential task is to actually play Minecraft (without enemies), and get diamon
   * Build a smelter to smelt iron and create an iron pickaxe
   
   * Find and mine diamond
+  
+---
+
+# Malm&ouml; Task: Navigation 
+
+A simpler task: Get to the gold.
+
+<img src="/CI-0129/assets/img/minecraft.png" width="50%"/>
 
 ---
+
+# Minecraft Environment 
+
+* If you want to play around with Minecraft, we made a bundle for CI-2600 during the III ciclo 2019
+
+* There is a zip file with Minecraft, a batch file to run everything, and a python file with the skeleton code 
+
+* This is completely optional!
+
+---
+
+class: medium
 
 # References 
 
@@ -262,7 +358,12 @@ A potential task is to actually play Minecraft (without enemies), and get diamon
   
   * [Deep Reinforcement Learning for General Video Game AI](https://arxiv.org/pdf/1806.02448.pdf)
   
+  * [OpenAI Gym](https://gym.openai.com/)
+  
   * [Project Malmo](https://www.microsoft.com/en-us/research/project/project-malmo/)
+  
+  * [Lab 8 from the Machine Learning Course](https://yawgmoth.github.io/CI-2600/labs/lab8.html)
+  
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-0.14.0.min.js">
