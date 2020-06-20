@@ -5,7 +5,7 @@ permalink: /slides/lecture18.html
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lecture 18: Ethical Considerations</title>
+    <title>Lecture 19: Ethical Considerations</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -64,10 +64,10 @@ permalink: /slides/lecture18.html
 
 class: center, middle
 
-# Machine Learning
+
+# Artificial Intelligence
 
 ## Garbage in - Racism out: Ethical considerations for Machine Learning
-### III-Verano 2019
 
 ---
 
@@ -129,139 +129,6 @@ class: medium
 
 ---
 
-class: mmedium
-
-# Informed Consent ("Consetimiento Informado")
-
-* Beyond general legal requirements, most institutions working with human subjects have strict guidelines and requirements for data collection 
-
-* Before collecting anything, we need to ask for consent
-
-* Exceptions usually apply to publicly available data, for example tweets that can be seen by anyone
-
-* But always ask yourself: What is the worst thing a malicious actor could do with my work?
-
-* In Costa Rica, any and all human related experiments (observational and interventional) require an informed consent, signed by participants
-
----
-
-class: medium
-
-# Data in Costa Rica
-
-* A Presidential decree to create a Data Analysis Unit was repealed
-
-* This unit would have accessed and used confidential information from Costa Rican citizens for political purposes to benefit the populace
-
-* What that means remains unclear
-
-* Costa Rica needs to be more aware of the risks of mishandling private or confidential data
-
-* Being lax in regards to confidential data can have repercussions, like Ecuador
-
----
-
-class: mmedium
-
-# The Potential Aftermath (Ecuadorean Provate Data Breach)
-
-* In 2019 Ecuador saw a similar situation were confidential data was collected by the government
-
-* This included information such as:
-
-		1- official government ID numbers
-
-		2- phone numbers
-
-		3- family records
-
-		4- marriage dates
-
-		5- education histories
-
-		6- work records
-
----
-
-class: mmedium
-
-# The Effects of a Data Breach
-
-* It also included financial information and tax records
-
-* The total number of individuals was 17 million (almost all Ecuadoreans)
-
-* It was leaked from Novaestrat a Data Analytics and Marketing Company
-
-* To make it worse it was publibly accesible from ZDNet!
-
-* Such data can be used to find trends/patterns to set policies or to doctor the market
-
----
-class: center, middle 
-
-# Data Storage 
-
----
-
-# Data Storage 
-
-* So you set up your data collection, ask users for consent and only collect the data you are allowed to
-
-* Then you put it on some server
-
-* What's the worst that could happen?
-
----
-
-class: medium
-
-# Data Storage 
-
-<img src="/CI-2600/assets/img/MGMleak.png" width="100%"/>
-
-* MGM hotel collected customer data 
-
-* Data includes full names, addresses, phone numbers, dates of birth 
-
-* Ideal for identity thiefs!
-
----
-
-# Medical Data 
-
-<img src="/CI-2600/assets/img/MRIleak.png" width="100%"/>
-
-* Medical data stored on unsecured servers 
-
-* "It's not even hacking, It’s walking into an open door," said cybersecurity researcher Jackie Singh
-
----
-
-# Security
-
-* Don't store data longer than necessary
-
-* The more sensitive the data, the less it should be connected to the internet
-
-* Hire a security expert/penetration tester 
-
-* Always install security updates for your storage server
-
----
-
-# Right to be Forgotten
-
-* Another legal aspect is the right to be forgotten/right to erasure
-
-* Both the GDPR and the CCPA include provisions for people to request that their data should be deleted 
-
-* This means we need to include a way in our data storage of how to get rid of data
-
-* Including backups!
-
----
-
 class: center, middle 
 
 # Data Usage
@@ -270,7 +137,7 @@ class: center, middle
 
 # Data Usage 
 
-* We have seen a variety of Machine Learning techniques 
+* We have seen some Machine Learning techniques 
 
 * If we have data (obtained with consent), we can produce predictions
 
@@ -279,18 +146,6 @@ class: center, middle
 * What do we want to find?
 
 * And just because we can: Should we?
-
----
-
-# Best Possible Action?
-
-<img src="/CI-0129/assets/img/trolleyproblem.png" width="100%"/>
-
----
-
-# The Moral Machine 
-
-<img src="/CI-0129/assets/img/moralmachine.png" width="80%"/>
 
 ---
 
@@ -404,6 +259,16 @@ Dr. Chris Hazard:
 
 ---
 
+# Adversarial Examples
+
+<center>
+<img src="/CI-2600/assets/img/badcat.jpg" width="80%"/>
+</center>
+
+Remember: This is a bird!
+
+---
+
 # Speed Limit
 
 <img src="/CI-2600/assets/img/35mph.png" width="50%"/>
@@ -414,7 +279,7 @@ Dr. Chris Hazard:
 
 * We can train Neural Networks to recognize numbers, objects, etc. 
 
-* But as we saw during the lab, determining what each neuron *does* is complicated 
+* But determining what each neuron *does* is complicated 
 
 * And since we don't know what is happening, we don't know which "features" (pixels) are important to each decision 
 
@@ -422,13 +287,15 @@ Dr. Chris Hazard:
 
 ---
 
-# Adversarial Examples
+# More Adversarial Examples
 
-<center>
-<img src="/CI-2600/assets/img/badcat.jpg" width="80%"/>
-</center>
---
-This is a bird!
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Can Your AI Differentiate Cats from COVID-19?<br><br>There is a recent interest in using AI to detect COVID-19 from Chest X-Ray (CXR) images. Our work serve as a warning to practitioners by showing that overconfident and inaccurate predictions become severe in small-data regime. <a href="https://t.co/hMA7TQcuSZ">pic.twitter.com/hMA7TQcuSZ</a></p>&mdash; Bhavya Kailkhura (@bkailkhu) <a href="https://twitter.com/bkailkhu/status/1272619636710752256?ref_src=twsrc%5Etfw">June 15, 2020</a></blockquote> 
+
+---
+
+# Style-Transfer: Digital Blackface/Brownface
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">If you&#39;re an AI research doing blending, style transfer, or other visual stuff, please stop doing this kind of thing in your talks and papers (or, like, at all). This is <a href="https://twitter.com/nvidia?ref_src=twsrc%5Etfw">@nvidia</a> presenting at a top conference in the field, <a href="https://twitter.com/CVPRConf?ref_src=twsrc%5Etfw">@CVPRConf</a>. <a href="https://t.co/neKHysOE56">pic.twitter.com/neKHysOE56</a></p>&mdash; mike cook (@mtrc) <a href="https://twitter.com/mtrc/status/1272943369346584579?ref_src=twsrc%5Etfw">June 16, 2020</a></blockquote> 
 
 ---
 
@@ -468,11 +335,6 @@ class: small
   
   * [Artificial Intelligence can discover, exploit personal information via a video game – here's how](https://www.wraltechwire.com/2019/10/14/artificial-intelligence-can-discover-exploit-personal-information-via-a-video-game-heres-how/)
 
-  * [Data on almost every Ecuadorean citizen leaked](https://www.bbc.com/news/technology-49715478)
-
-  
-  
-  
   
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-0.14.0.min.js">
