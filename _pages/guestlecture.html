@@ -1,0 +1,755 @@
+---
+permalink: /slides/guestlecture.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Planning Problem</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .medium li {  font-size: 1.1em; }
+      
+      .mmedium li {  font-size: 1.05em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      .left-column {
+        color: #777;
+        width: 25%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 70%;
+        float: right;
+        padding-top: 1em;
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Artificial Intelligence
+
+### The Planning Problem
+
+---
+
+class: center, middle
+
+# The Planning Problem
+
+---
+
+# The Planning Problem
+
+A planning problem consists of three parts:
+
+  * A definition of the current state of the world
+  
+  * A definition of a desired state of the world
+  
+  * A definition of the actions the agent can take
+  
+All of these definitions are done in "some" formal language.
+
+--
+
+Logic is a good choice for a formal language!
+
+---
+
+# An Example Planning Problem: Blocks World
+
+  * We have three blocks, A, B, and C
+  
+  * Blocks A and B are on the table, block C is on top of block B
+  
+  * Blocks can be stacked
+  
+  * At the moment, all blocks are on the table next to each other
+  
+  * We want the blocks to be stacked, with C on top of B, and B on top of A
+  
+---
+
+# An Example Planning Problem: Blocks World
+
+<img src="/PF-3341/assets/img/problemstatement.png" width="100%"/>
+  
+---
+
+# Formalizing the Problem
+
+Current state:
+$$
+\text{on}(A, \mathit{table}) \wedge\\\\
+\text{on}(B, \mathit{table}) \wedge \\\\
+\text{on}(C, B)\\\\
+$$
+
+Goal:
+$$
+\text{on}(A, \mathit{table}) \wedge \\\\
+\text{on}(B, A) \wedge\\\\
+\text{on}(C, B)\\\\
+$$
+  
+---
+
+# Actions?
+
+What can the agent do?
+
+  * Let's say our agent is a simple robot
+  
+  * It has a gripper
+  
+  * It can pick up a block, and also put it down (on the table, or on top of another block)
+  
+---
+
+# Formalizing Actions?
+
+  * First, we need to represent that the robot is holding some block X somehow: `\(\text{holds}(X)\)`
+  
+  * Picking up a block then has a **precondition** and an **effect**
+  
+  * The precondition defines *if* an action can even be taken
+  
+  * The effect defines what the action *changes* in the world
+  
+---
+
+# Picking Up a Block X
+
+Precondition:
+$$
+\forall Y \in \mathit{blocks}: \neg \text{holds}(Y) \wedge \\\\
+\forall Y \in \mathit{blocks}: \neg \text{on}(Y, X)
+$$
+
+Effect:
+$$
+\forall Y \in \mathit{blocks}: \neg \text{on}(X, Y) \wedge \\\\
+\neg \text{on}(X, \mathit{table}) \wedge \\\\
+\text{holds}(X)
+$$
+
+---
+
+# Putting a Block X on Top of a Block Y
+
+Precondition:
+$$
+\text{holds}(X) \wedge \\\\
+\forall Z \in \mathit{blocks}: \neg \text{on}(Z, Y)
+$$
+
+Effect:
+$$
+\text{on}(X, Y) \wedge \\\\
+\neg \text{holds}(X)
+$$
+
+---
+
+class: small
+
+# The Planning Problem 
+
+Given:
+* An initial state `\(s_0\)`
+* Action definitions `\(a = (p,e)\)` consisting of a precondition and an effect 
+* A goal formula `\(g\)`
+
+Find a sequence of actions `\(a_0, a_1, \ldots, a_n\)`, such that:
+
+* `\(s_i \models p_i\)`
+* `\(s_{i+1} =\:\text{apply}\:\:e_i\:\:\text{to}\:\:s_i\)`
+* `\(s_{n+1} \models g\)`
+
+Each action can be applied in the state preceding it, and generates a new state using its effect. In the final state the goal condition holds.
+
+---
+
+# Planners 
+
+- A *planner* is an algorithm that solves the planning problem 
+
+- Two important properties for a planner are:
+
+  + **Soundness**: Any plan the planner produces is valid, i.e. satisfies the three conditions 
+  + **Completeness**: For any planning problem that has a solution, the planner will (eventually) produce one
+
+- Not all planners have both of these properties!
+
+---
+
+class: medium
+
+# Complexity?
+
+  * Logic is nice, but this seems like a pretty complex problem to solve?
+  
+  * Whenever we want to execute an action we have to check against all blocks to see if the agent is already holding something, or if there's already something on
+  the target block
+  
+  * We can use an encoding trick to simplify the problem: Have predicates for negative conditions, too
+  
+  * For example: There is a predicate `holds` and a predicate `free` for the gripper, and a predicate `on` and a predicate `clear` for the blocks
+  
+---
+
+# Picking Up a Block X
+
+Precondition:
+$$
+\text{free}() \wedge \\\\
+\text{clear}(X)
+$$
+
+Effect:
+$$
+\neg \text{clear}(X) \wedge \\\\
+\neg \text{free}() \wedge
+\text{holds}(X)
+$$
+
+---
+
+# Putting a Block X on Top of a Block Y
+
+Precondition:
+$$
+\text{holds}(X) \wedge \\\\
+\text{clear}(Y)
+$$
+
+Effect:
+$$
+\text{on}(X, Y) \wedge \\\\
+\neg \text{clear}(Y) \wedge \\\\
+\neg \text{holds}(X) \\\\
+\text{clear}(X) \wedge \text{free}()
+$$
+
+---
+
+# STRIPS
+
+
+.left-column[
+  <img src="/PF-3341/assets/img/Shakey.png" width="100%"/>
+]
+
+.right-column[
+
+* Shakey the Robot could solve problems given by a goal state
+
+* Various sensors let it build a model of the current world state
+
+* The Stanford Research Institute Problem Solver was the planner responsible for finding a solution
+ 
+]
+
+---
+
+class: small
+
+# STRIPS planning
+
+  * A state (and the goal!) is defined as a set of atomic propositions of what is true in the world
+  
+  * The goal is reached when it is a **subset** of a state
+  
+  * Each action consists of four sets of atomic propositions:
+      * Two sets of preconditions: positive and negative
+      * An add list: What the action makes true
+      * A delete list: What the action makes false
+      
+  * To check if an action can be executed in a state, the planner checks if all positive preconditions are in the state and all negative ones are not
+  
+  * To execute the action, a new state is produced as the union of the old state with the add list, and then the delete list is removed
+  
+---
+
+# Picking Up a Block X in STRIPS
+
+Positive Preconditions:
+$$
+\\{\text{free}(), \text{clear}(X)\\}
+$$
+Negative Preconditions: None
+
+Add List:
+$$
+\\{\text{holds}(X)\\}
+$$
+
+Delete List:
+$$
+\\{\text{free}(), \text{clear}(X)\\}
+$$
+
+---
+
+class: medium
+
+# Actions vs. Action Schemata
+
+  * Technically "Picking up a block X" (`pickup(X)`) is not an action, because there is no "Block X" in our domain
+  
+  * We used "X" as a free variable to refer to "any block"
+  
+  * An actual (classical) STRIPS planning problem needs ground actions, without any free variables
+  
+  * `pickup(X)` is an action schema, called **operator**, that will need to be turned into ground actions (without free variables) `pickup(A)`, `pickup(B)`, and `pickup(C)`
+  
+---
+
+# The Sussman Anomaly
+
+Let's look at a slightly different problem:
+
+<img src="/PF-3341/assets/img/sussman.png" width="100%"/>
+
+---
+
+class: small
+
+# The Sussman Anomaly
+
+There are two goals: `on(A,B)` and `on(B,C)`. If the planner divides the goal into subgoals:
+ 
+- If it tries to reach a state with A on top of B first, it will put C aside, then put A on B, and then can not fulfill the other goal without undoing the first (by removing A).
+
+- If it tries to reach a state with B on top of C first, it will just put B on top of the pile, and then can't satisfy the other goal.
+    
+A "proper" solution has to interleave solving these two goals: First remove C, then put B on C, then put A on B. This requirement for interleaving is called "the Sussman Anomaly", discovered in the 1970s. Modern Planners do not run into this problem anymore.
+
+  
+---
+
+# Pathfinding
+
+Consider the problem of finding a path in a graph:
+
+* We are given a graph, consisting of nodes and edges
+
+* The task is to find a path, consisting of edges, that leads from a given start-node to a given goal node (or set of goal nodes)
+
+* To search for a path, we start at the start node, and then look at all of its neighbors "intelligently"
+
+---
+
+# Planning As Pathfinding
+
+To use a pathfinding algorithm for planning, we need to formulate the planning problem as a graph. Let's start with the "obvious" choice:
+
+* Each state is a logical state
+
+* Each edge corresponds to an action
+
+* In any state, we can take any action whose preconditions are satisfied to generate a new state
+
+---
+
+# The State-Space
+
+- When we start at the node corresponding to the start state and start expanding actions, we generate the so-called *State-Space*
+
+- We can then use a standard A* algorithm to do pathfinding
+
+- In fact, many planners do exactly that, with different heuristics
+
+---
+
+# State Space Example 
+
+<img src="/PF-3341/assets/img/planspace.png" width="100%"/>
+
+---
+
+# Planning Problem in State Space 
+
+<img src="/PF-3341/assets/img/problem.png" width="100%"/>
+
+---
+
+class: center, middle
+
+# Planning is PSPACE-complete
+
+---
+
+# Planning Complexity
+  
+Recall the Complexity classes P, NP, PSPACE and EXP:
+  
+$$
+P \subseteq \mathit{NP} \subseteq \mathit{PSPACE} \subseteq \mathit{EXP}
+$$
+
+(Any of these subsets may or may not be proper, but at least one of them is)
+
+---
+
+# Why is Planning Hard?
+
+  * We just said that planning is pathfinding on a graph consisting of the states
+  
+  * Pathfinding is solvable in polynomial time
+  
+  * Planning is not? Why?
+
+--
+
+  * For a pathfinding problem, the input is the graph. For a planning problem the input is the initial state, the goal condition and the actions. The graph is
+  **implicit** (and potentially exponentially large)
+  
+---
+
+class: mmedium
+
+# Complexity Theory
+
+Recall:
+
+  * A problem is called *in* a complexity class C, if there is an algorithm/Turing Machine that can solve it within the constraints of C
+  
+  * A problem is called *hard* for a complexity class C ("C-hard"), if given an algorithm for that problem *any* problem in C could be solved with less than polynomial overhead 
+  
+  * A problem is called *complete* for a complexity class C, if it is both *in* C and C-*hard*
+  
+Planning (more precisely: PLANSAT) is PSPACE-complete: It is in PSPACE because the maximum length of a plan is exponential, we can represent exponentially many different states in polynomial space, and we don't need to store intermediate states.
+  
+---
+
+class: small
+
+# So how hard is planning?
+
+* Imagine you have a (any!) Turing machine that needs at most polynomial space for some computation (i.e. it is in PSPACE)
+
+* If we could solve the *same* computation with a planner, **and** the conversion only takes polynomial time, we know that planning is PSPACE-hard
+
+* So how could we encode a Turing machine in a planner?
+
+* How is a Turing machine defined?
+
+---
+
+# Turing Machine
+
+Recall: A Turing Machine consists of three parts:
+
+  - A tape (in our case **polynomial** in size) filled with symbols from a finite alphabet `\(\Sigma\)`, e.g. `\(x\)`
+  
+  - A read/write head position `\(i\)`
+  
+  - A state `\(q \in Q\)`
+  
+The computation a Turing Machine computes is defined by a state transition function: `\(Q \times \Sigma \mapsto Q \times \Sigma \times \{L,R\}\)`
+
+The Turing Machine applies this state transition function until it reaches a *terminal state*
+
+---
+
+class: medium
+
+# Turing Machine
+
+Say:
+
+* We have a predicate `\(\mathit{in}(i,x)\)` to define which symbol is in a tape cell
+
+* We have a predicate `\(\mathit{at}(i,q)\)` to define the read/write head is at position `\(i\)` and we are in state `\(q\)`
+
+* We have a predicate `\(\mathit{accept}\)` to define that we are in a terminal state
+
+Let's additionally define a predicate `\(\mathit{do}(i,q,x)\)` to mean "we are processing the transition from state `\(q\)`, with current symbol `\(x\)`, and the read/write head is at position `\(i\)`"
+
+---
+
+class: small
+
+# Turing Machine
+
+Take a transition from the Turing Machine, e.g. `\((q_0,x) \mapsto (q_1,y,L)\)`. We can then define planning operators:
+
+Delete old state
+* Positive Preconditions: `\(\{\mathit{in}(i,x), \mathit{at}(i,q)\}\)`
+* Add List: `\(\{\mathit{do}(i,q,x)\}\)`, Delete List: `\(\{\mathit{at}(i,q)\}\)`
+
+Write new symbol
+* Positive Preconditions: `\(\{\mathit{in}(i,x), \mathit{do}(i,q,x)\}\)`
+* Add List: `\(\{\mathit{in}(i,y)\}\)`, Delete List: `\(\{\mathit{in}(i,x)\}\)`
+
+Move and change state
+* Positive Preconditions: `\(\{\mathit{do}(i,q,x), \mathit{in}(i,y)\}\)`
+* Add List: `\(\{\mathit{at}(i-1,q_1)\}\)`, Delete List: `\(\{\mathit{do}(i,q,x)\}\)`
+
+---
+
+class: small
+
+# Turing Machine
+
+Are we polynomial in size?
+
+* We need at most polynomially many `\(\mathit{in}\)` atoms 
+
+* For every state transition we generate actions equal to the number of possible symbols times the number of states (part of the definition) times the number of `\(\mathit{in}\)` atoms (squared)
+
+* Overall, we will generate polynomially many actions (and we need a few extras that set `\(\mathit{accept}\)` to true)
+
+If planning was not PSPACE-hard, we could therefore solve any problem in PSPACE more efficiently. Since we can not, that means that planning must be PSPACE-hard.
+
+---
+
+# It gets worse ...
+
+Recall our operators:
+
+Delete old state
+* Positive Preconditions: `\(\{\mathit{in}(i,x), \mathit{at}(i,q)\}\)`
+* Add List: `\(\{\mathit{do}(i,q,x)\}\)`, Delete List: `\(\{\mathit{at}(i,q)\}\)`
+
+Write new symbol
+* Positive Preconditions: `\(\{\mathit{in}(i,x), \mathit{do}(i,q,x)\}\)`
+* Add List: `\(\{\mathit{in}(i,y)\}\)`, Delete List: `\(\{\mathit{in}(i,x)\}\)`
+
+Move and change state
+* Positive Preconditions: `\(\{\mathit{do}(i,q,x), \mathit{in}(i,y)\}\)`
+* Add List: `\(\{\mathit{at}(i-1,q_1)\}\)`, Delete List: `\(\{\mathit{do}(i,q,x)\}\)`
+
+---
+
+# It gets worse ...
+
+* None of our operators used negative preconditions 
+
+* And they only used **two** positive preconditions 
+
+* And **two** effects 
+
+* This means that planning is PSPACE-hard even if we limit the operators to two positive preconditions and two effects
+
+* Oh, and remember: This result is just for determining if there even *exists* any plan
+
+---
+
+# Complexity Zoo
+
+<img src="/PF-3335/assets/img/plancomplexity.png" width="80%"/>
+  
+---
+
+class: medium
+
+# The Good News
+
+  * [All PSPACE-complete planning problems are equal, but some are more equal than others](https://www.aaai.org/ocs/index.php/SOCS/SOCS11/paper/view/4009/4353)
+  
+  * Many interesting planning problems, i.e. the ones that show up in practice, are tractable, even if their generalizations are theoretically hard to solve.
+  
+  * Another way to think about it: Since the solutions we usually *want* are not going to be exponential in length, we shouldn't have to generate a graph of
+  exponential size.
+  
+  * Also nice: Adding more convenience features doesn't actually make planning harder
+  
+---
+
+class: center, middle
+
+# Applications 
+
+---
+
+# Some Applications
+
+- Logistics (RoboCup Logistics League)
+
+- Ride sharing
+
+- Video Games
+
+- Narrative Generation
+
+---
+
+# Goal-Oriented Action Planning
+
+* F.E.A.R. (and several other games) use a variant of planning for its enemy AI 
+
+* Instead of arbitrary goals and states, it greatly restricts what can be represented 
+
+* This restriction allowed it to be used in a real-time environment
+
+* The developers stated that using planning allowed them to easily add new action types
+
+---
+
+# Story Generation
+
+- We have an initial state of the world
+
+- We have actions the different characters can perform
+
+- The author defines a goal for the story
+
+- For example: In a detective story the goal is that there is a murder and that the detective identifies the murderer
+
+---
+
+# Story Example
+
+* Sherlock Holmes goes to Irene Adler's house
+
+* Sherlock Holmes stabs Irene Adler
+
+* Sherlock Holmes identifies himself as the killer
+
+* The End.
+
+---
+
+# Story Generation as Planning
+
+- Planners are usually good at finding efficient solutions
+
+- Stories are not efficient!
+
+- However, each *character* should act rationally, i.e. efficiently
+
+- We could use one planner per character ...
+
+---
+
+# Intentional Planning
+
+- With one planner per character we may never find a path to the story goal
+
+- Instead, we use a "trick": We tell the planner what each character wants to achieve
+
+- The planner may then only use actions for a character that helps them achieve their goal
+
+- But the overall plan still has to solve the story goal!
+
+- Implementations: IPOCL, CPOCL
+
+---
+
+# Discourse Planning
+
+- Once we have a story (plot), we want to tell it 
+
+- There are several different media, such as film, text, comics, or combinations thereof
+
+- As we discussed during our lecture on Hierarchical Planning, we can use planning to generate this discourse
+
+---
+
+# Camera Planning 
+
+- Suppose we want to make a movie 
+
+- Each scene is supposed to convey some particular aspect of the story 
+
+- There are different camera shots, angles, lenses, etc. that we can use 
+
+- We can frame this as a planning problem by defining the different shots as operators
+
+---
+
+# The Battle for the Rune
+
+[Link](https://drive.google.com/open?id=1VweROPFFeFyPv4M1rf_FPnZR9NDIuD23)
+
+---
+
+class: mmedium
+
+# Summary
+
+* A planning problem consists of a start state, actions, and a goal condition
+
+* In STRIPS planning the start state consists of a set of atoms, each action has positive and negative preconditions (sets of atoms), and effects (an add list and a delete list of atoms), and the goal is also a set of atoms
+
+* Actions are usually defined as operators, which contain free variables, and have to be ground for the actual planning process
+
+  
+---
+
+# Resources
+
+  * [Shakey the Robot](https://www.youtube.com/watch?v=qXdn6ynwpiI)
+  
+  * [STRIPS: A New Approach to the Application of Theorem Proving to Problem Solving](http://ai.stanford.edu/users/nilsson/OnlinePubs-Nils/PublishedPapers/strips.pdf)
+  
+  * [The Computational Complexity of Propositional Strips Planning](https://ai.dmi.unibas.ch/research/reading_group/bylander-aij1994.pdf)
+  
+  * [All PSPACE-complete planning problems are equal, but some are more equal than others](https://www.aaai.org/ocs/index.php/SOCS/SOCS11/paper/view/4009/4353)
+  
+  * [Introduction to STRIPS Planning and Applications in Video-games](https://www.dis.uniroma1.it/~degiacom/didattica/dottorato-stavros-vassos/)
+  
+---
+
+class: medium
+
+# Resources
+
+  * [ICAPS 2019 Proceedings](https://aaai.org/ojs/index.php/ICAPS)
+
+  * [Goal-Oriented Action Planning](http://alumni.media.mit.edu/~jorkin/goap.html)
+  
+  * [Narrative Planning: Compilations to Classical Planning](https://arxiv.org/abs/1401.5856)
+  
+  * [Bardic: Generating Multimedia Narrative Reports for Game Logs](https://www.semanticscholar.org/paper/Bardic-%3A-Generating-Multimedia-Narrative-Reports-Barot-Branon/3087daa75239c7990bfc993a5919d14e69373b42)
+
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script>
+      var slideshow = remark.create({"highlightStyle": "dark"});
+      
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>
