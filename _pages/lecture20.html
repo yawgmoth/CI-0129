@@ -1,0 +1,319 @@
+---
+permalink: /slides/lecture20.html
+---
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 20: Review</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.7em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .ssmall li {  font-size: 0.9em; }
+      
+      .oneline li { font-size: 1.25em; line-height: 1.25em; }
+      .oneline li p { font-size: 1.25em; line-height: 1.25em; }
+      .oneline p { font-size: 1.25em; line-height: 1.25em; }
+      .oneline div { font-size: 1.25em; line-height: 1.25em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      .medium li {  font-size: 1.1em; }
+     
+      .mmedium li {  font-size: 1.05em; }
+      
+      table, td, th, tr { border: 1px solid black; }
+      table { border-collapse: collapse; }
+        
+      .left-column {
+        color: #777;
+        width: 40%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 60%;
+        float: right;
+        padding-top: 1em;
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Artificial Intelligence
+
+## Review
+
+---
+
+# Planning 
+
+* What three components does a planning problem have?
+
+* Define a planning problem for a robot that can carry boxes between rooms (in words). The goal is to get all boxes to room A.
+
+<img src="/CI-0129/assets/img/planningrooms.png" width="40%"/>
+
+---
+
+# Planning 
+
+Write PDDL actions for the planning problem from the previous slides: pickup, putdown and move 
+
+--
+
+Write the initial state and goal condition in PDDL.
+
+---
+
+# Planning 
+
+Given the actions, initial state and goal below, find a plan that solves this planning problem
+
+```Lisp
+(:action exchange :parameters (?a ?b ?w)
+  :precondition (and (at ?a ?w) (at ?b ?w))
+  :effect (and (when (has ?a money) 
+                  (and (not (has ?a money)) (has ?b money)))
+               (when (has ?b money) 
+                  (and (not (has ?b money)) (has ?a money)))))
+
+(:action move :parameters (?who ?fr ?to)
+  :precondition (at ?who ?fr)
+  :effect (and (not (at ?who ?fr)) (at ?who ?to)))
+
+(:init 
+   (at carl house)
+   (at dieter yard)
+   (has carl money))
+
+(:goal (and (at carl street) (has dieter money)))
+```
+
+---
+
+# Unsupervised Learning 
+
+Briefly Explain Lloyd's algorithm ("k-means algorithm")
+
+---
+
+# Unsupervised Learning 
+
+You are running Lloyd's algorithm with k=2, and are currently in the state shown below. Draw (approximately) where the cluster centers will be in the next step, and explain why. Also draw the new boundary between the two clusters.
+
+<img src="/CI-0129/assets/img/clusterproblem.png" width="60%"/>
+
+<a href="/CI-0129/assets/img/clusterproblemclear.png">Clear version</a>
+
+---
+
+# Unsupervised Learning 
+
+For the data given below, show a potential clustering Lloyd's algorithm could produce for k=3. Is this a good clustering? Why/why not?
+
+<img src="/CI-0129/assets/img/badclusterproblem.png" width="60%"/>
+
+---
+
+# Reinforcement Learning 
+
+What does an agent learn in a reinforcement learning problem? What inputs and outputs does it use to do that?
+
+---
+
+# Reinforcement Learning  
+
+What is the epsilon-greedy strategy for action selection in Reinforcement Learning? Why would you use it?
+
+---
+
+# Q-Learning 
+
+Explain each of the terms in the Q update expression:
+
+$$
+Q(s,a) \leftarrow (1-\alpha) \cdot Q(s,a) + \alpha \cdot  (R(s) + \gamma \max_{a'} Q(T(s,a),a'))
+$$
+
+---
+
+# Q-Learning 
+
+Given the Q-table below, which action would the policy defined by this table select in state 2?
+
+State | Walk left | Walk right | Jump
+------|-----------|------------|--------
+1     |   2.313   | 1.337      | 6.1
+2     |   1.5     | -2.8       | 0.24
+3     |  -4.1     | 2.4        | 0.0
+4     |  -2.6     | 3.4        | -1
+
+---
+
+# Q-Learning 
+
+Given the Q-table below, your agent is in state 2, performs the action "walk left", which results in a reward of 0.7 and leads to state 3. How will the Q-table change, using the Q-update rule using a learning rate of 0.5, and a discount factor (gamma) of 0.75?
+
+$$
+Q(s,a) \leftarrow (1-\alpha) Q(s,a) + \alpha \cdot (R(s) + \gamma \cdot \max_{a} Q(T(s,a),a))
+$$
+
+State | Walk left | Walk right | Jump
+------|-----------|------------|--------
+1     |   2.313   | 1.23       | 6.1
+2     |   1.5     | -2.8       | 0.24
+3     |  -4.1     | 2.4        | 0.0
+4     |  -2.6     | 3.4        | -1
+
+---
+
+# Supervised Learning
+
+* What is Regression?
+
+* What is Classification?
+
+---
+
+# Classification
+
+You are given a set of images, with 100x100 pixels, some of which are spoons, and some are forks
+
+* What Neural Network architecture would you propose for this task (layers, neurons, activation functions)?
+
+---
+
+# Gradient Descent
+
+Your model has the weights `w`, and you just calculated the loss and the gradient. Assume a learning rate of `0.1`, and calculate the new values for `w`
+
+$$
+w = \begin{pmatrix}1.2\\\\ 2.1\end{pmatrix}\\\\
+\nabla w = \begin{pmatrix}7\\\\11\end{pmatrix}
+$$
+
+---
+
+# Classification Metrics
+
+Your binary model constructed for the task of discriminating between dogs and non-dogs has resulted in the following confusion matrix
+      
+<img src="/CI-2600/assets/img/binary_dog_conf_mat.png" width="80%"/>
+
+Calculate the accuracy, the precision, the recall and the F1-score.
+
+---
+
+# PyTorch
+
+You have your training data, which are 2000 images of size 320x240 with 3 color channels in a tensor `t` with shape `(2000,320,240,3)`
+
+* You are using a regular, fully connected feed-forward neural network, with 320x240x3 = 230400 inputs. How can you change the shape of your tensor to work with this network?
+
+* How can you get a tensor that (only!) contains the red channel (first channel) of the first pixel (x=0, y=0) of each image?
+
+---
+
+# PyTorch 
+
+Draw the neural network corresponding to this pytorch code. Clearly note the activation function of each layer!
+
+```Python
+class MysteryNet(torch.nn.Module):
+    def __init__(self):
+        super(TwoLayerNet, self).__init__()
+        self.lin1 = torch.nn.Linear(3, 5)
+        self.lin2 = torch.nn.Linear(5, 2)
+        
+        self.af1 = torch.nn.Sigmoid()
+        self.af2 = torch.nn.Softmax()
+    def forward(self, x):
+        h = self.lin1(x)
+        h = self.af1(h)
+        h = self.lin2(h)
+        return self.af2(h)
+```
+
+---
+
+# PyTorch 
+
+What are the five steps a typical training loop in PyTorch has to perform in each iteration?
+
+---
+
+# GANs
+
+What is a GAN?
+
+How does it work?
+
+---
+
+# GANs 
+
+You are training a GAN to produce pictures of cats, but all output images are the same. Briefly explain, why this could happen.
+
+---
+
+# Deep Q Learning
+
+Briefly explain the idea behind Deep Q Learning: How are we changing classical Q-learning?
+
+Why do we use *two* neural networks?
+
+---
+
+# Ethical Considerations 
+
+G. Rind R. is the CEO of a startup that wants to make a dating app targeted at gay people. He offers to pay you 100 000 USD for a machine learning system that takes people's facebook pictures to predict if they are gay.
+
+Briefly discuss ethical and legal concerns you have about this assignment.
+
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+
+    <script>
+      var slideshow = remark.create();
+      
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>
