@@ -11,7 +11,7 @@ categories: []
 * TOC
 {:toc}
 
-Lab 4: Neural Networks, deadline: Jul 3
+Lab 4: Neural Networks, deadline: Jul 16
 
 ## Introduction
 
