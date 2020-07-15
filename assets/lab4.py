@@ -72,7 +72,7 @@ def train_classifier(opt, model, x, y):
 # call train_classifier with the training set
 # Calculate metrics on the test set 
 # Example: 
-#      y_pred = net(x_test[y_test == 3]) calculates all predictions for all images we know to be 3s
+#      y_pred = net(x_test[labels_test.view(-1) == 3,:]) calculates all predictions for all images we know to be 3s
 #      (y_pred > 0.5) is a tensor that tells you if a given image was classified as your chosen digit (True) or not (False)
 #      You can convert this tensor to 0s and 1s by calling .float()
 #      (y_pred > 0.5).sum() will tell you how many of these predictions were true
@@ -82,7 +82,7 @@ def train_classifier(opt, model, x, y):
 #     This last value (accuracy) should be over 90%
 #     Precision (which percentage of images identified as your chosen digit was actually that digit: TP/(TP+FP))
 #     Recall (which percentage of your chosen digit was identified as such: TP/(TP+FN))
-def classify(x_train, y_train, x_test, y_test):
+def classify(x_train, y_train, x_test, y_test, labels_test):
     pass
     
 # Task 2 (GAN) starts here
@@ -172,7 +172,7 @@ def main(rungan):
     if rungan:
         gan(x_train[labels_train == digit])
     else:
-        classify(x_train, y_train, x_test, y_test)
+        classify(x_train, y_train, x_test, y_test, labels_test)
     
     
         

@@ -13,6 +13,10 @@ categories: []
 
 Lab 4: Neural Networks, deadline: Jul 16
 
+**Update 14/7/2020:** If you get stuck trying to calculate which digit gets classified as your digit: You can pass `labels_test` from main to the classify function (you can change the interface). Also, the comment in 
+TODO 5 was wrong: You can use code like `y_pred = net(x_test[labels_test.view(-1) == 3,:])` (note the use of labels and the extra colon) to pass all images in the test set that are 3s through your network. The lab4.py file 
+has been updated with these changes, but if you already found another solution, that's fine too.
+
 ## Introduction
 
 In this lab, we will use a neural network to classify images, and then *generate* more images of the same type. This lab is based on 
